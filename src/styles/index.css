@@ -6,7 +6,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;500;700&family=Noto+Sans+Mono&display=swap");
 @import url("https://webfontworld.github.io/TheJamsil/TheJamsil.css");
 @import url("https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&family=Pixelify+Sans:wght@400;500;600;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Pixelify+Sans:wght@400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
 
 @font-face {
   font-family: "LeferiPoint";
@@ -53,10 +53,11 @@
 }
 body {
   color: #263238;
-  font-family: "Montserrat", sans-serif, -apple-system, BlinkMacSystemFont,
+  /* font-family: "Montserrat", sans-serif, -apple-system, BlinkMacSystemFont,
     system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo",
-    "Noto Sans KR", "Malgun Gothic", sans-serif !important;
-  letter-spacing: -0.5px;
+    "Noto Sans KR", "Malgun Gothic", sans-serif !important; */
+  font-family: "Poppins", Helvetica, sans-serif;
+  /* letter-spacing: -0.5px; */
 }
 @media (max-width: 575px) {
   * {

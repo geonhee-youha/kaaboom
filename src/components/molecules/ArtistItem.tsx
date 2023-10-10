@@ -14,7 +14,7 @@ import IconButton from "../atoms/IconButton";
 import Link from "next/link";
 import youhaBlue from "../../constants/youhaBlue";
 import Icon from "../atoms/Icon";
-import { pink } from "@mui/material/colors";
+import { pink, yellow } from "@mui/material/colors";
 import _ from "lodash";
 import { groups } from "../../data/group";
 import { MouseEvent, useState } from "react";
@@ -121,14 +121,17 @@ export default function ArtistItem({ item }: { item: ArtistProps }) {
             {item.group?.name ?? "SOLO"}
           </Typography>
         </Box>
-        <Stack
-          direction={"row"}
-          spacing={1}
+        <Box
           sx={{
-            m: theme.spacing(1, 0, 0, 0),
+            display: "flex",
+            m: theme.spacing(0.75, -0.5, 0, -0.5),
+            flexWrap: "wrap",
+            "& > *": {
+              p: theme.spacing(0.25, 0.5),
+            },
           }}
         >
-          <Stack direction={"row"} spacing={0.5} alignItems={"center"}>
+          <Stack direction={"row"} spacing={0.25} alignItems={"center"}>
             <Icon name="heart" color={youhaBlue[400]} size={16} prefix="fas" />
             <Typography
               sx={{
@@ -141,7 +144,7 @@ export default function ArtistItem({ item }: { item: ArtistProps }) {
               283
             </Typography>
           </Stack>
-          <Stack direction={"row"} spacing={0.5} alignItems={"center"}>
+          <Stack direction={"row"} spacing={0.25} alignItems={"center"}>
             <Icon
               name="thumbs-up"
               color={youhaBlue[400]}
@@ -159,13 +162,26 @@ export default function ArtistItem({ item }: { item: ArtistProps }) {
               1,230
             </Typography>
           </Stack>
-        </Stack>
+          <Stack direction={"row"} spacing={0.25} alignItems={"center"}>
+            <Icon name="film" color={youhaBlue[400]} size={16} prefix="fas" />
+            <Typography
+              sx={{
+                fontSize: 12,
+                lineHeight: "16px",
+                fontFamily: "Poppins",
+                color: youhaGrey[200],
+              }}
+            >
+              00:24
+            </Typography>
+          </Stack>
+        </Box>
         <Stack
           direction={"row"}
-          spacing={0.75}
+          spacing={1}
           alignItems={"center"}
           sx={{
-            m: theme.spacing(1, 0, 0, 0),
+            m: theme.spacing(0.75, 0, 0, 0),
           }}
         >
           <Stack direction={"row"}>
@@ -179,6 +195,27 @@ export default function ArtistItem({ item }: { item: ArtistProps }) {
               $250.00
             </Typography>
           </Stack>
+          {item.quickResponse && (
+          <Stack
+            direction={"row"}
+            spacing={0.25}
+            alignItems={"center"}
+            sx={{ m: theme.spacing(1, 0, 0, 0) }}
+          >
+            <Icon name="bolt" color={yellow[400]} size={16} prefix="fas" />
+            <Typography
+              sx={{
+                fontSize: 12,
+                lineHeight: "16px",
+                fontFamily: "Poppins",
+                // color: youhaGrey[200],
+                // fontWeight: '700'
+              }}
+            >
+              24hr
+            </Typography>
+          </Stack>
+        )}
         </Stack>
       </ButtonBase>
     </Link>

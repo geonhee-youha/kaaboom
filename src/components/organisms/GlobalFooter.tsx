@@ -60,60 +60,48 @@ export default function GlobalFooter() {
           },
         }}
       >
-        <Box
+        <Stack
           className="Section"
+          spacing={3}
           sx={{
+            // "@media(min-width: 768px)": {
+            //   position: "absolute",
+            //   top: 24,
+            //   right: 16,
+            //   "& > *": {
+            //     alignItems: "flex-end",
+            //   },
+            // },
             p: theme.spacing(0, 0, 4, 0),
           }}
         >
-          <Box>
-            <Typography
-              sx={{
-                fontSize: 16,
-                lineHeight: "24px",
-                fontWeight: "700",
-              }}
-            >
-              Keep up to date
-            </Typography>
+          <Stack alignItems={"flex-start"} spacing={1}>
             <Typography
               sx={{
                 fontSize: 14,
                 lineHeight: "20px",
-                color: youhaGrey[300],
               }}
             >
-              Join our newsletter for regular updates. No spam ever.
+              Ready to become a artist on KAABOOM?
             </Typography>
-          </Box>
-          <Box
-            sx={{
-              m: theme.spacing(2, 0, 0, 0),
-            }}
-          >
+            <Button type="outlined" borderColor={"#ffffff"} color={"#ffffff"}>
+              Join as artist
+            </Button>
+          </Stack>
+          <Stack alignItems={"flex-start"} spacing={1}>
             <Typography
               sx={{
                 fontSize: 14,
                 lineHeight: "20px",
-                fontWeight: "500",
               }}
             >
-              Enter your email:
+              Are you an agent, manager or publicist?
             </Typography>
-            <Stack
-              direction={"row"}
-              spacing={2}
-              sx={{ m: theme.spacing(1, 0, 0, 0) }}
-            >
-              <Input
-                placeholder="Email address"
-                value={value}
-                onChange={onChange}
-              />
-              <Button>Subscribe</Button>
-            </Stack>
-          </Box>
-        </Box>
+            <Button type="outlined" borderColor={"#ffffff"} color={"#ffffff"}>
+              Register as a Partner
+            </Button>
+          </Stack>
+        </Stack>
         <Stack direction="row" spacing={2}>
           {navs.map((item, index) => {
             return (
@@ -146,48 +134,6 @@ export default function GlobalFooter() {
           <img src="/icons/youtube.svg" />
           <img src="/icons/facebook.svg" />
           <img src="/icons/instagram.svg" />
-        </Stack>
-        <Stack
-          className="Section"
-          spacing={3}
-          sx={{
-            "@media(min-width: 768px)": {
-              position: "absolute",
-              top: 24,
-              right: 16,
-              "& > *": {
-                alignItems: "flex-end",
-              },
-            },
-            p: theme.spacing(0, 0, 4, 0),
-          }}
-        >
-          <Stack alignItems={"flex-start"} spacing={1}>
-            <Typography
-              sx={{
-                fontSize: 14,
-                lineHeight: "20px",
-              }}
-            >
-              Ready to become a artist on KAABOOM?
-            </Typography>
-            <Button type="outlined" borderColor={"#ffffff"} color={"#ffffff"}>
-              Join as artist
-            </Button>
-          </Stack>
-          <Stack alignItems={"flex-start"} spacing={1}>
-            <Typography
-              sx={{
-                fontSize: 14,
-                lineHeight: "20px",
-              }}
-            >
-              Are you an agent, manager or publicist?
-            </Typography>
-            <Button type="outlined" borderColor={"#ffffff"} color={"#ffffff"}>
-              Register as a Partner
-            </Button>
-          </Stack>
         </Stack>
         <Typography
           sx={{

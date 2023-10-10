@@ -11,7 +11,7 @@ export default function Button({
   size = "md",
   fullWidth,
   name,
-  backgroundColor: backgroundColorOrigin = youhaBlue[700],
+  backgroundColor: backgroundColorOrigin = youhaBlue[400],
   color,
   borderColor,
   children,
@@ -54,15 +54,16 @@ export default function Button({
         "&:hover": {
           opacity: type === "outlined" ? 0.7 : 1,
         },
-        height: 40,
+        minHeight: 40,
         p: theme.spacing(0, 2),
         "&.lg": {
-          height: 48,
+          minHeight: 48,
           fontSize: 16,
           lineHeight: "24px",
+          p: theme.spacing(1, 2),
         },
         "&.sm": {
-          height: 32,
+          minHeight: 32,
           p: theme.spacing(0, 1.5),
           fontSize: 12,
           lineHeight: "16px",
@@ -75,6 +76,7 @@ export default function Button({
         zIndex: 1,
         fontSize: 14,
         lineHeight: "20px",
+        textAlign:'center',
         color:
           type === "outlined"
             ? disabled

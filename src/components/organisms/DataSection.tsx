@@ -48,6 +48,7 @@ function DataRow({
           alignItems: "center",
           p: theme.spacing(0.25, 1.5),
           background: youhaGrey[800],
+          fontFamily: 'Poppins',
           "& .svg": {
             width: "auto",
             height: `16px !important`,

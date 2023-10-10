@@ -49,6 +49,7 @@ export type ArtistProps = {
   nicknames?: string[];
   mbti: string;
   links?: LinkProps[];
+  quickResponse?: boolean;
 };
 
 export const artists: ArtistProps[] = [
@@ -98,6 +99,7 @@ export const artists: ArtistProps[] = [
         link: "https://twitter.com/b_fatou_s",
       },
     ],
+    quickResponse: true
   },
   {
     id: "2",
@@ -141,6 +143,7 @@ export const artists: ArtistProps[] = [
         link: "https://www.instagram.com/n_v.ee/",
       },
     ],
+    quickResponse: true
   },
   {
     id: "3",

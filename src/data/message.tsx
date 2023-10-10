@@ -54,4 +54,34 @@ export const messages = [
       name: "GABI",
     },
   },
+  {
+    src: "/temp/messages/9.mp4",
+    artist: {
+      name: "JULIE",
+    },
+  },
+  {
+    src: "/temp/messages/10.mp4",
+    artist: {
+      name: "JULIE",
+    },
+  },
+  {
+    src: "/temp/messages/11.mp4",
+    artist: {
+      name: "NATTY",
+    },
+  },
+  {
+    src: "/temp/messages/12.mp4",
+    artist: {
+      name: "BELLE",
+    },
+  },
+  {
+    src: "/temp/messages/13.mp4",
+    artist: {
+      name: "HANEUL",
+    },
+  },
 ];

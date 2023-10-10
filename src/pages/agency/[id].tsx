@@ -175,10 +175,10 @@ function Page({ id }: { id: string | string[] }) {
                   gridTemplateColumns: "1fr 1fr 1fr",
                 },
                 "@media(min-width: 1080px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                  gridTemplateColumns: "1fr 1fr 1fr",
                 },
                 "@media(min-width: 1200px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
                 },
               }}
               className="SectionContents"
@@ -222,10 +222,10 @@ function Page({ id }: { id: string | string[] }) {
                   gridTemplateColumns: "1fr 1fr 1fr",
                 },
                 "@media(min-width: 1080px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                  gridTemplateColumns: "1fr 1fr 1fr",
                 },
                 "@media(min-width: 1200px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
                 },
               }}
               className="SectionContents"
@@ -328,7 +328,7 @@ function Page({ id }: { id: string | string[] }) {
                   >
                     <Stack
                       direction={"row"}
-                      spacing={1}
+                      spacing={0.5}
                       alignItems={"center"}
                       flexWrap={"wrap"}
                     >
@@ -351,7 +351,7 @@ function Page({ id }: { id: string | string[] }) {
                     </Stack>
                     <Stack
                       direction={"row"}
-                      spacing={1}
+                      spacing={0.5}
                       alignItems={"center"}
                       sx={{ ml: 2 }}
                     >

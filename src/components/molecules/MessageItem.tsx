@@ -146,7 +146,7 @@ export default function MessageItem({
           right: 0,
           zIndex: 999,
           background: "linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8))",
-          p: theme.spacing(4, 1, 1, 1),
+          p: theme.spacing(4, 1, 2, 1),
           transition: `all 0.35s ease`,
         }}
       >
@@ -156,8 +156,8 @@ export default function MessageItem({
             sx={{
               display: "flex",
               alignItems: "center",
-              pb: 1,
-              transform: controlls ? "translateY(0)" : "translateY(32px)",
+              pb: 2,
+              transform: controlls ? "translateY(0)" : "translateY(40px)",
               transition: `all 0.35s ease`,
             }}
             onClick={(e) => {
@@ -166,8 +166,8 @@ export default function MessageItem({
           >
             <Visual
               sx={{
-                width: 32,
-                height: 32,
+                width: 36,
+                height: 36,
                 borderRadius: "50%",
                 overflow: "hidden",
                 border: `1px solid ${youhaGrey[200]}`,
@@ -182,8 +182,8 @@ export default function MessageItem({
               <Typo
                 lines={1}
                 sx={{
-                  fontSize: 12,
-                  lineHeight: "16px",
+                  fontSize: 14,
+                  lineHeight: "20px",
                   fontWeight: "700",
                   whiteSpace: "nowrap",
                 }}
@@ -193,10 +193,10 @@ export default function MessageItem({
               <Typo
                 lines={1}
                 sx={{
-                  fontSize: 10,
-                  lineHeight: "14px",
+                  fontSize: 12,
+                  lineHeight: "16px",
                   whiteSpace: "nowrap",
-                  color: youhaGrey[300]
+                  color: youhaGrey[200]
                 }}
               >
                 {artist.group?.name ?? "SOLO"}
@@ -209,8 +209,10 @@ export default function MessageItem({
             width: "100%",
             display: "flex",
             alignItems: "center",
-            transform: controlls ? "translateY(0)" : "translateY(32px)",
+            transform: controlls ? "translateY(0)" : "translateY(40px)",
             transition: `all 0.35s ease`,
+            height: 20,
+            overflow: 'visible'
           }}
         >
           <Icon

@@ -200,7 +200,8 @@ const reset = css`
     vertical-align: middle;
   }
   input {
-    font-family: 'Montserrat', sans-serif !important;
+    /* font-family: 'Montserrat', sans-serif !important; */
+    font-family: 'Poppins', Helvetica, sans-serif;
     font-size: 16px;
     color: #ffffff;
     vertical-align: middle;
@@ -262,7 +263,7 @@ const reset = css`
     color: #ffffff;
     background-color: #111418 !important;
     scroll-behavior: smooth;
-    letter-spacing: -0.4px !important;
+    letter-spacing: 0.15px !important;
     width: 100%;
     min-height: 100%;
     position: relative;
@@ -274,7 +275,7 @@ const reset = css`
     /* font-family: "Spoqa Han Sans Neo", "Spoqa Han Sans JP", sans-serif !important; */
     /* font-family: "Noto Sans KR", sans-serif !important; */
     font-display: block;
-    letter-spacing: -0.4px !important;
+    /* letter-spacing: -0.4px !important; */
   }
   body {
     -webkit-font-smoothing: antialiased;
@@ -356,8 +357,7 @@ const reset = css`
   }
   html,
   body {
-    // width: 100%;
-    font-family: 'Montserrat', sans-serif, NanumGothic,"나눔고딕","Nanum Gothic","맑은 고딕","Malgun Gothic",Dotum
+    font-family: "Poppins", Helvetica, sans-serif;
   }
   #__next {
     width: 100%;

@@ -203,7 +203,7 @@ function MyApp(props: MyAppProps) {
           content="/images/favicon/ms-icon-144x144.png"
         />
         <script src="https://js.pusher.com/3.2/pusher.min.js" />
-        {/* <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" /> */}
+        {/* <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,700&display=swap" /> */}
         {/* "Mixed content blocked" when running an HTTP AJAX operation in an HTTPS page */}
         {/* <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" /> */}
         {/* <!-- jQuery --> */}

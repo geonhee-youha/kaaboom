@@ -245,10 +245,10 @@ function Page({ id }: { id: string | string[] }) {
                 gridTemplateColumns: "1fr 1fr 1fr",
               },
               "@media(min-width: 1080px)": {
-                gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                gridTemplateColumns: "1fr 1fr 1fr",
               },
               "@media(min-width: 1200px)": {
-                gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+                gridTemplateColumns: "1fr 1fr 1fr 1fr",
               },
             }}
             className="SectionContents"
@@ -287,10 +287,10 @@ function Page({ id }: { id: string | string[] }) {
                   gridTemplateColumns: "1fr 1fr 1fr",
                 },
                 "@media(min-width: 1080px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                  gridTemplateColumns: "1fr 1fr 1fr",
                 },
                 "@media(min-width: 1200px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
                 },
               }}
               className="SectionContents"
@@ -384,7 +384,7 @@ function Page({ id }: { id: string | string[] }) {
                   display: "flex",
                 }}
               >
-                <Stack direction={"row"} spacing={1} alignItems={"center"}>
+                <Stack direction={"row"} spacing={0.5} alignItems={"center"}>
                   <Icon
                     name="user"
                     color={youhaBlue[400]}
