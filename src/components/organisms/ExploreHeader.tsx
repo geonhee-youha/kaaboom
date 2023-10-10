@@ -69,7 +69,7 @@ export default function ExploreHeader({
         >
           {data.length} results
         </Typography>
-        <Stack
+        {/* <Stack
           sx={{
             m: theme.spacing(1, 0, 0, 0),
             "@media(min-width: 768px)": {
@@ -99,7 +99,7 @@ export default function ExploreHeader({
               }}
             />
           </Button>
-        </Stack>
+        </Stack> */}
       </Box>
     </Box>
   );

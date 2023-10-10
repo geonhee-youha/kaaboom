@@ -21,27 +21,25 @@ function NavItem({ item }: { item: { link: string; label: string } }) {
   };
   return item.label === "Artists" ? (
     <>
-      <Link href={`${item.link}`} passHref>
-        <TextButton
-          size={"lg"}
-          label={item.label}
-          fontWeight={"700"}
-          disableRipple
-          onClick={onClick}
-          fullWidth
-        >
-          <Icon
-            name="angle-down"
-            prefix="fas"
-            size={20}
-            sx={{
-              transition: `all 0.35s ease`,
-              transform: `rotate(${open ? 180 : 0}deg)`,
-              m: theme.spacing(0, 0, 0, "auto"),
-            }}
-          />
-        </TextButton>
-      </Link>
+      <TextButton
+        size={"lg"}
+        label={item.label}
+        fontWeight={"700"}
+        disableRipple
+        onClick={onClick}
+        fullWidth
+      >
+        <Icon
+          name="angle-down"
+          prefix="fas"
+          size={20}
+          sx={{
+            transition: `all 0.35s ease`,
+            transform: `rotate(${open ? 180 : 0}deg)`,
+            m: theme.spacing(0, 0, 0, "auto"),
+          }}
+        />
+      </TextButton>
       <Stack
         alignItems={"flex-start"}
         sx={{

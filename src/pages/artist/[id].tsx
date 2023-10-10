@@ -25,6 +25,8 @@ import { pink, yellow } from "@mui/material/colors";
 import Button from "../../components/atoms/Button";
 import { faqs, howKaboomWorks, purchaseTypes } from "../../data";
 import FaqItem from "../../components/molecules/FaqItem";
+import { reviews } from "../../data/review";
+import Typo from "../../components/atoms/Typo";
 
 export default function Index() {
   const router = useRouter();
@@ -82,6 +84,19 @@ function Page({ id }: { id: string | string[] }) {
     messages,
     (el) => el.artist.name === item.name
   );
+  const [reviewSwiper, setReviewSwiper] = useState<any>(null);
+  const [reviewSwiperIndex, setReviewSwiperIndex] = useState<number>(0);
+  const onReviewSlideChange = (swiper: any) => {
+    setReviewSwiperIndex(swiper.realIndex);
+  };
+  const onClickReviewPrev = () => {
+    if (reviewSwiperIndex === 0) return;
+    reviewSwiper.slideTo(reviewSwiperIndex - 1);
+  };
+  const onClickReviewNext = () => {
+    if (reviewSwiperIndex === reviews.length - 1) return;
+    reviewSwiper.slideTo(reviewSwiperIndex + 1);
+  };
   const [purchaseType, setPurchaseType] = useState<string>("");
   const onClickPurchase = () => {};
   const data = [
@@ -373,7 +388,7 @@ function Page({ id }: { id: string | string[] }) {
         m: theme.spacing(0, "auto"),
         minHeight: "100vh",
         flexDirection: "column-reverse",
-        "@media(min-width: 840px)": {
+        "@media(min-width: 960px)": {
           flexDirection: "row-reverse",
         },
       }}
@@ -381,10 +396,11 @@ function Page({ id }: { id: string | string[] }) {
       <Box
         sx={{
           flex: 1,
-          "@media(min-width: 840px)": {
+          "@media(min-width: 960px)": {
             width: `calc(100vw - 420px)`,
+            maxWidth: `calc(1280px - 420px)`,
           },
-          maxWidth: `calc(1280px - 420px)`,
+          width: "100%",
         }}
       >
         <Box sx={{ width: "100%", p: theme.spacing(6, 2) }}>
@@ -454,7 +470,7 @@ function Page({ id }: { id: string | string[] }) {
                         >
                           <Icon
                             // color={focused ? youhaBlue[100] : youhaGrey[100]}
-                            color={youhaGrey[100]}
+                            // color={youhaGrey[100]}
                             prefix="fas"
                             name={
                               item.value === "mini" ? "film" : "camera-movie"
@@ -462,18 +478,22 @@ function Page({ id }: { id: string | string[] }) {
                           />
                           <Typography
                             sx={{
-                              fontSize: 20,
-                              lineHeight: "32px",
+                              fontSize: 16,
+                              lineHeight: "24px",
                               fontWeight: "700",
                               // color: focused ? youhaBlue[100] : youhaGrey[100],
-                              color: youhaGrey[100]
+                              // color: youhaGrey[100],
                             }}
                           >
                             {item.label}
                           </Typography>
                         </Stack>
                         <Stack spacing={1}>
-                          <Box>
+                          <Box
+                            sx={{
+                              m: theme.spacing(2, 0, 0, 0),
+                            }}
+                          >
                             <Typography
                               sx={{
                                 fontSize: 12,
@@ -481,7 +501,7 @@ function Page({ id }: { id: string | string[] }) {
                                 // color: focused
                                 //   ? youhaBlue[100]
                                 //   : youhaGrey[100],
-                                  color: youhaGrey[100]
+                                // color: youhaGrey[100],
                               }}
                             >
                               Max video length
@@ -493,14 +513,18 @@ function Page({ id }: { id: string | string[] }) {
                                 // color: focused
                                 //   ? youhaBlue[100]
                                 //   : youhaGrey[100],
-                                color: youhaGrey[100],
+                                // color: youhaGrey[100],
                                 fontWeight: "700",
                               }}
                             >
                               {item.maxVideoLength}
                             </Typography>
                           </Box>
-                          <Box>
+                          <Box
+                            sx={{
+                              m: theme.spacing(2, 0, 0, 0),
+                            }}
+                          >
                             <Typography
                               sx={{
                                 fontSize: 12,
@@ -508,7 +532,7 @@ function Page({ id }: { id: string | string[] }) {
                                 // color: focused
                                 //   ? youhaBlue[100]
                                 //   : youhaGrey[100],
-                                color: youhaGrey[100]
+                                // color: youhaGrey[100],
                               }}
                             >
                               Max letters
@@ -520,7 +544,7 @@ function Page({ id }: { id: string | string[] }) {
                                 // color: focused
                                 //   ? youhaBlue[100]
                                 //   : youhaGrey[100],
-                                color: youhaGrey[100],
+                                // color: youhaGrey[100],
                                 fontWeight: "700",
                               }}
                             >
@@ -546,7 +570,7 @@ function Page({ id }: { id: string | string[] }) {
                   }}
                 >
                   <Stack direction={"row"} spacing={1} sx={{ mb: 1 }}>
-                    <Icon name="rotate-left" size={20} prefix="fas" />
+                    <Icon name="money-bill-transfer" size={20} prefix="fas" />
                     <Typography
                       sx={{
                         fontSize: 14,
@@ -579,7 +603,16 @@ function Page({ id }: { id: string | string[] }) {
                 spacing={1}
                 sx={{ m: theme.spacing(2, 0, 0, 0), flex: 1, width: "100%" }}
               >
-                <Button size="lg" fullWidth backgroundColor={youhaBlue[500]}>
+                <Button
+                  size="lg"
+                  fullWidth
+                  // backgroundColor={youhaBlue[500]}
+                  backgroundColor={`linear-gradient(135deg, ${alpha(
+                    youhaBlue[400],
+                    1
+                  )}, ${alpha(youhaBlue[800], 1)})`}
+                  color={"#ffffff"}
+                >
                   Get a personal video reply $
                   {purchaseType === "long" ? `1,250,00` : `250.00`}
                 </Button>
@@ -598,7 +631,7 @@ function Page({ id }: { id: string | string[] }) {
                 }}
               >
                 <Stack direction={"row"} spacing={1} sx={{ mb: 1 }}>
-                  <Icon name="rotate-left" size={20} prefix="fas" />
+                  <Icon name="money-bill-transfer" size={20} prefix="fas" />
                   <Typography
                     sx={{
                       fontSize: 14,
@@ -702,19 +735,19 @@ function Page({ id }: { id: string | string[] }) {
                   spaceBetween: 12,
                 },
                 480: {
-                  slidesPerView: 3,
+                  slidesPerView: 2,
                   spaceBetween: 12,
                 },
                 600: {
-                  slidesPerView: 4,
+                  slidesPerView: 3,
                   spaceBetween: 12,
                 },
                 720: {
-                  slidesPerView: 5,
+                  slidesPerView: 4,
                   spaceBetween: 12,
                 },
                 840: {
-                  slidesPerView: 3,
+                  slidesPerView: 4,
                   spaceBetween: 12,
                 },
                 960: {
@@ -722,7 +755,7 @@ function Page({ id }: { id: string | string[] }) {
                   spaceBetween: 12,
                 },
                 1080: {
-                  slidesPerView: 3,
+                  slidesPerView: 4,
                   spaceBetween: 12,
                 },
                 1200: {
@@ -812,33 +845,6 @@ function Page({ id }: { id: string | string[] }) {
                       Get now
                     </Button>
                   </Box>
-                  <Stack direction={"row"} spacing={1} sx={{ mt: 2 }}>
-                    <Icon
-                      name="bolt"
-                      prefix="fas"
-                      size={24}
-                      color={yellow[400]}
-                    />
-                    <Box>
-                      <Typography
-                        sx={{
-                          fontSize: 16,
-                          lineHeight: `24px`,
-                          fontWeight: "700",
-                        }}
-                      >
-                        24hr delivery
-                      </Typography>
-                      <Typography
-                        sx={{
-                          fontSize: 14,
-                          lineHeight: `20px`,
-                        }}
-                      >
-                        For every occasion
-                      </Typography>
-                    </Box>
-                  </Stack>
                 </Box>
               </SwiperSlide>
               {artistMessages.map((item, index) => {
@@ -854,8 +860,57 @@ function Page({ id }: { id: string | string[] }) {
                 );
               })}
             </Swiper>
+            <Stack direction={"row"} spacing={1} sx={{ mt: 2 }}>
+              <Icon name="bolt" prefix="fas" size={24} color={yellow[400]} />
+              <Box>
+                <Typography
+                  sx={{
+                    fontSize: 14,
+                    lineHeight: `20px`,
+                  }}
+                >
+                  24hr delivery
+                </Typography>
+                <Typography
+                  sx={{
+                    fontSize: 14,
+                    lineHeight: `20px`,
+                    color: youhaGrey[200],
+                  }}
+                >
+                  For every occasion
+                </Typography>
+              </Box>
+            </Stack>
           </Box>
         </Stack>
+        <Box
+          className="Section"
+          sx={{
+            p: theme.spacing(6, 2),
+            display: "block",
+            "@media(min-width: 960px)": {
+              display: "none",
+            },
+          }}
+        >
+          <Typography
+            sx={{
+              fontSize: 20,
+              lineHeight: "32px",
+              fontWeight: "700",
+              width: "100%",
+            }}
+          >
+            Key features
+          </Typography>
+          <DataSection
+            data={data}
+            sx={{
+              p: theme.spacing(2, 0, 0, 0),
+            }}
+          />
+        </Box>
         <Box
           sx={{
             p: theme.spacing(6, 2),
@@ -878,7 +933,7 @@ function Page({ id }: { id: string | string[] }) {
               height: `1px`,
               backgroundColor: youhaGrey[500],
             },
-            "@media(min-width: 840px)": {
+            "@media(min-width: 960px)": {
               "&:before": {
                 position: "absolute",
                 bottom: 0,
@@ -948,7 +1003,7 @@ function Page({ id }: { id: string | string[] }) {
                   width: "1px",
                   border: `1px dashed ${youhaGrey[500]}`,
                 },
-                "@media(min-width: 840px)": {
+                "@media(min-width: 960px)": {
                   flexDirection: "row",
                   "& > div:not(:nth-child(1))": {
                     m: theme.spacing(0, 0, 0, 4),
@@ -975,7 +1030,7 @@ function Page({ id }: { id: string | string[] }) {
                       flexDirection: "row",
                       flex: 1,
                       zIndex: 9,
-                      "@media(min-width: 840px)": {
+                      "@media(min-width: 960px)": {
                         flexDirection: "column",
                       },
                     }}
@@ -1006,7 +1061,7 @@ function Page({ id }: { id: string | string[] }) {
                       sx={{
                         flex: 1,
                         m: theme.spacing(0, 0, 0, 2),
-                        "@media(min-width: 840px)": {
+                        "@media(min-width: 960px)": {
                           m: theme.spacing(1, 0, 0, 0),
                         },
                       }}
@@ -1046,7 +1101,7 @@ function Page({ id }: { id: string | string[] }) {
               }}
             >
               <Stack direction={"row"} spacing={1} sx={{ mb: 1 }}>
-                <Icon name="rotate-left" size={20} prefix="fas" />
+                <Icon name="money-bill-transfer" size={20} prefix="fas" />
                 <Typography
                   sx={{
                     fontSize: 14,
@@ -1074,6 +1129,163 @@ function Page({ id }: { id: string | string[] }) {
             </Box>
           </Box>
         </Box>
+        <Stack
+          spacing={2}
+          className="Section"
+          sx={{
+            p: theme.spacing(6, 2),
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Typography
+              sx={{
+                flex: 1,
+                fontSize: 20,
+                lineHeight: "32px",
+                fontWeight: "700",
+              }}
+            >
+              Reviews
+            </Typography>
+            <Stack direction={"row"} spacing={1}>
+              <IconButton
+                name="angle-left"
+                size={20}
+                borderColor={youhaGrey[700]}
+                backgroundColor={youhaGrey[800]}
+                sx={{
+                  width: 32,
+                  height: 32,
+                }}
+                onClick={onClickReviewPrev}
+              />
+              <IconButton
+                name="angle-right"
+                size={20}
+                borderColor={youhaGrey[700]}
+                backgroundColor={youhaGrey[800]}
+                sx={{
+                  width: 32,
+                  height: 32,
+                }}
+                onClick={onClickReviewNext}
+              />
+            </Stack>
+          </Box>
+          <Box
+            sx={{
+              "& a": {
+                width: "100%",
+              },
+              pb: 4,
+              "@media(max-width: 480px)": {
+                ml: `-16px !important`,
+                mr: `-16px !important`,
+                "& .swiper": {
+                  pl: 2,
+                  pr: 2,
+                },
+              },
+            }}
+          >
+            <Swiper
+              onSwiper={setReviewSwiper}
+              onSlideChange={onReviewSlideChange}
+              breakpoints={{
+                0: {
+                  slidesPerView: 1,
+                  spaceBetween: 12,
+                },
+                480: {
+                  slidesPerView: 1,
+                  spaceBetween: 12,
+                },
+                600: {
+                  slidesPerView: 2,
+                  spaceBetween: 12,
+                },
+                720: {
+                  slidesPerView: 3,
+                  spaceBetween: 12,
+                },
+                840: {
+                  slidesPerView: 3,
+                  spaceBetween: 12,
+                },
+                960: {
+                  slidesPerView: 2,
+                  spaceBetween: 12,
+                },
+                1080: {
+                  slidesPerView: 3,
+                  spaceBetween: 12,
+                },
+                1200: {
+                  slidesPerView: 3,
+                  spaceBetween: 12,
+                },
+              }}
+            >
+              {reviews.map((item, index) => {
+                return (
+                  <SwiperSlide key={index}>
+                    <Box
+                      sx={{
+                        backgroundColor: youhaGrey[700],
+                        borderRadius: 1,
+                        p: theme.spacing(2),
+                      }}
+                    >
+                      <Stack direction={"row"} spacing={1} alignItems={'center'} sx={{mb: 0.5}}>
+                        <Typography
+                          sx={{
+                            fontSize: 14,
+                            lineHeight: `20px`,
+                            fontWeight: "700",
+                          }}
+                        >
+                          {item.name}
+                        </Typography>
+                        <Icon
+                          name="thumbs-up"
+                          color={youhaBlue[400]}
+                          prefix="fas"
+                          size={20}
+                        />
+                      </Stack>
+                      <Typography
+                        sx={{
+                          fontSize: 14,
+                          lineHeight: `20px`,
+                          m: theme.spacing(0, 0, 2, 0),
+                        }}
+                      >
+                        {item.date}
+                        {" / "}
+                        {item.type}
+                      </Typography>
+                      <Typo
+                        lines={4}
+                        sx={{
+                          fontSize: 14,
+                          lineHeight: `20px`,
+                          color: youhaGrey[200]
+                        }}
+                      >
+                        {item.contents}
+                      </Typo>
+                    </Box>
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
+          </Box>
+        </Stack>
         {groupArtists.length > 0 && (
           <Box
             sx={{
@@ -1095,19 +1307,22 @@ function Page({ id }: { id: string | string[] }) {
                 gridColumnGap: 12,
                 gridRowGap: 32,
                 "@media(min-width: 480px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr",
+                  gridTemplateColumns: "1fr 1fr",
                 },
                 "@media(min-width: 600px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                  gridTemplateColumns: "1fr 1fr 1fr",
                 },
                 "@media(min-width: 720px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
                 },
                 "@media(min-width: 840px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                },
+                "@media(min-width: 960px)": {
                   gridTemplateColumns: "1fr 1fr 1fr",
                 },
                 "@media(min-width: 1080px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr",
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
                 },
                 "@media(min-width: 1200px)": {
                   gridTemplateColumns: "1fr 1fr 1fr 1fr",
@@ -1168,7 +1383,7 @@ function Page({ id }: { id: string | string[] }) {
         component={"aside"}
         sx={{
           width: "100%",
-          "@media(min-width: 840px)": {
+          "@media(min-width: 960px)": {
             width: 420,
             display: "block",
             p: theme.spacing(0, 2, 0, 0),
@@ -1184,7 +1399,10 @@ function Page({ id }: { id: string | string[] }) {
         >
           <Box
             sx={{
-              p: theme.spacing(6, 2),
+              p: theme.spacing(6, 2, 0, 2),
+              "@media(min-width: 960px)": {
+                p: theme.spacing(6, 2),
+              },
             }}
             className="Section"
           >
@@ -1322,8 +1540,16 @@ function Page({ id }: { id: string | string[] }) {
                   </Typography>
                 </Stack>
               </Stack>
-
-              <DataSection data={data} />
+              <Box
+                sx={{
+                  display: "none",
+                  "@media(min-width: 960px)": {
+                    display: "flex",
+                  },
+                }}
+              >
+                <DataSection data={data} />
+              </Box>
             </Box>
           </Box>
         </Box>

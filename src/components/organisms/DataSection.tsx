@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, SxProps, Typography } from "@mui/material";
 import youhaGrey from "../../constants/youhaGrey";
 import { theme } from "../../themes/theme";
 import React from "react";
@@ -48,7 +48,7 @@ function DataRow({
           alignItems: "center",
           p: theme.spacing(0.25, 1.5),
           background: youhaGrey[800],
-          fontFamily: 'Poppins',
+          fontFamily: "Poppins",
           "& .svg": {
             width: "auto",
             height: `16px !important`,
@@ -73,13 +73,16 @@ function DataRow({
 
 export default function DataSection({
   data,
+  sx,
 }: {
   data: { label: string; value: React.ReactNode }[];
+  sx?: SxProps;
 }) {
   return (
     <Box
       sx={{
         p: theme.spacing(6, 0, 0, 0),
+        ...sx,
       }}
     >
       <Box

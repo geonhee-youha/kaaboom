@@ -44,7 +44,7 @@ export default function Button({
         justifyContent: "center",
         alignItems: "center",
         overflow: "hidden",
-        backgroundColor: type === "outlined" ? "transparent" : backgroundColor,
+        background: type === "outlined" ? "transparent" : backgroundColor,
         boxShadow: `${borderColor ?? backgroundColor} 0px 0px 0px ${
           type === "outlined" || borderColor ? 1 : 0
         }px inset`,
@@ -72,7 +72,7 @@ export default function Button({
         "@media(max-width: 480px)": {
           display: mobile ? "flex" : web ? "none" : "flex",
         },
-        fontWeight: "700",
+        fontWeight: "500",
         zIndex: 1,
         fontSize: 14,
         lineHeight: "20px",
@@ -87,7 +87,7 @@ export default function Button({
             : color ?? "#ffffff",
         ...sx,
       }}
-      disableRipple={type === "outlined"}
+      // disableRipple={type === "outlined"}
       onClick={onClick}
       className={size}
     >
@@ -101,7 +101,8 @@ export default function Button({
           backgroundColor: alpha("#000000", 0.15),
           transition: `all 0.35s ease`,
           opacity: 0,
-          zIndex: type === "outlined" ? 2 : 0,
+          zIndex: type === "outlined" ? 2 : -1,
+          display:'none'
         }}
         className="ripple"
       />

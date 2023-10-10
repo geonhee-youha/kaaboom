@@ -207,7 +207,7 @@ function Page({ id }: { id: string | string[] }) {
         m: theme.spacing(0, "auto"),
         minHeight: "100vh",
         flexDirection: "column-reverse",
-        "@media(min-width: 840px)": {
+        "@media(min-width: 960px)": {
           flexDirection: "row-reverse",
         },
       }}
@@ -233,19 +233,22 @@ function Page({ id }: { id: string | string[] }) {
               gridColumnGap: 12,
               gridRowGap: 32,
               "@media(min-width: 480px)": {
-                gridTemplateColumns: "1fr 1fr 1fr",
+                gridTemplateColumns: "1fr 1fr",
               },
               "@media(min-width: 600px)": {
-                gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                gridTemplateColumns: "1fr 1fr 1fr",
               },
               "@media(min-width: 720px)": {
-                gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+                gridTemplateColumns: "1fr 1fr 1fr 1fr",
               },
               "@media(min-width: 840px)": {
+                gridTemplateColumns: "1fr 1fr 1fr 1fr",
+              },
+              "@media(min-width: 960px)": {
                 gridTemplateColumns: "1fr 1fr 1fr",
               },
               "@media(min-width: 1080px)": {
-                gridTemplateColumns: "1fr 1fr 1fr",
+                gridTemplateColumns: "1fr 1fr 1fr 1fr",
               },
               "@media(min-width: 1200px)": {
                 gridTemplateColumns: "1fr 1fr 1fr 1fr",
@@ -275,19 +278,22 @@ function Page({ id }: { id: string | string[] }) {
                 gridColumnGap: 12,
                 gridRowGap: 32,
                 "@media(min-width: 480px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr",
+                  gridTemplateColumns: "1fr 1fr",
                 },
                 "@media(min-width: 600px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                  gridTemplateColumns: "1fr 1fr 1fr",
                 },
                 "@media(min-width: 720px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
                 },
                 "@media(min-width: 840px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                },
+                "@media(min-width: 960px)": {
                   gridTemplateColumns: "1fr 1fr 1fr",
                 },
                 "@media(min-width: 1080px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr",
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
                 },
                 "@media(min-width: 1200px)": {
                   gridTemplateColumns: "1fr 1fr 1fr 1fr",
@@ -314,7 +320,7 @@ function Page({ id }: { id: string | string[] }) {
         component={"aside"}
         sx={{
           width: "100%",
-          "@media(min-width: 840px)": {
+          "@media(min-width: 960px)": {
             width: 420,
             display: "block",
             p: theme.spacing(0, 2, 0, 0),
