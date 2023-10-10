@@ -14,7 +14,7 @@ import IconButton from "../atoms/IconButton";
 import Link from "next/link";
 import youhaBlue from "../../constants/youhaBlue";
 import Icon from "../atoms/Icon";
-import { cyan, pink, yellow } from "@mui/material/colors";
+import { pink } from "@mui/material/colors";
 import _ from "lodash";
 import { groups } from "../../data/group";
 import { MouseEvent, useState } from "react";
@@ -39,6 +39,7 @@ export default function ArtistItem({ item }: { item: ArtistProps }) {
         sx={{
           flexDirection: "column",
           borderRadius: 1,
+          alignSelf: "flex-start",
         }}
         disableRipple
       >
@@ -51,15 +52,6 @@ export default function ArtistItem({ item }: { item: ArtistProps }) {
             borderRadius: 1,
             overflow: "hidden",
             aspectRatio: `5 / 6`,
-            // "&:after": {
-            //   position: "absolute",
-            //   content: "''",
-            //   top: 0,
-            //   left: 0,
-            //   right: 0,
-            //   bottom: 0,
-            //   background: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0))`,
-            // },
           }}
         >
           <Visual src={item.thumbnail} absolute noScale={false} />
@@ -78,81 +70,30 @@ export default function ArtistItem({ item }: { item: ArtistProps }) {
             prefix={favorite ? "fas" : "far"}
             onClick={onClickFavorite}
             color={favorite ? pink[400] : "#ffffff"}
-            // disableRipple
           />
-          {/* <IconButton
-            size={20}
-            name={"heart"}
-            sx={{
-              position: "absolute",
-              top: 4,
-              right: 4,
-              zIndex: 99,
-              width: 32,
-              height: 32,
-              borderRadius: 0.75,
-              boxShadow: '0px 3px 5px -1px rgba(0,0,0,0.2), 0px 5px 8px 0px rgba(0,0,0,0.14), 0px 1px 14px 0px rgba(0,0,0,0.12)'
-            }}
-            backgroundColor={alpha(youhaGrey[800], 1)}
-            borderColor={youhaGrey[700]}
-            prefix="far"
-            onClick={(e) => {
-              e.preventDefault();
-              console.log("1");
-            }}
-            disableRipple
-          /> */}
-          {/* <IconButton
-            name={"heart"}
-            sx={{
-              position: "absolute",
-              top: 0,
-              right: 0,
-              zIndex: 99,
-            }}
-            //   backgroundColor={alpha(youhaGrey[100], 0.4)}
-            //   borderColor={'#ffffff'}
-            prefix="far"
-            onClick={(e) => {
-              e.preventDefault();
-              console.log("1");
-            }}
-            disableRipple
-          /> */}
           {group && (
-            <ButtonBase
-              sx={{
-                position: "absolute",
-                top: 4,
-                left: 4,
-                zIndex: 99,
-              }}
-            >
+            <Link href={`/group/${group.id}`} passHref>
               <Paper
                 elevation={5}
                 sx={{
-                  background: `linear-gradient(${
-                    group.colors.backgrounds[0]
-                  }, ${
-                    group.colors.backgrounds[1] ?? group.colors.backgrounds[0]
-                  })`,
-                  borderRadius: 1,
+                  position: "absolute",
+                  bottom: 4,
+                  left: 4,
+                  zIndex: 99,
+                  overflow: "hidden",
+                  borderRadius: 20,
                   width: 40,
                   height: 40,
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
                   border: `1px solid ${youhaGrey[700]}`,
+                  cursor: "pointer",
                 }}
               >
-                <Visual
-                  src={group.thumbnail}
-                  sx={{
-                    width: 24,
-                  }}
-                />
+                <Visual src={group.thumbnail} absolute noScale />
               </Paper>
-            </ButtonBase>
+            </Link>
           )}
         </Box>
         <Box
@@ -162,8 +103,8 @@ export default function ArtistItem({ item }: { item: ArtistProps }) {
         >
           <Typography
             sx={{
-              fontSize: 20,
-              lineHeight: "32px",
+              fontSize: 16,
+              lineHeight: "24px",
               fontWeight: "700",
               color: `#ffffff !important`,
             }}
@@ -194,7 +135,6 @@ export default function ArtistItem({ item }: { item: ArtistProps }) {
                 fontSize: 12,
                 lineHeight: "16px",
                 fontFamily: "Poppins",
-                // fontWeight: '700',
                 color: youhaGrey[200],
               }}
             >
@@ -213,7 +153,6 @@ export default function ArtistItem({ item }: { item: ArtistProps }) {
                 fontSize: 12,
                 lineHeight: "16px",
                 fontFamily: "Poppins",
-                // fontWeight: '700',
                 color: youhaGrey[200],
               }}
             >
@@ -230,22 +169,11 @@ export default function ArtistItem({ item }: { item: ArtistProps }) {
           }}
         >
           <Stack direction={"row"}>
-            {/* <Typography
-              sx={{
-                fontSize: 14,
-                lineHeight: "20px",
-                m: theme.spacing(0, 0.25, "auto", 0),
-                // fontWeight: '700',
-              }}
-            >
-              $
-            </Typography> */}
             <Typography
               sx={{
                 fontSize: 14,
                 lineHeight: "20px",
                 fontFamily: "Poppins",
-                // fontWeight: '700',
               }}
             >
               $250.00
@@ -256,39 +184,3 @@ export default function ArtistItem({ item }: { item: ArtistProps }) {
     </Link>
   );
 }
-
-// <Stack
-// direction={"row"}
-// spacing={0.75}
-// alignItems={"center"}
-// sx={{
-//   m: theme.spacing(0.5, 0, 0, 0),
-// }}
-// >
-// {/* <Icon
-//   name="circle-dollar"
-//   color={youhaBlue[400]}
-//   size={20}
-//   prefix="fas"
-// /> */}
-// <Stack direction={"row"}>
-//   <Typography
-//     sx={{
-//       fontSize: 8,
-//       lineHeight: "20px",
-//       m: theme.spacing(0, 0.25, "auto", 0),
-//     }}
-//   >
-//     $
-//   </Typography>
-//   <Typography
-//     sx={{
-//       fontSize: 16,
-//       lineHeight: "24px",
-//       fontFamily: "Poppins",
-//     }}
-//   >
-//     250.00
-//   </Typography>
-// </Stack>
-// </Stack>

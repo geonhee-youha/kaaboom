@@ -18,7 +18,7 @@ import {
   sideDrawerRecoilState,
 } from "../../constants/recoils";
 import { artistsMenus, globalMenus } from "../../constants";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Icon from "../atoms/Icon";
 
 function NavItem({ item }: { item: { link: string; label: string } }) {
@@ -26,48 +26,55 @@ function NavItem({ item }: { item: { link: string; label: string } }) {
   const onClick = () => {
     setOpen(!open);
   };
+  const onMouseOver = () => {
+    setOpen(true);
+  };
+  const onMouseOut = () => {
+    setOpen(false);
+  };
   return item.label === "Artists" ? (
     <Box
       sx={{
         position: "relative",
-        "& .Icon": {
-          transform: `rotate(0deg)`,
-        },
-        "&:hover": {
-          "& .Stack": {
-            display: "flex",
-          },
-          "& .Icon": {
-            transform: `rotate(180deg)`,
-          },
-        },
+        // "& .Icon": {
+        //   transform: `rotate(0deg)`,
+        // },
+        // "&:hover": {
+        //   "& .Stack": {
+        //     display: "flex",
+        //   },
+        //   "& .Icon": {
+        //     transform: `rotate(180deg)`,
+        //   },
+        // },
       }}
+      onMouseOver={onMouseOver}
+      onMouseOut={onMouseOut}
     >
-      <Link href={`${item.link}`} passHref>
-        <TextButton
-          size={"lg"}
-          label={item.label}
-          fontWeight={"700"}
-          disableRipple
-          onClick={onClick}
-          fullWidth
-        >
-          <Icon
-            name="chevron-down"
-            prefix="fas"
-            size={20}
-            className="Icon"
-            sx={{
-              transition: `all 0.35s ease`,
-              m: theme.spacing(0, 0, 0, 1),
-            }}
-          />
-        </TextButton>
-      </Link>
+      <TextButton
+        size={"lg"}
+        label={item.label}
+        fontWeight={"700"}
+        disableRipple
+        onClick={onClick}
+        fullWidth
+      >
+        <Icon
+          name="angle-down"
+          prefix="fas"
+          size={20}
+          className="Icon"
+          sx={{
+            transform: `rotate(${open ? 180 : 0}deg)`,
+            transition: `all 0.35s ease`,
+            m: theme.spacing(0, 0, 0, 1),
+          }}
+        />
+      </TextButton>
       <Paper
         elevation={6}
         sx={{
-          display: "none",
+          display: open ? "flex" : "none",
           position: "absolute",
           left: -8,
           top: 48,
@@ -87,20 +94,20 @@ function NavItem({ item }: { item: { link: string; label: string } }) {
         >
           {artistsMenus.map((item, index) => {
             return (
-              <TextButton
-                size={"lg"}
-                label={item.label}
-                fontWeight={"400"}
-                // disableRipple
-                // color={youhaGrey[300]}
-                // onClick={onClick}
-              >
-                <Box
-                  sx={{
-                    m: theme.spacing(0, 0, 0, "auto"),
-                  }}
-                />
-              </TextButton>
+              <Link key={index} href={`${item.link}`} passHref>
+                <TextButton
+                  size={"lg"}
+                  label={item.label}
+                  fontWeight={"400"}
+                  onClick={onClick}
+                >
+                  <Box
+                    sx={{
+                      m: theme.spacing(0, 0, 0, "auto"),
+                    }}
+                  />
+                </TextButton>
+              </Link>
             );
           })}
         </Stack>
@@ -130,7 +137,11 @@ export default function GlobalHeader() {
     setSearchDialog({ open: true });
   };
   const onClickSignin = () => {};
-  return (
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => {
+    setLoaded(true);
+  }, [setLoaded]);
+  return loaded ? (
     <>
       <Box
         sx={{
@@ -317,5 +328,5 @@ export default function GlobalHeader() {
         </Stack>
       </Box>
     </>
-  );
+  ) : null;
 }

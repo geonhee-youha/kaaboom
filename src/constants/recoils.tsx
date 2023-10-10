@@ -7,6 +7,13 @@ export const searchDialogRecoilState = atom({
   },
 });
 
+export const sortDialogRecoilState = atom({
+  key: "sortDialog",
+  default: {
+    open: false,
+  },
+});
+
 export const sideDrawerRecoilState = atom({
   key: "sideDrawer",
   default: {

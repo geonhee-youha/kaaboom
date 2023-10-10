@@ -1,148 +1,328 @@
-import { Box, ButtonBase, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import { theme } from "../themes/theme";
-import Visual from "../components/atoms/Visual";
-import { ArtistProps, artists } from "../data/artist";
+import { artists } from "../data/artist";
 import youhaGrey from "../constants/youhaGrey";
 import ArtistItem from "../components/molecules/ArtistItem";
+import { agencies } from "../data/agency";
+import { groups } from "../data/group";
+import GroupItem from "../components/molecules/GroupItem";
+import { messages } from "../data/message";
+import MessageItem from "../components/molecules/MessageItem";
+import { useEffect, useState } from "react";
 
-type Section1ArtistProps = { item: ArtistProps };
+import { Swiper, SwiperSlide } from "swiper/react";
+import IconButton from "../components/atoms/IconButton";
 
-function Section1Artist({ item }: Section1ArtistProps) {
-  return (
-    <ButtonBase
-      sx={{
-        width: "100%",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
-      <Box
-        sx={{
-          position: "relative",
-          width: "100%",
-          height: 0,
-          p: theme.spacing("100%", 0, 0, 0),
-          border: `1px solid ${youhaGrey[700]}`,
-          borderRadius: "50%",
-          overflow: "hidden",
-        }}
-      >
-        <Visual src={item.thumbnail} absolute />
-      </Box>
-      <Box
-        sx={{
-          m: theme.spacing(1, 0, 0, 0),
-        }}
-      >
-        <Typography
-          sx={{
-            fontSize: 12,
-            lineHeight: "16px",
-            extAlign: "center",
-            color: youhaGrey[300],
-            fontFamily: "Pretendard",
-          }}
-        >
-          {item.group?.name ?? "SOLO"}
-        </Typography>
-        <Typography
-          sx={{
-            fontWeight: "700",
-            textAlign: "center",
-            fontFamily: "Pretendard",
-          }}
-        >
-          {item.name}
-        </Typography>
-      </Box>
-    </ButtonBase>
-  );
-}
+const originalError = console.error;
+
+console.error = (...args) => {
+  if (/Warning.*Function components cannot be given refs/.test(args[0])) {
+    return;
+  }
+  originalError.call(console, ...args);
+};
 
 export default function Index() {
+  const [focusedIndex, setFocusedIndex] = useState<number>(-1);
+  const [artistSwiper, setArtistSwiper] = useState<any>(null);
+  const [artistSwiperIndex, setArtistSwiperIndex] = useState<number>(0);
+  const onArtistSlideChange = (swiper: any) => {
+    setArtistSwiperIndex(swiper.realIndex);
+  };
+  const onClickArtistPrev = () => {
+    if (artistSwiperIndex === 0) return;
+    artistSwiper.slideTo(artistSwiperIndex - 1);
+  };
+  const onClickArtistNext = () => {
+    if (artistSwiperIndex === artists.length - 1) return;
+    artistSwiper.slideTo(artistSwiperIndex + 1);
+  };
+  const [messageSwiper, setMessageSwiper] = useState<any>(null);
+  const [messageSwiperIndex, setMessageSwiperIndex] = useState<number>(0);
+  const onMessageSlideChange = (swiper: any) => {
+    setMessageSwiperIndex(swiper.realIndex);
+  };
+  const onClickMessagePrev = () => {
+    if (messageSwiperIndex === 0) return;
+    messageSwiper.slideTo(messageSwiperIndex - 1);
+  };
+  const onClickMessageNext = () => {
+    if (messageSwiperIndex === messages.length - 1) return;
+    messageSwiper.slideTo(messageSwiperIndex + 1);
+  };
+  const [mounted, setMounted] = useState<boolean>(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
-    <Box
-      sx={{
-        width: `100%`,
-        minWidth: "280px",
-        maxWidth: `1280px`,
-        m: theme.spacing(0, "auto"),
-      }}
-    >
+    mounted && (
       <Stack
-        spacing={3}
+        spacing={4}
         sx={{
-          p: theme.spacing(4, 2),
+          width: `100%`,
+          minWidth: "280px",
+          maxWidth: `1280px`,
+          m: theme.spacing(0, "auto"),
+          minHeight: "100vh",
+          p: theme.spacing(6, 2),
         }}
-        className="Section"
       >
-        <Box
-          sx={{
-            m: theme.spacing(1, 0),
-          }}
-          className="SectionTitle"
-        >
-          <Typography
+        <Stack spacing={3} className="Section">
+          <Box
             sx={{
-              fontSize: 28,
-              lineHeight: "40px",
-              fontWeight: "700",
-              textAlign: "center",
-              "@media(min-width: 600px)": {
-                "& br": {
-                  display: "none",
+              m: theme.spacing(1, 0),
+            }}
+            className="SectionTitle"
+          >
+            <Typography
+              sx={{
+                fontSize: 28,
+                lineHeight: "40px",
+                fontWeight: "700",
+                textAlign: "center",
+                "@media(min-width: 600px)": {
+                  "& br": {
+                    display: "none",
+                  },
+                },
+              }}
+            >
+              Personalized video <br />
+              from your favorite artists
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+              "& > *": {
+                maxWidth: `calc((1280px - 32px - ${12 * (7 - 1)}px) / ${7})`,
+                width: `calc((100vw - 32px - ${12 * (3 - 1)}px) / ${3})`,
+                mb: `32px`,
+                ":not(:first-child)": {
+                  ml: `11px`,
+                },
+                "@media(min-width: 480px)": {
+                  width: `calc((100vw - 32px - ${12 * (4 - 1)}px) / ${4})`,
+                },
+                "@media(min-width: 600px)": {
+                  width: `calc((100vw - 32px - ${12 * (5 - 1)}px) / ${5})`,
+                },
+                "@media(min-width: 720px)": {
+                  width: `calc((100vw - 32px - ${12 * (6 - 1)}px) / ${6})`,
+                },
+                "@media(min-width: 840px)": {
+                  width: `calc((100vw - 32px - ${12 * (7 - 1)}px) / ${7})`,
+                },
+                "@media(min-width: 1280px)": {
+                  width: `calc((1280px - 32px - ${12 * (7 - 1)}px) / ${8})`,
+                },
+              },
+            }}
+            className="SectionContents"
+          >
+            {groups.map((item, index) => {
+              return <GroupItem key={index} item={item} />;
+            })}
+          </Box>
+        </Stack>
+        <Stack spacing={2} className="Section">
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Typography
+              sx={{
+                flex: 1,
+                fontSize: 20,
+                lineHeight: "32px",
+                fontWeight: "700",
+              }}
+            >
+              New artists
+            </Typography>
+            <Stack direction={"row"} spacing={1}>
+              <IconButton
+                name="angle-left"
+                size={20}
+                borderColor={youhaGrey[700]}
+                backgroundColor={youhaGrey[800]}
+                sx={{
+                  width: 32,
+                  height: 32,
+                }}
+                onClick={onClickArtistPrev}
+              />
+              <IconButton
+                name="angle-right"
+                size={20}
+                borderColor={youhaGrey[700]}
+                backgroundColor={youhaGrey[800]}
+                sx={{
+                  width: 32,
+                  height: 32,
+                }}
+                onClick={onClickArtistNext}
+              />
+            </Stack>
+          </Box>
+          <Box
+            sx={{
+              "& a": {
+                width: "100%",
+              },
+              pb: 4,
+              "@media(max-width: 480px)": {
+                ml: `-16px !important`,
+                mr: `-16px !important`,
+                "& .swiper": {
+                  pl: 2,
+                  pr: 2,
                 },
               },
             }}
           >
-            Personalized video
-            <br />
-            from your favorite artists
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gridAutoRows: "1fr",
-            gridTemplateRows: "auto auto",
-            gridColumnGap: 12,
-            gridRowGap: 32,
-            "@media(min-width: 480px)": {
-              gridTemplateColumns: "1fr 1fr 1fr",
-            },
-            "@media(min-width: 600px)": {
-              gridTemplateColumns: "1fr 1fr 1fr 1fr",
-            },
-            "@media(min-width: 720px)": {
-              gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
-            },
-            "@media(min-width: 840px)": {
-              gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr 1fr",
-            },
-          }}
-          className="SectionContents"
-        >
-          {artists.map((item, index) => {
-            return <ArtistItem key={index} item={item} />;
-          })}
-        </Box>
-        <Box
-          sx={{
-            display: "none",
-            gridTemplateColumns: "1fr 1fr 1fr",
-            gridAutoRows: "1fr",
-            gridTemplateRows: "auto auto",
-            gridColumnGap: 12,
-            gridRowGap: 32,
-          }}
-          className="SectionContents"
-        >
-          {artists.map((item, index) => {
-            return <Section1Artist key={index} item={item} />;
-          })}
-        </Box>
+            <Swiper
+              onSwiper={setArtistSwiper}
+              onSlideChange={onArtistSlideChange}
+              breakpoints={{
+                0: {
+                  slidesPerView: 2,
+                  spaceBetween: 12,
+                },
+                480: {
+                  slidesPerView: 3,
+                  spaceBetween: 12,
+                },
+                600: {
+                  slidesPerView: 4,
+                  spaceBetween: 12,
+                },
+                720: {
+                  slidesPerView: 5,
+                  spaceBetween: 12,
+                },
+                840: {
+                  slidesPerView: 6,
+                  spaceBetween: 12,
+                },
+              }}
+            >
+              {artists.map((item, index) => {
+                return (
+                  <SwiperSlide key={index}>
+                    <ArtistItem item={item} />
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
+          </Box>
+        </Stack>
+        <Stack spacing={2} className="Section">
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Typography
+              sx={{
+                flex: 1,
+                fontSize: 20,
+                lineHeight: "32px",
+                fontWeight: "700",
+              }}
+            >
+              Recent fan messages
+            </Typography>
+            <Stack direction={"row"} spacing={1}>
+              <IconButton
+                name="angle-left"
+                size={20}
+                borderColor={youhaGrey[700]}
+                backgroundColor={youhaGrey[800]}
+                sx={{
+                  width: 32,
+                  height: 32,
+                }}
+                onClick={onClickMessagePrev}
+              />
+              <IconButton
+                name="angle-right"
+                size={20}
+                borderColor={youhaGrey[700]}
+                backgroundColor={youhaGrey[800]}
+                sx={{
+                  width: 32,
+                  height: 32,
+                }}
+                onClick={onClickMessageNext}
+              />
+            </Stack>
+          </Box>
+          <Box
+            sx={{
+              "& a": {
+                width: "100%",
+              },
+              pb: 4,
+              "@media(max-width: 480px)": {
+                ml: `-16px !important`,
+                mr: `-16px !important`,
+                "& .swiper": {
+                  pl: 2,
+                  pr: 2,
+                },
+              },
+            }}
+          >
+            <Swiper
+              onSwiper={setMessageSwiper}
+              onSlideChange={onMessageSlideChange}
+              breakpoints={{
+                0: {
+                  slidesPerView: 2,
+                  spaceBetween: 12,
+                },
+                480: {
+                  slidesPerView: 3,
+                  spaceBetween: 12,
+                },
+                600: {
+                  slidesPerView: 4,
+                  spaceBetween: 12,
+                },
+                720: {
+                  slidesPerView: 5,
+                  spaceBetween: 12,
+                },
+                840: {
+                  slidesPerView: 6,
+                  spaceBetween: 12,
+                },
+              }}
+            >
+              {messages.map((item, index) => {
+                return (
+                  <SwiperSlide key={index}>
+                    <MessageItem
+                      item={item}
+                      index={index}
+                      focusedIndex={focusedIndex}
+                      setFocusedIndex={setFocusedIndex}
+                    />
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
+          </Box>
+        </Stack>
       </Stack>
-    </Box>
+    )
   );
 }

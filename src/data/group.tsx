@@ -31,10 +31,9 @@ export type GroupProps = {
 
 export const groups: GroupProps[] = [
   {
-    id: "BSW",
-    name: "BLACKSWAN",
-    thumbnail:
-      "https://i.namu.wiki/i/9e8lvO0vA7VeNxBz0Ak71lzvgRtaDdf3Jw7LsQu8ep89o0vvSWmTMMp-aro5jFZmQpGRVQl7is-lwcd2IjWBna4dW7hHidhyHEoQBopm9-C68HPqRHoKp_E_fM5o6mZeJQvGRUpuoVFl8U2hA5JOSw.svg",
+    id: "KOL",
+    name: "KISS OF LIFE",
+    thumbnail: "/temp/kol.png",
     debutDate: new Date("2023-07-05"),
     debutAlbum: "KISS OF LIFE - 1st Mini Album",
     genres: ["Dance", "R&B", "Soul"],
@@ -59,7 +58,7 @@ export const groups: GroupProps[] = [
         link: "https://instagram.com/kissoflife_s2",
       },
       {
-        type: "twitter",
+        type: "x-twitter",
         link: "https://twitter.com/KISSOFLIFE_S2",
       },
       {
@@ -71,21 +70,20 @@ export const groups: GroupProps[] = [
         link: "https://www.tiktok.com/@kissoflife_official",
       },
       {
-        type: "daum-cafe",
+        type: "cafe-daum",
         link: "https://cafe.daum.net/KISSOFLIFE",
       },
     ],
     colors: {
       inners: ["#000000"],
       borders: ["##f3002e"],
-      backgrounds: ["#000000"]
+      backgrounds: ["#000000"],
     },
   },
   {
-    id: "KOL",
-    name: "KISS OF LIFE",
-    thumbnail:
-      "https://i.namu.wiki/i/BdFCJMuhjxdNsH-kDPxuq_NRa5Di5DLTxpdLUKQwPcEEs9xsfIw0_88DzuMHTb_9KOiBZ5wx5FsrAgz-1fxlYGtXN9Fa-Hw8wOl1bp5eaYVe7SUn0HqYbZ22VUBLHcicdnOzP7aDRenRcClot6o2bA.webp",
+    id: "BSW",
+    name: "BLACKSWAN",
+    thumbnail: "/temp/bsw.png",
     debutDate: new Date("2020-10-16"),
     debutAlbum: "Goodbye RANIA - THE 1ST FULL ALBUM",
     genres: ["Dance", "POP", "Hiphop"],
@@ -104,12 +102,12 @@ export const groups: GroupProps[] = [
         link: "https://blackswan.bstage.in/",
       },
       {
-        type: "twitter",
+        type: "x-twitter",
         link: "https://twitter.com/blackswan_drent",
         label: "Official",
       },
       {
-        type: "twitter",
+        type: "x-twitter",
         link: "https://twitter.com/blackswan_staff",
         label: "Staff",
       },
@@ -126,7 +124,7 @@ export const groups: GroupProps[] = [
         link: "https://www.youtube.com/raniaofficialchannel",
       },
       {
-        type: "daum-cafe",
+        type: "cafe-daum",
         link: "http://cafe.daum.net/1248.",
       },
       {

@@ -38,6 +38,8 @@ import _ from "lodash";
 import GlobalHeader from "../components/organisms/GlobalHeader";
 import SearchDialog from "../components/templates/SearchDialog";
 import SideDrawer from "../components/templates/SideDrawer";
+import GlobalFooter from "../components/organisms/GlobalFooter";
+import SortDialog from "../components/templates/SortDialog";
 
 ChartJS.register(
   LineController,
@@ -220,8 +222,10 @@ function MyApp(props: MyAppProps) {
           <Global styles={reset} />
           <GlobalHeader />
           <Component {...pageProps} key={router.route} />
+          <GlobalFooter />
           <SearchDialog />
-          <SideDrawer/>
+          <SortDialog />
+          <SideDrawer />
         </ThemeProvider>
       </RecoilRoot>
     </CacheProvider>

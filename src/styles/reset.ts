@@ -200,7 +200,7 @@ const reset = css`
     vertical-align: middle;
   }
   input {
-    font-family: Pixelify Sans, cursive !important;
+    font-family: 'Montserrat', sans-serif !important;
     font-size: 16px;
     color: #ffffff;
     vertical-align: middle;
@@ -247,7 +247,7 @@ const reset = css`
     font-weight: bold;
   }
   html {
-    background-color: #111418 !important;
+    background-color: #141A1F !important;
     /* background-color: #ffffff !important; */
     -webkit-font-smoothing: antialiased;
     box-sizing: border-box;
@@ -357,7 +357,7 @@ const reset = css`
   html,
   body {
     // width: 100%;
-    font-family: "Pixelify Sans, cursive, Pretendard",NanumGothic,"나눔고딕","Nanum Gothic","맑은 고딕","Malgun Gothic",Dotum
+    font-family: 'Montserrat', sans-serif, NanumGothic,"나눔고딕","Nanum Gothic","맑은 고딕","Malgun Gothic",Dotum
   }
   #__next {
     width: 100%;

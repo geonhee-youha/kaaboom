@@ -18,6 +18,7 @@ export type IconProps = {
   className?: string;
   color?: string;
   sx?: SxProps;
+  onClick?: MouseEventHandler<HTMLSpanElement> | undefined;
 };
 
 export default function Icon({
@@ -29,6 +30,7 @@ export default function Icon({
   className,
   color = "#ffffff",
   sx,
+  onClick,
 }: IconProps) {
   const icon: IconLookup = { prefix: prefix, iconName: name };
   const badgeInvisible = badgeCount === undefined;
@@ -63,8 +65,9 @@ export default function Icon({
         },
       }}
       className={className}
+      onClick={onClick}
     >
-      <FontAwesomeIcon icon={icon} size="2x"/>
+      <FontAwesomeIcon icon={icon} size="2x" />
     </Badge>
   );
 }

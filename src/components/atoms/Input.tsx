@@ -1,4 +1,11 @@
-import { Box, IconButton, InputBase, SxProps, Typography } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  InputBase,
+  SxProps,
+  Typography,
+  alpha,
+} from "@mui/material";
 import { red } from "@mui/material/colors";
 import { ChangeEvent, KeyboardEventHandler, useEffect, useState } from "react";
 import youhaBlue from "../../constants/youhaBlue";
@@ -16,7 +23,7 @@ export default function Input({
   searchIcon,
   size,
   placeholder,
-  inputValue,
+  value,
   onChange,
   onKeyPress,
   onKeyDown,
@@ -35,7 +42,7 @@ export default function Input({
   searchIcon?: boolean;
   size?: string;
   placeholder?: string;
-  inputValue: string;
+  value: string;
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onKeyPress?: React.KeyboardEventHandler<HTMLDivElement> | undefined;
   onKeyDown?:
@@ -80,7 +87,7 @@ export default function Input({
       >
         <InputBase
           type={inputType}
-          value={inputValue}
+          value={value}
           onChange={onChangeValue}
           onKeyPress={onKeyPress}
           onKeyDown={onKeyDown}
@@ -107,7 +114,7 @@ export default function Input({
             display: "flex",
             alignItems: multiline ? "flex-start" : "center",
             boxShadow: `${
-              error ? red[500] : youhaGrey[200]
+              error ? red[500] : youhaGrey[700]
             } 0px 0px 0px 1px inset`,
             "&:hover": {
               boxShadow: `${
@@ -116,7 +123,7 @@ export default function Input({
             },
             "&.Mui-focused": {
               boxShadow: `${
-                error ? red[500] : youhaGrey[600]
+                error ? red[500] : "#ffffff"
               } 0px 0px 0px 1px inset`,
               "& input": {
                 "&::placeholder": {
@@ -129,17 +136,18 @@ export default function Input({
                 },
               },
             },
+            backgroundColor: alpha(youhaGrey[900], 1),
             "& input": {
-              fontSize: size === "sm" ? 12 : 14,
-              lineHeight: size === "sm" ? "16px" : "20px",
+              fontSize: size === "sm" ? 14 : 16,
+              lineHeight: size === "sm" ? "20px" : "24px",
               "&::placeholder": {
                 color: youhaGrey[500],
                 opacity: 1,
               },
             },
             "& textarea": {
-              fontSize: size === "sm" ? 12 : 14,
-              lineHeight: size === "sm" ? "16px" : "20px",
+              fontSize: size === "sm" ? 14 : 16,
+              lineHeight: size === "sm" ? "20px" : "24px",
               "&::placeholder": {
                 color: youhaGrey[500],
                 opacity: 1,
@@ -159,10 +167,7 @@ export default function Input({
             disableRipple
             onClick={onClickSearch}
           >
-            <Icon
-              name="search"
-              size={size === "sm" ? 14 : 18}
-            />
+            <Icon name="search" size={size === "sm" ? 14 : 18} />
           </IconButton>
         )}
         {type === "password" && (
@@ -193,7 +198,7 @@ export default function Input({
               fontSize: 12,
               lineHeight: "16px",
               color: timer
-                ? Number(timer.replace(':', '')) < 5
+                ? Number(timer.replace(":", "")) < 5
                   ? red[500]
                   : youhaBlue[500]
                 : youhaGrey[500],
@@ -206,7 +211,7 @@ export default function Input({
               timer
             ) : (
               <>
-                <span>{inputValue.length}</span>/{maxLength}
+                <span>{value.length}</span>/{maxLength}
               </>
             )}
           </Typography>

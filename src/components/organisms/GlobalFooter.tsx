@@ -3,261 +3,202 @@ import { useRouter } from "next/router";
 import { theme } from "../../themes/theme";
 import { grey } from "@mui/material/colors";
 import Link from "next/link";
+import Input from "../atoms/Input";
+import Button from "../atoms/Button";
+import youhaGrey from "../../constants/youhaGrey";
+import { ChangeEvent, useState } from "react";
+import Icon from "../atoms/Icon";
+
+const navs = [
+  {
+    link: "",
+    label: "FAQ",
+  },
+  {
+    link: "",
+    label: "Privacy",
+  },
+  {
+    link: "",
+    label: "Terms",
+  },
+  {
+    link: "",
+    label: "Guidelines",
+  },
+  {
+    link: "",
+    label: "About",
+  },
+];
 
 export default function GlobalFooter() {
   const router = useRouter();
   const pathnames = router.pathname.split("/");
   const focused = `/${pathnames[1]}` !== "/auth";
+  const [value, setValue] = useState<string>("");
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setValue(value);
+  };
   return (
     <Box
       sx={{
-        width: "100%",
-        backgroundColor: `#f5f5f5`,
-        display: focused ? "block" : "none",
-        p: theme.spacing(2, 2, 10, 2),
+        backgroundColor: youhaGrey[800],
+        borderTop: `1px solid ${youhaGrey[700]}`,
       }}
     >
-      <Box
-        sx={{
-          borderBottom: `1px solid ${grey[300]}`,
-          p: theme.spacing(1.5, 0),
-        }}
-      >
-        <Typography
-          sx={{
-            fontSize: 14,
-            lineHeight: "20px",
-            color: grey[700],
-            fontWeight: "700",
-          }}
-        >
-          (주) 티켓플레이스 사업자 정보
-        </Typography>
-      </Box>
       <Stack
-        spacing={1}
+        spacing={3}
         sx={{
-          p: theme.spacing(1.5, 0),
+          position: "relative",
+          maxWidth: 1280,
+          m: theme.spacing(0, "auto"),
+          p: theme.spacing(4, 2),
+          "@media(min-width: 768px)": {
+            p: theme.spacing(6, 2),
+          },
         }}
       >
-        <Stack
-          direction="row"
-          spacing={1}
+        <Box
+          className="Section"
           sx={{
-            "& *": {
-              fontSize: `12px !important`,
-              lineHeight: "16px !important",
-            },
+            p: theme.spacing(0, 0, 4, 0),
           }}
         >
-          <Typography
+          <Box>
+            <Typography
+              sx={{
+                fontSize: 16,
+                lineHeight: "24px",
+                fontWeight: "700",
+              }}
+            >
+              Keep up to date
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: 14,
+                lineHeight: "20px",
+                color: youhaGrey[300],
+              }}
+            >
+              Join our newsletter for regular updates. No spam ever.
+            </Typography>
+          </Box>
+          <Box
             sx={{
-              color: grey[500],
+              m: theme.spacing(2, 0, 0, 0),
             }}
           >
-            대표자
-          </Typography>
-          <Typography
-            sx={{
-              color: grey[900],
-            }}
-          >
-            한준희
-          </Typography>
+            <Typography
+              sx={{
+                fontSize: 14,
+                lineHeight: "20px",
+                fontWeight: "500",
+              }}
+            >
+              Enter your email:
+            </Typography>
+            <Stack
+              direction={"row"}
+              spacing={2}
+              sx={{ m: theme.spacing(1, 0, 0, 0) }}
+            >
+              <Input
+                placeholder="Email address"
+                value={value}
+                onChange={onChange}
+              />
+              <Button>Subscribe</Button>
+            </Stack>
+          </Box>
+        </Box>
+        <Stack direction="row" spacing={2}>
+          {navs.map((item, index) => {
+            return (
+              <Typography
+                key={index}
+                sx={{
+                  fontSize: 14,
+                  lineHeight: "20px",
+                }}
+              >
+                {item.label}
+              </Typography>
+            );
+          })}
         </Stack>
         <Stack
           direction="row"
-          spacing={1}
+          spacing={2}
           sx={{
-            "& *": {
-              fontSize: `12px !important`,
-              lineHeight: "16px !important",
+            m: theme.spacing(2, 0, 0, 0),
+            p: theme.spacing(0, 0, 4, 0),
+            "& img": {
+              color: "#ffffff",
+              width: "auto",
+              height: 20,
             },
           }}
         >
-          <Typography
-            sx={{
-              color: grey[500],
-            }}
-          >
-            주소
-          </Typography>
-          <Typography
-            sx={{
-              color: grey[900],
-            }}
-          >
-            서울특별시 강남구 봉은사로 2길 21, 반석빌딩 5층
-          </Typography>
+          <img src="/icons/x-twitter.svg" />
+          <img src="/icons/youtube.svg" />
+          <img src="/icons/facebook.svg" />
+          <img src="/icons/instagram.svg" />
         </Stack>
         <Stack
-          direction="row"
-          spacing={1}
+          className="Section"
+          spacing={3}
           sx={{
-            "& *": {
-              fontSize: `12px !important`,
-              lineHeight: "16px !important",
+            "@media(min-width: 768px)": {
+              position: "absolute",
+              top: 24,
+              right: 16,
+              "& > *": {
+                alignItems: "flex-end",
+              },
             },
+            p: theme.spacing(0, 0, 4, 0),
           }}
         >
-          <Typography
-            sx={{
-              color: grey[500],
-            }}
-          >
-            사업자등록번호
-          </Typography>
-          <Typography
-            sx={{
-              color: grey[900],
-            }}
-          >
-            145-87-00100
-          </Typography>
-        </Stack>
-        <Stack
-          direction="row"
-          spacing={1}
-          sx={{
-            "& *": {
-              fontSize: `12px !important`,
-              lineHeight: "16px !important",
-            },
-          }}
-        >
-          <Typography
-            sx={{
-              color: grey[500],
-            }}
-          >
-            광고 제휴문의
-          </Typography>
-          <Typography
-            sx={{
-              color: grey[900],
-            }}
-          >
-            business@youha.info
-          </Typography>
-        </Stack>
-        <Stack
-          direction="row"
-          spacing={1}
-          sx={{
-            "& *": {
-              fontSize: `12px !important`,
-              lineHeight: "16px !important",
-            },
-          }}
-        >
-          <Typography
-            sx={{
-              color: grey[500],
-            }}
-          >
-            마케팅 제휴문의
-          </Typography>
-          <Typography
-            sx={{
-              color: grey[900],
-            }}
-          >
-            business@youha.info
-          </Typography>
+          <Stack alignItems={"flex-start"} spacing={1}>
+            <Typography
+              sx={{
+                fontSize: 14,
+                lineHeight: "20px",
+              }}
+            >
+              Ready to become a artist on KAABOOM?
+            </Typography>
+            <Button type="outlined" borderColor={"#ffffff"} color={"#ffffff"}>
+              Join as artist
+            </Button>
+          </Stack>
+          <Stack alignItems={"flex-start"} spacing={1}>
+            <Typography
+              sx={{
+                fontSize: 14,
+                lineHeight: "20px",
+              }}
+            >
+              Are you an agent, manager or publicist?
+            </Typography>
+            <Button type="outlined" borderColor={"#ffffff"} color={"#ffffff"}>
+              Register as a Partner
+            </Button>
+          </Stack>
         </Stack>
         <Typography
           sx={{
             fontSize: 14,
             lineHeight: "20px",
-            color: grey[500],
+            color: youhaGrey[300],
+            p: theme.spacing(0, 0, 4, 0),
           }}
         >
-          Copyright © 티켓플레이스. All rights reserved.
+          Copyright © Ticketplace. All rights reserved.
         </Typography>
-      </Stack>
-      <Stack
-        direction="row"
-        spacing={1.5}
-        alignItems="center"
-        sx={{
-          p: theme.spacing(1.5, 0),
-        }}
-      >
-        <Link
-          href="https://www.notion.so/5c99a3571c684b4bb4d1d70283b4d7cb"
-          passHref
-        >
-          <Typography
-            sx={{
-              fontSize: 14,
-              lineHeight: "20px",
-              color: grey[700],
-              cursor: "pointer",
-            }}
-          >
-            이용약관
-          </Typography>
-        </Link>
-        <Box
-          sx={{
-            width: `1px`,
-            height: `10px`,
-            backgroundColor: grey[400],
-          }}
-        ></Box>
-        <Link
-          href="https://www.notion.so/0c40b91bd29440c1bfe153cd76246141"
-          passHref
-        >
-          <Typography
-            sx={{
-              fontSize: 14,
-              lineHeight: "20px",
-              color: grey[700],
-              cursor: "pointer",
-            }}
-          >
-            개인정보처리방침
-          </Typography>
-        </Link>
-        <Box
-          sx={{
-            width: `1px`,
-            height: `10px`,
-            backgroundColor: grey[400],
-          }}
-        ></Box>
-        <Link href="https://tech.youha.info/" passHref>
-          <Typography
-            sx={{
-              fontSize: 14,
-              lineHeight: "20px",
-              color: grey[700],
-              cursor: "pointer",
-            }}
-          >
-            기술 블로그
-          </Typography>
-        </Link>
-        <Box
-          sx={{
-            width: `1px`,
-            height: `10px`,
-            backgroundColor: grey[400],
-          }}
-        ></Box>
-        <Link href="https://careers.youha.info/" passHref>
-          <Typography
-            sx={{
-              fontSize: 14,
-              lineHeight: "20px",
-              color: grey[700],
-              cursor: "pointer",
-            }}
-          >
-            채용
-          </Typography>
-        </Link>
       </Stack>
     </Box>
   );

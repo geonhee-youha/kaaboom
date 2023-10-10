@@ -1,41 +1,47 @@
 import { Box, ButtonBase, Drawer, Stack } from "@mui/material";
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { theme } from "../../themes/theme";
 import TextButton from "../atoms/TextButton";
 import youhaGrey from "../../constants/youhaGrey";
 import { useRecoilState } from "recoil";
 import { sideDrawerRecoilState } from "../../constants/recoils";
 import Link from "next/link";
-import Visual from "../atoms/Visual";
 import { artistsMenus, globalMenus } from "../../constants";
 import Icon from "../atoms/Icon";
 
 function NavItem({ item }: { item: { link: string; label: string } }) {
+  const [sideDrawer, setSideDrawer] = useRecoilState(sideDrawerRecoilState);
   const [open, setOpen] = useState<boolean>(false);
   const onClick = () => {
     setOpen(!open);
   };
+  const onClose = () => {
+    setOpen(false);
+    setSideDrawer({ open: false });
+  };
   return item.label === "Artists" ? (
     <>
-      <TextButton
-        size={"lg"}
-        label={item.label}
-        fontWeight={"700"}
-        disableRipple
-        onClick={onClick}
-        fullWidth
-      >
-        <Icon
-          name="chevron-down"
-          prefix="fas"
-          size={20}
-          sx={{
-            transition: `all 0.35s ease`,
-            transform: `rotate(${open ? 180 : 0}deg)`,
-            m: theme.spacing(0, 0, 0, "auto"),
-          }}
-        />
-      </TextButton>
+      <Link href={`${item.link}`} passHref>
+        <TextButton
+          size={"lg"}
+          label={item.label}
+          fontWeight={"700"}
+          disableRipple
+          onClick={onClick}
+          fullWidth
+        >
+          <Icon
+            name="angle-down"
+            prefix="fas"
+            size={20}
+            sx={{
+              transition: `all 0.35s ease`,
+              transform: `rotate(${open ? 180 : 0}deg)`,
+              m: theme.spacing(0, 0, 0, "auto"),
+            }}
+          />
+        </TextButton>
+      </Link>
       <Stack
         alignItems={"flex-start"}
         sx={{
@@ -48,20 +54,22 @@ function NavItem({ item }: { item: { link: string; label: string } }) {
       >
         {artistsMenus.map((item, index) => {
           return (
-            <TextButton
-              size={"lg"}
-              label={item.label}
-              fontWeight={"400"}
-              disableRipple
-              color={youhaGrey[300]}
-              // onClick={onClick}
-            >
-              <Box
-                sx={{
-                  m: theme.spacing(0, 0, 0, "auto"),
-                }}
-              />
-            </TextButton>
+            <Link key={index} href={`${item.link}`} passHref>
+              <TextButton
+                size={"lg"}
+                label={item.label}
+                fontWeight={"400"}
+                disableRipple
+                color={youhaGrey[300]}
+                onClick={onClose}
+              >
+                <Box
+                  sx={{
+                    m: theme.spacing(0, 0, 0, "auto"),
+                  }}
+                />
+              </TextButton>
+            </Link>
           );
         })}
       </Stack>
@@ -73,6 +81,7 @@ function NavItem({ item }: { item: { link: string; label: string } }) {
         label={item.label}
         fontWeight={"700"}
         disableRipple
+        onClick={onClose}
       >
         <Box
           sx={{

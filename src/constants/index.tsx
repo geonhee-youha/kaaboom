@@ -1,29 +1,52 @@
 export const globalMenus = [
   {
-    link: '',
-    label: 'Artists',
+    link: "",
+    label: "Artists",
   },
   {
-    link: '',
-    label: 'How it works',
+    link: "",
+    label: "How it works",
   },
   {
-    link: '',
-    label: 'Join as artist',
+    link: "",
+    label: "Join as artist",
   },
-]
+];
 
 export const artistsMenus = [
   {
-    link: '',
-    label: 'All artists',
+    link: "/explore/artists",
+    label: "All artists",
   },
   {
-    link: '',
-    label: 'Find with group',
+    link: "/explore/groups",
+    label: "Find with group",
   },
   {
-    link: '',
-    label: 'Find with agency',
+    link: "/explore/agencies",
+    label: "Find with agency",
   },
-]
+];
+
+export const sorts = [
+  {
+    value: "featured",
+    label: "Featured",
+  },
+  {
+    value: "price_asc",
+    label: "Price (asc)",
+  },
+  {
+    value: "price_desc",
+    label: "Price (desc)",
+  },
+  {
+    value: "newest",
+    label: "Newest",
+  },
+  {
+    value: "alphavetical",
+    label: "Alphabetical",
+  },
+];

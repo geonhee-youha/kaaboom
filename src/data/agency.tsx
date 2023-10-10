@@ -13,6 +13,7 @@ export type AgencyProps = {
   colors: {
     inners: string[];
     borders?: string[];
+    backgrounds: string[];
   };
 };
 
@@ -20,14 +21,13 @@ export const agencies: AgencyProps[] = [
   {
     id: "DRM",
     name: "DR Music",
-    thumbnail:
-      "https://i.namu.wiki/i/apaKojovboAMoge3NVLoJdK-SZ4MlIPWiaS5X2i9n9uA-3R8fsAhKGdjz_vqnlP5Zwm9ot1HuOsYRqGYCfsYUQ.webp",
+    thumbnail: "/temp/drm.png",
     nation: {
       name: "republic of korea",
       thumbnail:
         "https://i.namu.wiki/i/uN6KVJhSUX_VXnLdZgzZZmL9fK-tZo9QAbRRiEWXdJwuGYMby_HDAv7Gsae4hRIF6hKtAyMYnwbxgeC7Ds5qbJl0OuO_CwHUM1xLT2SzAv8Dri4LZyolf4dv1YR4110j63GmMf_Vk6dutp_yKV76YA.svg",
     },
-    establishmentDate: "1989년",
+    establishmentDate: "1989",
 
     ceo: "Deung-ryong Yoon",
     address: "17, Gangnam-daero 160-gil, Gangnam-gu, Seoul, Republic of Korea",
@@ -39,19 +39,19 @@ export const agencies: AgencyProps[] = [
     ],
     colors: {
       inners: ["#ffffff"],
+      backgrounds: ["#ffffff"],
     },
   },
   {
     id: "S2E",
     name: "S2 Entertainment",
-    thumbnail:
-      "https://i.namu.wiki/i/xpSLthD81YuZqBAr8rukkXqa-wJ_0ALp-0D0rNOI51zC11ik25d1z8xDtg9v_xDyauz2DNV5XHS_SvOQLTrKJw5d0zt9r24H-bnDbiGBdYPOdldu6sRUbxmiupASxdEnJv-jSedVIpt_vE_V4xFG4Q.webp",
+    thumbnail: "/temp/s2e.png",
     nation: {
       name: "republic of korea",
       thumbnail:
         "https://i.namu.wiki/i/uN6KVJhSUX_VXnLdZgzZZmL9fK-tZo9QAbRRiEWXdJwuGYMby_HDAv7Gsae4hRIF6hKtAyMYnwbxgeC7Ds5qbJl0OuO_CwHUM1xLT2SzAv8Dri4LZyolf4dv1YR4110j63GmMf_Vk6dutp_yKV76YA.svg",
     },
-    establishmentDate: "2020년 8월 14일",
+    establishmentDate: "2020.08.14",
     establisher: "Seung-sung Hong",
     ceo: "Tae-hwa Hong",
     address: "22, Seolleung-ro 129-gil, Gangnam-gu, Seoul, Republic of Korea",
@@ -69,7 +69,7 @@ export const agencies: AgencyProps[] = [
         link: "http://instagram.com/s2ent_official",
       },
       {
-        type: "twitter",
+        type: "x-twitter",
         link: "https://twitter.com/S2ent_official",
       },
       {
@@ -83,6 +83,7 @@ export const agencies: AgencyProps[] = [
     ],
     colors: {
       inners: ["##00c7be"],
+      backgrounds: ["##00c7be"],
     },
   },
 ];

@@ -45,17 +45,20 @@ export default function TextButton({
       disableRipple={disableRipple}
       onClick={onClick}
     >
-      <Typography
-        sx={{
-          fontSize: size === "sm" ? 12 : size === "lg" ? 16 : 14,
-          lineHeight: size === "sm" ? `16px` : size === "lg" ? "24px" : "20px",
-          fontWeight: fontWeight,
-          color: color,
-        }}
-      >
-        {label}
-      </Typography>
-      {children}
+      <>
+        <Typography
+          sx={{
+            fontSize: size === "sm" ? 12 : size === "lg" ? 16 : 14,
+            lineHeight:
+              size === "sm" ? `16px` : size === "lg" ? "24px" : "20px",
+            fontWeight: fontWeight,
+            color: color,
+          }}
+        >
+          {label}
+        </Typography>
+        {children}
+      </>
     </ButtonBase>
   );
 }

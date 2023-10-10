@@ -60,7 +60,7 @@ export const artists: ArtistProps[] = [
       {
         name: "Belgium",
         thumbnail:
-          "https://i.namu.wiki/i/FTpUb4VrEm5n3DyGOz0dvrsfXGk20cL-UI0gOu28afJ8tPZpcLKxs-wKMH6hQ2she5nf1QUVTuJVqi1AsQ5bdPCZYwHZSxXnikzFSk7Bmt8vZLPie4oeeBRhUnbCilAwHKmYxw0MJzs8XScH_NX62Q.svg",
+          "https://i.namu.wiki/i/Cu1PCWFPC_szW-5wo-F5MhiHc1j0Kmv7ntuaGsO-alUTtxpOyN3MOm6GaM8zOFMLOXpN9jF0IE1nO6tDyXMPNvFD6ZuUdur23n_lpTpLda7GJxO3BKojuuWI1sl9AkrPldD6nY-84H7zq371DWpipg.svg",
       },
     ],
     body: {
@@ -83,14 +83,14 @@ export const artists: ArtistProps[] = [
         album: "Goodbye RANIA - THE 1ST FULL ALBUM",
       },
     },
-    mbti: "",
+    mbti: "ENTP-A",
     links: [
       {
         type: "instagram",
         link: "https://www.instagram.com/b_fatou_s/",
       },
       {
-        type: "twitter",
+        type: "x-twitter",
         link: "https://twitter.com/b_fatou_s",
       },
     ],
