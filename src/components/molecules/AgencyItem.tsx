@@ -15,7 +15,10 @@ export default function AgencyItem({ item }: { item: AgencyProps }) {
     return el.agency !== undefined && el.agency.name === item.name;
   });
   const agencyArtists = _.filter(artists, (el) => {
-    return el.agency !== undefined && el.agency.name === item.name;
+    return (
+      el.agencies !== undefined &&
+      _.flatMap(el.agencies, (el) => el.name).includes(item.name)
+    );
   });
   return (
     <Link href={`/agency/${item.id}`} passHref>
