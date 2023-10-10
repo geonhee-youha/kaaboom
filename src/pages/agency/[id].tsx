@@ -33,14 +33,21 @@ function Page({ id }: { id: string | string[] }) {
     return e.agency?.name === item.name;
   });
   const agencyArtists = _.filter(artists, (e) => {
-    return e.agency?.name === item.name;
+    return _.flatMap(e.agencies, (el) => el.name).includes(item.name);
   });
+  const parentCompany = item.parentCompany
+    ? agencies[
+        _.findIndex(agencies, (e) => {
+          return e.name === item.parentCompany?.name;
+        })
+      ] ?? { name: item.parentCompany?.name }
+    : null;
   const data = [
     {
       label: "Nation",
       value: (
         <>
-          <img src={item.nation.thumbnail} className="svg"/>
+          <img src={item.nation.thumbnail} className="svg" />
           {item.nation.name}
         </>
       ),
@@ -60,6 +67,45 @@ function Page({ id }: { id: string | string[] }) {
     {
       label: "Address",
       value: item.address,
+    },
+    {
+      label: "Parent company",
+      value: parentCompany && (
+        <Box
+          sx={{
+            display: "inline-flex",
+            position: "relative",
+            borderRadius: "50%",
+            overflow: "hidden",
+            border: `1px solid ${youhaGrey[700]}`,
+            width: `40px !important`,
+            height: `40px !important`,
+            mr: 1,
+          }}
+        >
+          {parentCompany.id ? (
+            <Link href={`/agency/${parentCompany.id}`} passHref>
+              <a
+                href={`/agency/${parentCompany.id}`}
+                style={{ textDecoration: "underline", cursor: "pointer" }}
+              >
+                <Visual
+                  src={parentCompany.thumbnail}
+                  absolute
+                  sx={{ "& *": { cursor: "pointer !important" } }}
+                />
+              </a>
+            </Link>
+          ) : (
+            <a
+              target={"_blank"}
+              style={{ textDecoration: "underline", cursor: "pointer" }}
+            >
+              {parentCompany.name}
+            </a>
+          )}
+        </Box>
+      ),
     },
     {
       label: "Links",
@@ -95,98 +141,102 @@ function Page({ id }: { id: string | string[] }) {
         },
       }}
     >
-      <Box sx={{ flex: 1 }}>
-        <Box
-          sx={{
-            p: theme.spacing(6, 2),
-          }}
-          className="Section"
-        >
-          <ExploreHeader
-            title="Affiliated groups"
-            data={agencyGroups}
-            size="sm"
-          />
+      <Stack spacing={3} sx={{ flex: 1, p: theme.spacing(6, 0) }}>
+        {agencyGroups.length > 0 && (
           <Box
             sx={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gridAutoRows: "1fr",
-              gridTemplateRows: "auto auto",
-              gridColumnGap: 12,
-              gridRowGap: 32,
-              "@media(min-width: 480px)": {
-                gridTemplateColumns: "1fr 1fr 1fr",
-              },
-              "@media(min-width: 600px)": {
-                gridTemplateColumns: "1fr 1fr 1fr 1fr",
-              },
-              "@media(min-width: 720px)": {
-                gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
-              },
-              "@media(min-width: 840px)": {
-                gridTemplateColumns: "1fr 1fr 1fr",
-              },
-              "@media(min-width: 1080px)": {
-                gridTemplateColumns: "1fr 1fr 1fr 1fr",
-              },
-              "@media(min-width: 1280px)": {
-                gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
-              },
+              p: theme.spacing(0, 2),
             }}
-            className="SectionContents"
+            className="Section"
           >
-            {agencyGroups.map((item, index) => {
-              return <GroupItem key={index} item={item} />;
-            })}
+            <ExploreHeader
+              title="Affiliated groups"
+              data={agencyGroups}
+              size="sm"
+            />
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gridAutoRows: "1fr",
+                gridTemplateRows: "auto auto",
+                gridColumnGap: 12,
+                gridRowGap: 32,
+                "@media(min-width: 480px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr",
+                },
+                "@media(min-width: 600px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                },
+                "@media(min-width: 720px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+                },
+                "@media(min-width: 840px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr",
+                },
+                "@media(min-width: 1080px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                },
+                "@media(min-width: 1200px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+                },
+              }}
+              className="SectionContents"
+            >
+              {agencyGroups.map((item, index) => {
+                return <GroupItem key={index} item={item} />;
+              })}
+            </Box>
           </Box>
-        </Box>
-        <Box
-          sx={{
-            p: theme.spacing(6, 2),
-          }}
-          className="Section"
-        >
-          <ExploreHeader
-            title="Affiliated artists"
-            data={agencyArtists}
-            size="sm"
-          />
+        )}
+        {agencyArtists.length > 0 && (
           <Box
             sx={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gridAutoRows: "1fr",
-              gridTemplateRows: "auto auto",
-              gridColumnGap: 12,
-              gridRowGap: 32,
-              "@media(min-width: 480px)": {
-                gridTemplateColumns: "1fr 1fr 1fr",
-              },
-              "@media(min-width: 600px)": {
-                gridTemplateColumns: "1fr 1fr 1fr 1fr",
-              },
-              "@media(min-width: 720px)": {
-                gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
-              },
-              "@media(min-width: 840px)": {
-                gridTemplateColumns: "1fr 1fr 1fr",
-              },
-              "@media(min-width: 1080px)": {
-                gridTemplateColumns: "1fr 1fr 1fr 1fr",
-              },
-              "@media(min-width: 1280px)": {
-                gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
-              },
+              p: theme.spacing(0, 2),
             }}
-            className="SectionContents"
+            className="Section"
           >
-            {agencyArtists.map((item, index) => {
-              return <ArtistItem key={index} item={item} />;
-            })}
+            <ExploreHeader
+              title="Affiliated artists"
+              data={agencyArtists}
+              size="sm"
+            />
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gridAutoRows: "1fr",
+                gridTemplateRows: "auto auto",
+                gridColumnGap: 12,
+                gridRowGap: 32,
+                "@media(min-width: 480px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr",
+                },
+                "@media(min-width: 600px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                },
+                "@media(min-width: 720px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+                },
+                "@media(min-width: 840px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr",
+                },
+                "@media(min-width: 1080px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                },
+                "@media(min-width: 1200px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+                },
+              }}
+              className="SectionContents"
+            >
+              {agencyArtists.map((item, index) => {
+                return <ArtistItem key={index} item={item} />;
+              })}
+            </Box>
           </Box>
-        </Box>
-      </Box>
+        )}
+      </Stack>
       <Box
         component={"aside"}
         sx={{
@@ -220,95 +270,114 @@ function Page({ id }: { id: string | string[] }) {
             >
               <Box
                 sx={{
-                  width: 160,
-                  height: 160,
+                  flex: 1,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
                 }}
               >
                 <Box
                   sx={{
-                    position: "relative",
-                    width: "100%",
-                    height: "100%",
-                    border: `1px solid ${youhaGrey[700]}`,
-                    borderRadius: "50%",
-                    overflow: "hidden",
-                    aspectRatio: `1`,
-                    p: theme.spacing(2),
+                    width: 160,
+                    height: 160,
                   }}
                 >
-                  <Visual src={item.thumbnail} absolute noScale={false} />
+                  <Box
+                    sx={{
+                      position: "relative",
+                      width: "100%",
+                      height: "100%",
+                      border: `1px solid ${youhaGrey[700]}`,
+                      borderRadius: "50%",
+                      overflow: "hidden",
+                      aspectRatio: `1`,
+                      p: theme.spacing(2),
+                    }}
+                  >
+                    <Visual src={item.thumbnail} absolute noScale={false} />
+                  </Box>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      m: theme.spacing(1, 0, 0, 0),
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: 24,
+                        lineHeight: "36px",
+                        fontWeight: "700",
+                        color: `#ffffff !important`,
+                      }}
+                    >
+                      {item.name}
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      m: theme.spacing(1, 0, 0, 0),
+                      display: "flex",
+                    }}
+                  >
+                    <Stack
+                      direction={"row"}
+                      spacing={1}
+                      alignItems={"center"}
+                      flexWrap={"wrap"}
+                    >
+                      <Icon
+                        name="users"
+                        color={youhaBlue[400]}
+                        size={20}
+                        prefix="fas"
+                      />
+                      <Typography
+                        sx={{
+                          fontSize: 14,
+                          lineHeight: "20px",
+                          fontFamily: "Poppins",
+                          color: youhaGrey[200],
+                        }}
+                      >
+                        {agencyGroups.length} Groups
+                      </Typography>
+                    </Stack>
+                    <Stack
+                      direction={"row"}
+                      spacing={1}
+                      alignItems={"center"}
+                      sx={{ ml: 2 }}
+                    >
+                      <Icon
+                        name="user"
+                        color={youhaBlue[400]}
+                        size={20}
+                        prefix="fas"
+                      />
+                      <Typography
+                        sx={{
+                          fontSize: 14,
+                          lineHeight: "20px",
+                          fontFamily: "Poppins",
+                          color: youhaGrey[200],
+                        }}
+                      >
+                        {agencyArtists.length} Artists
+                      </Typography>
+                    </Stack>
+                  </Box>
                 </Box>
               </Box>
-              <Box
-                sx={{
-                  m: theme.spacing(1, 0, 0, 0),
-                }}
-              >
-                <Typography
-                  sx={{
-                    fontSize: 24,
-                    lineHeight: "36px",
-                    fontWeight: "700",
-                    color: `#ffffff !important`,
-                  }}
-                >
-                  {item.name}
-                </Typography>
+              <Box sx={{ width: "100%" }}>
+                <DataSection data={data} />
               </Box>
-              <Box
-                sx={{
-                  m: theme.spacing(1, 0, 0, 0),
-                  display: "flex",
-                }}
-              >
-                <Stack
-                  direction={"row"}
-                  spacing={1}
-                  alignItems={"center"}
-                  flexWrap={"wrap"}
-                >
-                  <Icon
-                    name="users"
-                    color={youhaBlue[400]}
-                    size={20}
-                    prefix="fas"
-                  />
-                  <Typography
-                    sx={{
-                      fontSize: 14,
-                      lineHeight: "20px",
-                      fontFamily: "Poppins",
-                      color: youhaGrey[200],
-                    }}
-                  >
-                    {agencyGroups.length} Groups
-                  </Typography>
-                </Stack>
-                <Stack
-                  direction={"row"}
-                  spacing={1}
-                  alignItems={"center"}
-                  sx={{ ml: 2 }}
-                >
-                  <Icon
-                    name="user"
-                    color={youhaBlue[400]}
-                    size={20}
-                    prefix="fas"
-                  />
-                  <Typography
-                    sx={{
-                      fontSize: 14,
-                      lineHeight: "20px",
-                      fontFamily: "Poppins",
-                      color: youhaGrey[200],
-                    }}
-                  >
-                    {agencyArtists.length} Artists
-                  </Typography>
-                </Stack>
-              </Box>
-              <DataSection data={data} />
             </Box>
           </Box>
         </Box>

@@ -33,14 +33,21 @@ function Page({ id }: { id: string | string[] }) {
     return e.agency?.name === item.name;
   });
   const agencyArtists = _.filter(artists, (e) => {
-    return e.agency?.name === item.name;
+    return _.flatMap(e.agencies, (el) => el.name).includes(item.name);
   });
+  const parentCompany = item.parentCompany
+    ? agencies[
+        _.findIndex(agencies, (e) => {
+          return e.name === item.parentCompany?.name;
+        })
+      ] ?? { name: item.parentCompany?.name }
+    : null;
   const data = [
     {
       label: "Nation",
       value: (
         <>
-          <img src={item.nation.thumbnail} />
+          <img src={item.nation.thumbnail} className="svg" />
           {item.nation.name}
         </>
       ),
@@ -62,6 +69,45 @@ function Page({ id }: { id: string | string[] }) {
       value: item.address,
     },
     {
+      label: "Parent company",
+      value: parentCompany && (
+        <Box
+          sx={{
+            display: "inline-flex",
+            position: "relative",
+            borderRadius: "50%",
+            overflow: "hidden",
+            border: `1px solid ${youhaGrey[700]}`,
+            width: `40px !important`,
+            height: `40px !important`,
+            mr: 1,
+          }}
+        >
+          {parentCompany.id ? (
+            <Link href={`/agency/${parentCompany.id}`} passHref>
+              <a
+                href={`/agency/${parentCompany.id}`}
+                style={{ textDecoration: "underline", cursor: "pointer" }}
+              >
+                <Visual
+                  src={parentCompany.thumbnail}
+                  absolute
+                  sx={{ "& *": { cursor: "pointer !important" } }}
+                />
+              </a>
+            </Link>
+          ) : (
+            <a
+              target={"_blank"}
+              style={{ textDecoration: "underline", cursor: "pointer" }}
+            >
+              {parentCompany.name}
+            </a>
+          )}
+        </Box>
+      ),
+    },
+    {
       label: "Links",
       value: (
         <>
@@ -69,7 +115,7 @@ function Page({ id }: { id: string | string[] }) {
             return (
               <Link href={item.link} key={index}>
                 <a target="_blank">
-                  <img src={`/logos/${item.type}.svg`} />
+                  <img src={`/logos/${item.type}.svg`} className="svg" />
                   {item.label && ` (${item.label})`}
                 </a>
               </Link>
@@ -89,57 +135,160 @@ function Page({ id }: { id: string | string[] }) {
         maxWidth: `1280px`,
         m: theme.spacing(0, "auto"),
         minHeight: "100vh",
+        flexDirection: "column-reverse",
+        "@media(min-width: 840px)": {
+          flexDirection: "row-reverse",
+        },
       }}
     >
       <Box sx={{ flex: 1 }}>
+        {agencyGroups.length > 0 && (
+          <Box
+            sx={{
+              p: theme.spacing(6, 2),
+            }}
+            className="Section"
+          >
+            <ExploreHeader
+              title="Affiliated groups"
+              data={agencyGroups}
+              size="sm"
+            />
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gridAutoRows: "1fr",
+                gridTemplateRows: "auto auto",
+                gridColumnGap: 12,
+                gridRowGap: 32,
+                "@media(min-width: 480px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr",
+                },
+                "@media(min-width: 600px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                },
+                "@media(min-width: 720px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+                },
+                "@media(min-width: 840px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr",
+                },
+                "@media(min-width: 1080px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                },
+                "@media(min-width: 1280px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+                },
+              }}
+              className="SectionContents"
+            >
+              {agencyGroups.map((item, index) => {
+                return <GroupItem key={index} item={item} />;
+              })}
+            </Box>
+          </Box>
+        )}
+        {agencyArtists.length > 0 && (
+          <Box
+            sx={{
+              p: theme.spacing(6, 2),
+            }}
+            className="Section"
+          >
+            <ExploreHeader
+              title="Affiliated artists"
+              data={agencyArtists}
+              size="sm"
+            />
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gridAutoRows: "1fr",
+                gridTemplateRows: "auto auto",
+                gridColumnGap: 12,
+                gridRowGap: 32,
+                "@media(min-width: 480px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr",
+                },
+                "@media(min-width: 600px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                },
+                "@media(min-width: 720px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+                },
+                "@media(min-width: 840px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr",
+                },
+                "@media(min-width: 1080px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                },
+                "@media(min-width: 1280px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+                },
+              }}
+              className="SectionContents"
+            >
+              {agencyArtists.map((item, index) => {
+                return <ArtistItem key={index} item={item} />;
+              })}
+            </Box>
+          </Box>
+        )}
+      </Box>
+      <Box
+        component={"aside"}
+        sx={{
+          width: "100%",
+          "@media(min-width: 840px)": {
+            width: 420,
+            display: "block",
+            p: theme.spacing(0, 2, 0, 0),
+          },
+        }}
+      >
         <Box
           sx={{
-            p: theme.spacing(6, 2),
+            position: "sticky",
+            top: 56,
+            width: "100%",
           }}
-          className="Section"
         >
           <Box
             sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              "@media(min-width: 840px)": {
-                flexDirection: "row",
-              },
+              p: theme.spacing(6, 2),
             }}
+            className="Section"
           >
-            <Box
-              sx={{
-                width: 160,
-                height: 160,
-              }}
-            >
-              <Box
-                sx={{
-                  position: "relative",
-                  width: "100%",
-                  height: "100%",
-                  border: `1px solid ${youhaGrey[700]}`,
-                  borderRadius: "50%",
-                  overflow: "hidden",
-                  aspectRatio: `1`,
-                  p: theme.spacing(2),
-                }}
-              >
-                <Visual src={item.thumbnail} absolute noScale={false} />
-              </Box>
-            </Box>
             <Box
               sx={{
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                "@media(min-width: 840px)": {
-                  alignItems: "flex-start",
-                  m: theme.spacing(0 ,0, 0, 3)
-                },
               }}
             >
+              <Box
+                sx={{
+                  width: 160,
+                  height: 160,
+                }}
+              >
+                <Box
+                  sx={{
+                    position: "relative",
+                    width: "100%",
+                    height: "100%",
+                    border: `1px solid ${youhaGrey[700]}`,
+                    borderRadius: "50%",
+                    overflow: "hidden",
+                    aspectRatio: `1`,
+                    p: theme.spacing(2),
+                  }}
+                >
+                  <Visual src={item.thumbnail} absolute noScale={false} />
+                </Box>
+              </Box>
               <Box
                 sx={{
                   m: theme.spacing(1, 0, 0, 0),
@@ -209,123 +358,9 @@ function Page({ id }: { id: string | string[] }) {
                   </Typography>
                 </Stack>
               </Box>
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                "@media(min-width: 840px)": {
-                  display: "none",
-                },
-              }}
-            >
               <DataSection data={data} />
             </Box>
           </Box>
-        </Box>
-        <Box
-          sx={{
-            p: theme.spacing(6, 2),
-          }}
-          className="Section"
-        >
-          <ExploreHeader
-            title="Affiliated groups"
-            data={agencyGroups}
-            size="sm"
-          />
-          <Box
-            sx={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gridAutoRows: "1fr",
-              gridTemplateRows: "auto auto",
-              gridColumnGap: 12,
-              gridRowGap: 32,
-              "@media(min-width: 480px)": {
-                gridTemplateColumns: "1fr 1fr 1fr",
-              },
-              "@media(min-width: 600px)": {
-                gridTemplateColumns: "1fr 1fr 1fr 1fr",
-              },
-              "@media(min-width: 720px)": {
-                gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
-              },
-              "@media(min-width: 840px)": {
-                gridTemplateColumns: "1fr 1fr 1fr",
-              },
-              "@media(min-width: 1280px)": {
-                gridTemplateColumns: "1fr 1fr 1fr 1fr",
-              },
-            }}
-            className="SectionContents"
-          >
-            {agencyGroups.map((item, index) => {
-              return <GroupItem key={index} item={item} />;
-            })}
-          </Box>
-        </Box>
-        <Box
-          sx={{
-            p: theme.spacing(6, 2),
-          }}
-          className="Section"
-        >
-          <ExploreHeader
-            title="Affiliated artists"
-            data={agencyArtists}
-            size="sm"
-          />
-          <Box
-            sx={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gridAutoRows: "1fr",
-              gridTemplateRows: "auto auto",
-              gridColumnGap: 12,
-              gridRowGap: 32,
-              "@media(min-width: 480px)": {
-                gridTemplateColumns: "1fr 1fr 1fr",
-              },
-              "@media(min-width: 600px)": {
-                gridTemplateColumns: "1fr 1fr 1fr 1fr",
-              },
-              "@media(min-width: 720px)": {
-                gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
-              },
-              "@media(min-width: 840px)": {
-                gridTemplateColumns: "1fr 1fr 1fr",
-              },
-              "@media(min-width: 1280px)": {
-                gridTemplateColumns: "1fr 1fr 1fr 1fr",
-              },
-            }}
-            className="SectionContents"
-          >
-            {agencyArtists.map((item, index) => {
-              return <ArtistItem key={index} item={item} />;
-            })}
-          </Box>
-        </Box>
-      </Box>
-      <Box
-        component={"aside"}
-        sx={{
-          width: (198 + 12) * 2 + 16,
-          display: "none",
-          "@media(min-width: 840px)": {
-            display: "block",
-          },
-        }}
-      >
-        <Box
-          sx={{
-            position: "sticky",
-            top: 56,
-            width: "100%",
-            p: theme.spacing(0, 2, 0, 1.5),
-          }}
-        >
-          <DataSection data={data} />
         </Box>
       </Box>
     </Box>

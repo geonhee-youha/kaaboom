@@ -2,6 +2,7 @@ import { Box, Typography } from "@mui/material";
 import youhaGrey from "../../constants/youhaGrey";
 import { theme } from "../../themes/theme";
 import React from "react";
+import { pink } from "@mui/material/colors";
 
 function DataRow({
   item,
@@ -45,18 +46,25 @@ function DataRow({
           display: "flex",
           justifyContent: "flex-start",
           alignItems: "center",
-          p: theme.spacing(0.5, 1.5),
+          p: theme.spacing(0.25, 1.5),
           background: youhaGrey[800],
           "& .svg": {
             width: "auto",
             height: `16px !important`,
             mr: 1,
           },
+          "& a": {
+            color: pink[400],
+          },
           fontSize: 14,
-            lineHeight: "20px",
+          lineHeight: "20px",
+          flexWrap: "wrap",
+          "& > *": {
+            m: theme.spacing(0.25, 0),
+          },
         }}
       >
-         {item.value}
+        {item.value}
       </Box>
     </Box>
   ) : null;

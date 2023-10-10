@@ -19,6 +19,8 @@ import moment from "moment";
 import { messages } from "../../data/message";
 import MessageItem from "../../components/molecules/MessageItem";
 import { useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import IconButton from "../../components/atoms/IconButton";
 
 export default function Index() {
   const router = useRouter();
@@ -33,18 +35,55 @@ function Page({ id }: { id: string | string[] }) {
         return e.id === id;
       })
     ];
+  const artist = item;
+  const bodies = [
+    item.body.height ?? "",
+    item.body.weight ?? "",
+    item.body.bloodType ?? "",
+  ];
   const group =
     groups[
       _.findIndex(groups, (el) => {
         return el.name === item.group?.name;
       })
     ];
-  const agency =
-    agencies[
-      _.findIndex(agencies, (el) => {
-        return el.name === item.agency?.name;
-      })
-    ];
+  const groupArtists = _.filter(artists, (el) => {
+    return el.group?.name === group.name;
+  });
+  const artistAgencies = _.filter(agencies, (e) => {
+    return _.flatMap(item.agencies, (el) => el.name).includes(e.name);
+  });
+  const [focusedIndex, setFocusedIndex] = useState<number>(-1);
+  const [artistSwiper, setArtistSwiper] = useState<any>(null);
+  const [artistSwiperIndex, setArtistSwiperIndex] = useState<number>(0);
+  const onArtistSlideChange = (swiper: any) => {
+    setArtistSwiperIndex(swiper.realIndex);
+  };
+  const onClickArtistPrev = () => {
+    if (artistSwiperIndex === 0) return;
+    artistSwiper.slideTo(artistSwiperIndex - 1);
+  };
+  const onClickArtistNext = () => {
+    if (artistSwiperIndex === artists.length - 1) return;
+    artistSwiper.slideTo(artistSwiperIndex + 1);
+  };
+  const [messageSwiper, setMessageSwiper] = useState<any>(null);
+  const [messageSwiperIndex, setMessageSwiperIndex] = useState<number>(0);
+  const onMessageSlideChange = (swiper: any) => {
+    setMessageSwiperIndex(swiper.realIndex);
+  };
+  const onClickMessagePrev = () => {
+    if (messageSwiperIndex === 0) return;
+    messageSwiper.slideTo(messageSwiperIndex - 1);
+  };
+  const onClickMessageNext = () => {
+    if (messageSwiperIndex === messages.length - 1) return;
+    messageSwiper.slideTo(messageSwiperIndex + 1);
+  };
+  const artistMessages = _.filter(
+    messages,
+    (el) => el.artist.name === item.name
+  );
   const data = [
     {
       label: "Real name",
@@ -77,11 +116,21 @@ function Page({ id }: { id: string | string[] }) {
             item.body.weight ?? "",
             item.body.bloodType ?? "",
           ].map((item, index) => {
+            console.log(item);
             return (
-              <span key={index}>
-                {index !== 0 && item !== "" && ", "}
+              <span key={index} style={{ marginRight: 4 }}>
                 {item}
                 {item ? (index === 0 ? "cm" : index === 1 ? "kg" : "type") : ""}
+                {index !==
+                  _.filter(bodies, (el) => {
+                    return el !== "";
+                  }).length -
+                    1 ||
+                _.filter(bodies, (el) => {
+                  return el !== "";
+                }).length === 1
+                  ? ""
+                  : ", "}
               </span>
             );
           })}
@@ -94,9 +143,9 @@ function Page({ id }: { id: string | string[] }) {
         <>
           {item.families.map((item, index) => {
             return (
-              <span key={index}>
-                {index !== 0 && ", "}
+              <span key={index} style={{ marginRight: 4 }}>
                 {item}
+                {index !== artist.families.length - 1 && ", "}
               </span>
             );
           })}
@@ -104,27 +153,26 @@ function Page({ id }: { id: string | string[] }) {
       ),
     },
     {
-      label: "Agency",
-      value: (
-        <Box
-          sx={{
-            display: "inline-flex",
-            position: "relative",
-            borderRadius: 1,
-            overflow: "hidden",
-            border: `1px solid ${youhaGrey[700]}`,
-            width: `40px !important`,
-            height: `40px !important`,
-            mr: 1,
-          }}
-        >
-          <a
-            href={`/agency/${agency.id}`}
-            style={{ textDecoration: "underline", cursor: "pointer" }}
-          >
-            <Visual src={agency.thumbnail} absolute sx={{}} />
-          </a>
-        </Box>
+      label: "Educations",
+      value: artist.educations && (
+        <Stack spacing={1}>
+          {artist.educations.map((item, index) => {
+            return (
+              <Box>
+                <Box>{item.name} </Box>
+                <Typography
+                  sx={{
+                    fontSize: 12,
+                    lineHeight: "16px",
+                    color: youhaGrey[200],
+                  }}
+                >
+                  ({item.state})
+                </Typography>
+              </Box>
+            );
+          })}
+        </Stack>
       ),
     },
     {
@@ -134,7 +182,7 @@ function Page({ id }: { id: string | string[] }) {
           sx={{
             display: "inline-flex",
             position: "relative",
-            borderRadius: 1,
+            borderRadius: "50%",
             overflow: "hidden",
             border: `1px solid ${youhaGrey[700]}`,
             width: `40px !important`,
@@ -142,18 +190,92 @@ function Page({ id }: { id: string | string[] }) {
             mr: 1,
           }}
         >
-          <a
-            href={`/group/${group.id}`}
-            style={{ textDecoration: "underline", cursor: "pointer" }}
-          >
-            <Visual src={group.thumbnail} absolute sx={{}} />
-          </a>
+          <Link href={`/group/${group.id}`} passHref>
+            <a
+              href={`/group/${group.id}`}
+              style={{ textDecoration: "underline", cursor: "pointer" }}
+            >
+              <Visual
+                src={group.thumbnail}
+                absolute
+                sx={{ "& *": { cursor: "pointer !important" } }}
+              />
+            </a>
+          </Link>
         </Box>
       ),
     },
     {
+      label: "Agency",
+      value: artistAgencies && (
+        <>
+          {artistAgencies.map((item, index) => {
+            return (
+              <Box
+                sx={{
+                  display: "inline-flex",
+                  position: "relative",
+                  borderRadius: 1,
+                  overflow: "hidden",
+                  border: `1px solid ${youhaGrey[700]}`,
+                  width: `40px !important`,
+                  height: `40px !important`,
+                  mr: 1,
+                }}
+              >
+                <Link href={`/agency/${item.id}`} passHref>
+                  <a
+                    href={`/agency/${item.id}`}
+                    style={{ textDecoration: "underline", cursor: "pointer" }}
+                  >
+                    <Visual
+                      src={item.thumbnail}
+                      absolute
+                      sx={{ "& *": { cursor: "pointer !important" } }}
+                    />
+                  </a>
+                </Link>
+              </Box>
+            );
+          })}
+        </>
+      ),
+    },
+    {
       label: "Fandom",
-      value: item.fandom?.name,
+      value: item.fandom && (
+        <Box
+          sx={{
+            "& img": {
+              width: `auto !important`,
+              height: `24px !important`,
+            },
+            mr: 1,
+          }}
+        >
+          {item.fandom.link ? (
+            <Link href={item.fandom.link ?? ""} passHref>
+              <a
+                target={"_blank"}
+                style={{ textDecoration: "underline", cursor: "pointer" }}
+              >
+                {item.fandom.thumbnail ? (
+                  <Visual
+                    src={item.fandom.thumbnail}
+                    sx={{ "& *": { cursor: "pointer !important" } }}
+                  />
+                ) : (
+                  <>{item.fandom.name}</>
+                )}
+              </a>
+            </Link>
+          ) : item.fandom.thumbnail ? (
+            <Visual src={item.fandom.thumbnail} />
+          ) : (
+            <>{item.fandom.name}</>
+          )}
+        </Box>
+      ),
     },
     {
       label: "Positions",
@@ -161,23 +283,15 @@ function Page({ id }: { id: string | string[] }) {
         <>
           {item.positions.map((item, index) => {
             return (
-              <span key={index}>
-                {index !== 0 && ", "}
+              <span key={index} style={{ marginRight: 4 }}>
                 {item}
+                {index !== artist.positions.length - 1 && ", "}
               </span>
             );
           })}
         </>
       ),
     },
-    // {
-    //   label: "Establisher",
-    //   value: item.establisher,
-    // },
-    // {
-    //   label: "CEO",
-    //   value: item.ceo,
-    // },
     {
       label: "Debut",
       value: (
@@ -222,7 +336,7 @@ function Page({ id }: { id: string | string[] }) {
     },
     {
       label: "Links",
-      value: (
+      value: item.links && (
         <>
           {item.links.map((item, index) => {
             return (
@@ -248,7 +362,6 @@ function Page({ id }: { id: string | string[] }) {
       ),
     },
   ];
-  const [focusedIndex, setFocusedIndex] = useState<number>(-1);
   return (
     <Box
       component={"main"}
@@ -265,56 +378,178 @@ function Page({ id }: { id: string | string[] }) {
         },
       }}
     >
-      <Box sx={{ flex: 1 }}>
-        <Box
+      <Box
+        sx={{
+          flex: 1,
+          "@media(min-width: 840px)": {
+            width: `calc(100vw - 420px)`,
+          },
+        }}
+      >
+        <Stack
+          spacing={2}
+          className="Section"
           sx={{
             p: theme.spacing(6, 2),
           }}
-          className="Section"
         >
-          <ExploreHeader title="Fan messages" data={messages} size="sm" />
           <Box
             sx={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gridAutoRows: "1fr",
-              gridTemplateRows: "auto auto",
-              gridColumnGap: 12,
-              gridRowGap: 32,
-              "@media(min-width: 480px)": {
-                gridTemplateColumns: "1fr 1fr 1fr",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Typography
+              sx={{
+                flex: 1,
+                fontSize: 20,
+                lineHeight: "32px",
+                fontWeight: "700",
+              }}
+            >
+              Recent fan messages
+            </Typography>
+            <Stack direction={"row"} spacing={1}>
+              <IconButton
+                name="angle-left"
+                size={20}
+                borderColor={youhaGrey[700]}
+                backgroundColor={youhaGrey[800]}
+                sx={{
+                  width: 32,
+                  height: 32,
+                }}
+                onClick={onClickMessagePrev}
+              />
+              <IconButton
+                name="angle-right"
+                size={20}
+                borderColor={youhaGrey[700]}
+                backgroundColor={youhaGrey[800]}
+                sx={{
+                  width: 32,
+                  height: 32,
+                }}
+                onClick={onClickMessageNext}
+              />
+            </Stack>
+          </Box>
+          <Box
+            sx={{
+              "& a": {
+                width: "100%",
               },
-              "@media(min-width: 600px)": {
-                gridTemplateColumns: "1fr 1fr 1fr 1fr",
-              },
-              "@media(min-width: 720px)": {
-                gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
-              },
-              "@media(min-width: 840px)": {
-                gridTemplateColumns: "1fr 1fr 1fr",
-              },
-              "@media(min-width: 1080px)": {
-                gridTemplateColumns: "1fr 1fr 1fr 1fr",
-              },
-              "@media(min-width: 1280px)": {
-                gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+              pb: 4,
+              "@media(max-width: 480px)": {
+                ml: `-16px !important`,
+                mr: `-16px !important`,
+                "& .swiper": {
+                  pl: 2,
+                  pr: 2,
+                },
               },
             }}
-            className="SectionContents"
           >
-            {messages.map((item, index) => {
-              return (
-                <MessageItem
-                  key={index}
-                  item={item}
-                  index={index}
-                  focusedIndex={focusedIndex}
-                  setFocusedIndex={setFocusedIndex}
-                />
-              );
-            })}
+            <Swiper
+              onSwiper={setMessageSwiper}
+              onSlideChange={onMessageSlideChange}
+              breakpoints={{
+                0: {
+                  slidesPerView: 2,
+                  spaceBetween: 12,
+                },
+                480: {
+                  slidesPerView: 3,
+                  spaceBetween: 12,
+                },
+                600: {
+                  slidesPerView: 4,
+                  spaceBetween: 12,
+                },
+                720: {
+                  slidesPerView: 5,
+                  spaceBetween: 12,
+                },
+                840: {
+                  slidesPerView: 3,
+                  spaceBetween: 12,
+                },
+                960: {
+                  slidesPerView: 3,
+                  spaceBetween: 12,
+                },
+                1080: {
+                  slidesPerView: 4,
+                  spaceBetween: 12,
+                },
+                1200: {
+                  slidesPerView: 5,
+                  spaceBetween: 12,
+                },
+              }}
+            >
+              {artistMessages.map((item, index) => {
+                return (
+                  <SwiperSlide key={index}>
+                    <MessageItem
+                      item={item}
+                      index={index}
+                      focusedIndex={focusedIndex}
+                      setFocusedIndex={setFocusedIndex}
+                    />
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
           </Box>
-        </Box>
+        </Stack>
+        {groupArtists.length > 0 && (
+          <Box
+            sx={{
+              p: theme.spacing(6, 2),
+            }}
+            className="Section"
+          >
+            <ExploreHeader
+              title="Related artists"
+              data={groupArtists}
+              size="sm"
+            />
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gridAutoRows: "1fr",
+                gridTemplateRows: "auto auto",
+                gridColumnGap: 12,
+                gridRowGap: 32,
+                "@media(min-width: 480px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr",
+                },
+                "@media(min-width: 600px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                },
+                "@media(min-width: 720px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+                },
+                "@media(min-width: 840px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr",
+                },
+                "@media(min-width: 1080px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                },
+                "@media(min-width: 1200px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+                },
+              }}
+              className="SectionContents"
+            >
+              {groupArtists.map((item, index) => {
+                return <ArtistItem key={index} item={item} />;
+              })}
+            </Box>
+          </Box>
+        )}
       </Box>
       <Box
         component={"aside"}

@@ -66,10 +66,16 @@ export default function Index() {
           maxWidth: `1280px`,
           m: theme.spacing(0, "auto"),
           minHeight: "100vh",
-          p: theme.spacing(6, 2),
+          p: theme.spacing(6, 0),
         }}
       >
-        <Stack spacing={3} className="Section">
+        <Stack
+          spacing={3}
+          className="Section"
+          sx={{
+            p: theme.spacing(0, 2),
+          }}
+        >
           <Box
             sx={{
               m: theme.spacing(1, 0),
@@ -129,7 +135,13 @@ export default function Index() {
             })}
           </Box>
         </Stack>
-        <Stack spacing={2} className="Section">
+        <Stack
+          spacing={2}
+          className="Section"
+          sx={{
+            p: theme.spacing(0, 2),
+          }}
+        >
           <Box
             sx={{
               display: "flex",
@@ -223,7 +235,13 @@ export default function Index() {
             </Swiper>
           </Box>
         </Stack>
-        <Stack spacing={2} className="Section">
+        <Stack
+          spacing={2}
+          className="Section"
+          sx={{
+            p: theme.spacing(0, 2),
+          }}
+        >
           <Box
             sx={{
               display: "flex",

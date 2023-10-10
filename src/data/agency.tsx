@@ -8,28 +8,25 @@ export type AgencyProps = {
   establishmentDate: any; //추후 수정 필요
   establisher?: string;
   ceo: string;
+  parentCompany?: {
+    name: string;
+  };
   address: string;
   links: LinkProps[];
-  colors: {
-    inners: string[];
-    borders?: string[];
-    backgrounds: string[];
-  };
 };
 
 export const agencies: AgencyProps[] = [
   {
     id: "DRM",
     name: "DR Music",
-    thumbnail: "/temp/drm.png",
+    thumbnail: "/temp/agencies/drm.png",
     nation: {
       name: "republic of korea",
-      thumbnail:
-        "https://i.namu.wiki/i/uN6KVJhSUX_VXnLdZgzZZmL9fK-tZo9QAbRRiEWXdJwuGYMby_HDAv7Gsae4hRIF6hKtAyMYnwbxgeC7Ds5qbJl0OuO_CwHUM1xLT2SzAv8Dri4LZyolf4dv1YR4110j63GmMf_Vk6dutp_yKV76YA.svg",
+      thumbnail: "/temp/nations/korea.svg",
     },
     establishmentDate: "1989",
 
-    ceo: "Deung-ryong Yoon",
+    ceo: "Yoon Deungryong",
     address: "17, Gangnam-daero 160-gil, Gangnam-gu, Seoul, Republic of Korea",
     links: [
       {
@@ -37,23 +34,18 @@ export const agencies: AgencyProps[] = [
         link: "https://www.youtube.com/channel/UCE9y91EhAvdRfm8nzD5SOzw",
       },
     ],
-    colors: {
-      inners: ["#ffffff"],
-      backgrounds: ["#ffffff"],
-    },
   },
   {
     id: "S2E",
     name: "S2 Entertainment",
-    thumbnail: "/temp/s2e.png",
+    thumbnail: "/temp/agencies/s2e.png",
     nation: {
       name: "republic of korea",
-      thumbnail:
-        "https://i.namu.wiki/i/uN6KVJhSUX_VXnLdZgzZZmL9fK-tZo9QAbRRiEWXdJwuGYMby_HDAv7Gsae4hRIF6hKtAyMYnwbxgeC7Ds5qbJl0OuO_CwHUM1xLT2SzAv8Dri4LZyolf4dv1YR4110j63GmMf_Vk6dutp_yKV76YA.svg",
+      thumbnail: "/temp/nations/korea.svg",
     },
     establishmentDate: "2020.08.14",
-    establisher: "Seung-sung Hong",
-    ceo: "Tae-hwa Hong",
+    establisher: "Hong Seungsung",
+    ceo: "Hong Taehwa",
     address: "22, Seolleung-ro 129-gil, Gangnam-gu, Seoul, Republic of Korea",
     links: [
       {
@@ -81,9 +73,42 @@ export const agencies: AgencyProps[] = [
         link: "http://weibo.com/u/7525144523",
       },
     ],
-    colors: {
-      inners: ["##00c7be"],
-      backgrounds: ["##00c7be"],
+  },
+  {
+    id: "AUR",
+    name: "AURA Entertainment",
+    thumbnail: "/temp/agencies/aur.png",
+    nation: {
+      name: "republic of korea",
+      thumbnail: "/temp/nations/korea.svg",
     },
+    establishmentDate: "2020.12",
+    ceo: "Alex Kim",
+    parentCompany: {
+      name: "S2 Entertainment",
+    },
+    address: "5, Seolleung-ro 161-gil, Gangnam-gu, Seoul, Republic of Korea",
+    links: [
+      {
+        type: "homepage",
+        link: "http://auraent.net/",
+      },
+      {
+        type: "youtube",
+        link: "https://www.youtube.com/channel/UC_e-ZKI2ZRS3uBCSv6vzvDw/channels",
+      },
+      {
+        type: "instagram",
+        link: "https://www.instagram.com/aura_officialkr",
+      },
+      {
+        type: "x-twitter",
+        link: "https://twitter.com/aura_officialkr",
+      },
+      {
+        type: "facebook",
+        link: "https://www.facebook.com/auraofficialkr/",
+      },
+    ],
   },
 ];

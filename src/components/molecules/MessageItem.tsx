@@ -112,7 +112,7 @@ export default function MessageItem({
       <ReactPlayer
         playing={playing}
         muted={true}
-        url={`/${item.src}`}
+        url={`${item.src}`}
         onDuration={onDuration}
         onProgress={onProgress}
       />
@@ -193,8 +193,10 @@ export default function MessageItem({
               <Typo
                 lines={1}
                 sx={{
-                  fontSize: 12,
-                  lineHeight: "16px",
+                  fontSize: 10,
+                  lineHeight: "14px",
+                  whiteSpace: "nowrap",
+                  color: youhaGrey[300]
                 }}
               >
                 {artist.group?.name ?? "SOLO"}

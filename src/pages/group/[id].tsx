@@ -16,6 +16,9 @@ import Icon from "../../components/atoms/Icon";
 import DataSection from "../../components/organisms/DataSection";
 import Link from "next/link";
 import moment from "moment";
+import MessageItem from "../../components/molecules/MessageItem";
+import { messages } from "../../data/message";
+import { useState } from "react";
 
 export default function Index() {
   const router = useRouter();
@@ -45,6 +48,9 @@ function Page({ id }: { id: string | string[] }) {
         return el.name === item.leader.name;
       })
     ];
+  const fanMessages = _.filter(messages, (e) => {
+    return _.flatMap(groupArtists, (el) => el.name).includes(e.artist.name);
+  });
   const data = [
     {
       label: "Debut date",
@@ -61,7 +67,7 @@ function Page({ id }: { id: string | string[] }) {
           sx={{
             display: "inline-flex",
             position: "relative",
-            borderRadius: `50%`,
+            borderRadius: "50%",
             overflow: "hidden",
             border: `1px solid ${youhaGrey[700]}`,
             width: `40px !important`,
@@ -69,12 +75,18 @@ function Page({ id }: { id: string | string[] }) {
             mr: 1,
           }}
         >
-          <a
-            href={`/artist/${leader.id}`}
-            style={{ textDecoration: "underline", cursor: "pointer" }}
-          >
-            <Visual src={leader.thumbnail} absolute sx={{}} />
-          </a>
+          <Link href={`/artist/${leader.id}`} passHref>
+            <a
+              href={`/artist/${leader.id}`}
+              style={{ textDecoration: "underline", cursor: "pointer" }}
+            >
+              <Visual
+                src={leader.thumbnail}
+                absolute
+                sx={{ "& *": { cursor: "pointer !important" } }}
+              />
+            </a>
+          </Link>
         </Box>
       ),
     },
@@ -93,18 +105,50 @@ function Page({ id }: { id: string | string[] }) {
             mr: 1,
           }}
         >
-          <a
-            href={`/agency/${agency.id}`}
-            style={{ textDecoration: "underline", cursor: "pointer" }}
-          >
-            <Visual src={agency.thumbnail} absolute sx={{}} />
-          </a>
+          <Link href={`/agency/${agency.id}`} passHref>
+            <a
+              href={`/agency/${agency.id}`}
+              style={{ textDecoration: "underline", cursor: "pointer" }}
+            >
+              <Visual
+                src={agency.thumbnail}
+                absolute
+                sx={{ "& *": { cursor: "pointer !important" } }}
+              />
+            </a>
+          </Link>
         </Box>
       ),
     },
     {
       label: "Fandom",
-      value: item.fandom?.name,
+      value: item.fandom && (
+        <Box
+          sx={{
+            "& img": {
+              width: `auto !important`,
+              height: `24px !important`,
+            },
+            mr: 1,
+          }}
+        >
+          <Link href={item.fandom.link ?? ""} passHref>
+            <a
+              target={"_blank"}
+              style={{ textDecoration: "underline", cursor: "pointer" }}
+            >
+              {item.fandom.thumbnail ? (
+                <Visual
+                  src={item.fandom.thumbnail}
+                  sx={{ "& *": { cursor: "pointer !important" } }}
+                />
+              ) : (
+                <>{item.fandom.name}</>
+              )}
+            </a>
+          </Link>
+        </Box>
+      ),
     },
     {
       label: "Genre",
@@ -121,38 +165,28 @@ function Page({ id }: { id: string | string[] }) {
         </>
       ),
     },
-    // {
-    //   label: "Establisher",
-    //   value: item.establisher,
-    // },
-    // {
-    //   label: "CEO",
-    //   value: item.ceo,
-    // },
-    // {
-    //   label: "Address",
-    //   value: item.address,
-    // },
     {
       label: "Links",
       value: (
         <>
           {item.links.map((item, index) => {
             return (
-              <Link href={item.link} key={index}>
+              <Link href={item.link} key={index} passHref>
                 <a target="_blank">
-                  <img src={`/logos/${item.type}.svg`} className="svg" />
-                  {item.label && (
-                    <span
-                      style={{
-                        marginLeft: -4,
-                        marginRight: 8,
-                        fontSize: 12,
-                        lineHeight: "16px",
-                        textDecoration: "underline",
-                      }}
-                    >{`(${item.label})`}</span>
-                  )}
+                  <Box component={"span"} sx={{ cursor: "pointer" }}>
+                    <img src={`/logos/${item.type}.svg`} className="svg" />
+                    {item.label && (
+                      <span
+                        style={{
+                          marginLeft: -4,
+                          marginRight: 8,
+                          fontSize: 12,
+                          lineHeight: "16px",
+                          textDecoration: "underline",
+                        }}
+                      >{`(${item.label})`}</span>
+                    )}
+                  </Box>
                 </a>
               </Link>
             );
@@ -161,6 +195,7 @@ function Page({ id }: { id: string | string[] }) {
       ),
     },
   ];
+  const [focusedIndex, setFocusedIndex] = useState<number>(-1);
   return (
     <Box
       component={"main"}
@@ -177,10 +212,10 @@ function Page({ id }: { id: string | string[] }) {
         },
       }}
     >
-      <Box sx={{ flex: 1 }}>
+      <Stack spacing={3} sx={{ flex: 1, p: theme.spacing(6, 0) }}>
         <Box
           sx={{
-            p: theme.spacing(6, 2),
+            p: theme.spacing(0, 2),
           }}
           className="Section"
         >
@@ -212,7 +247,7 @@ function Page({ id }: { id: string | string[] }) {
               "@media(min-width: 1080px)": {
                 gridTemplateColumns: "1fr 1fr 1fr 1fr",
               },
-              "@media(min-width: 1280px)": {
+              "@media(min-width: 1200px)": {
                 gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
               },
             }}
@@ -223,7 +258,58 @@ function Page({ id }: { id: string | string[] }) {
             })}
           </Box>
         </Box>
-      </Box>
+        {fanMessages.length > 0 && (
+          <Box
+            sx={{
+              p: theme.spacing(0, 2),
+            }}
+            className="Section"
+          >
+            <ExploreHeader title="Fan messages" data={messages} size="sm" />
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gridAutoRows: "1fr",
+                gridTemplateRows: "auto auto",
+                gridColumnGap: 12,
+                gridRowGap: 32,
+                "@media(min-width: 480px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr",
+                },
+                "@media(min-width: 600px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                },
+                "@media(min-width: 720px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+                },
+                "@media(min-width: 840px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr",
+                },
+                "@media(min-width: 1080px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                },
+                "@media(min-width: 1200px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+                },
+              }}
+              className="SectionContents"
+            >
+              {fanMessages.map((item, index) => {
+                return (
+                  <MessageItem
+                    key={index}
+                    item={item}
+                    index={index}
+                    focusedIndex={focusedIndex}
+                    setFocusedIndex={setFocusedIndex}
+                  />
+                );
+              })}
+            </Box>
+          </Box>
+        )}
+      </Stack>
       <Box
         component={"aside"}
         sx={{
@@ -298,12 +384,7 @@ function Page({ id }: { id: string | string[] }) {
                   display: "flex",
                 }}
               >
-                <Stack
-                  direction={"row"}
-                  spacing={1}
-                  alignItems={"center"}
-                  sx={{ ml: 2 }}
-                >
+                <Stack direction={"row"} spacing={1} alignItems={"center"}>
                   <Icon
                     name="user"
                     color={youhaBlue[400]}

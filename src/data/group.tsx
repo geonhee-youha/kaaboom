@@ -33,7 +33,7 @@ export const groups: GroupProps[] = [
   {
     id: "KOL",
     name: "KISS OF LIFE",
-    thumbnail: "/temp/kol.png",
+    thumbnail: "/temp/groups/kol.png",
     debutDate: new Date("2023-07-05"),
     debutAlbum: "KISS OF LIFE - 1st Mini Album",
     genres: ["Dance", "R&B", "Soul"],
@@ -45,8 +45,7 @@ export const groups: GroupProps[] = [
     },
     fandom: {
       name: "KISSY",
-      thumbnail:
-        "https://i.namu.wiki/i/6yT_3tDDrvQqWUnTKaDNURZdsaOXAyY_oVzPCcTHydY7-BwfjjgGPwmpNLv1KtjHLDTAaxtJ9ludQMJPNFoaVlXXaEMlzZnLR_uNvs9vwLSe3DkAC4T9buNMB4ZC39wNPG3DHyuuhGiCvgYwZKSknA.webp",
+      thumbnail: "/temp/fandoms/kissy.webp",
     },
     links: [
       {
@@ -83,7 +82,7 @@ export const groups: GroupProps[] = [
   {
     id: "BSW",
     name: "BLACKSWAN",
-    thumbnail: "/temp/bsw.png",
+    thumbnail: "/temp/groups/bsw.png",
     debutDate: new Date("2020-10-16"),
     debutAlbum: "Goodbye RANIA - THE 1ST FULL ALBUM",
     genres: ["Dance", "POP", "Hiphop"],
