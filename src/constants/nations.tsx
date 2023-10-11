@@ -1,4 +1,4 @@
-export const contries = [
+export const nations = [
   { value: "AF", group: "A", text: "Afghanistan" },
   { value: "AL", group: "A", text: "Albania" },
   { value: "DZ", group: "A", text: "Algeria" },

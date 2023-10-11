@@ -18,7 +18,7 @@ export default function ExploreHeader({
   title: string;
   data: any;
   size?: string;
-  label?:string;
+  label?: string;
 }) {
   const router = useRouter();
   const currentValue = router.query.sortBy ?? "featured";
@@ -29,15 +29,12 @@ export default function ExploreHeader({
   return (
     <Box>
       <Box
-        sx={{
-          m: theme.spacing(0, 0, 2, 0),
-        }}
         className="SectionTitle"
       >
         <Typography
           sx={{
             fontSize: size === "sm" ? 20 : 28,
-            lineHeight: size === "sm" ? '32px' : "40px",
+            lineHeight: size === "sm" ? '32px' : "44px",
             fontWeight: "700",
             "@media(min-width: 600px)": {
               "& br": {
@@ -64,8 +61,8 @@ export default function ExploreHeader({
         <Typography
           sx={{
             flex: 1,
-            fontSize: 16,
-            lineHeight: "24px",
+            fontSize: 14,
+            lineHeight: "20px",
             color: youhaGrey[300],
           }}
         >

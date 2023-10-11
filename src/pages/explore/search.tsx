@@ -10,16 +10,11 @@ import { agencies } from "../../data/agency";
 import GroupItem from "../../components/molecules/GroupItem";
 import AgencyItem from "../../components/molecules/AgencyItem";
 import youhaGrey from "../../constants/youhaGrey";
+import Page from "../../components/atoms/Page";
 
 export default function Index() {
   const router = useRouter();
   const { searchText } = router.query;
-  //   const searchedArtists = _.filter(artists, (el) => {
-  //     return el.group
-  //       ? el.group.name.toLowerCase().includes(`${searchText}`.toLowerCase()) ||
-  //           el.name.toLowerCase().includes(`${searchText}`.toLowerCase())
-  //       : el.name.toLowerCase().includes(`${searchText}`.toLowerCase());
-  //   });
   const searchedArtists = _.filter(artists, (el) => {
     return el.name.toLowerCase().includes(`${searchText}`.toLowerCase());
   });
@@ -30,53 +25,48 @@ export default function Index() {
     return el.name.toLowerCase().includes(`${searchText}`.toLowerCase());
   });
   return (
-    <Box
-      sx={{
-        width: `100%`,
-        minWidth: "280px",
-        maxWidth: `1280px`,
-        m: theme.spacing(0, "auto"),
-        minHeight: "100vh",
-      }}
-    >
-      <Box
-        sx={{
-          m: theme.spacing(1, 0),
-          p: theme.spacing(6, 2, 0, 2)
-        }}
-        className="SectionTitle"
-      >
-        <Typography
+    <Page>
+      <Box sx={{
+        p: theme.spacing(6, 2, 0, 2)
+      }}>
+        <Box
           sx={{
-            fontSize: 28,
-            lineHeight: "40px",
-            fontWeight: "700",
-            "& span": {
-              fontSize: 14,
-              lineHeight: "20px",
-              color: youhaGrey[300],
-              fontWeight: '400',
-              m: theme.spacing(0, 0, 0, 1)
-            },
-            "@media(min-width: 600px)": {
-              "& br": {
-                display: "none",
-              },
-            },
+            m: theme.spacing(1, 0),
           }}
+          className="SectionTitle"
         >
-          Results for "{searchText}"
-          <span>
-            {searchedArtists.length +
-              searchedGroups.length +
-              searchedAgencies.length}{" "}
-            results
-          </span>
-        </Typography>
+          <Typography
+            sx={{
+              fontSize: 28,
+              lineHeight: "40px",
+              fontWeight: "700",
+              "& span": {
+                fontSize: 14,
+                lineHeight: "20px",
+                color: youhaGrey[300],
+                fontWeight: '400',
+                m: theme.spacing(0, 0, 0, 1)
+              },
+              "@media(min-width: 600px)": {
+                "& br": {
+                  display: "none",
+                },
+              },
+            }}
+          >
+            Results for "{searchText}"
+            <span>
+              {searchedArtists.length +
+                searchedGroups.length +
+                searchedAgencies.length}{" "}
+              results
+            </span>
+          </Typography>
+        </Box>
       </Box>
       <Box
         sx={{
-          p: theme.spacing(6, 2),
+          p: theme.spacing(6, 2, 3, 2),
         }}
         className="Section"
       >
@@ -86,7 +76,7 @@ export default function Index() {
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
             gridAutoRows: "1fr",
-            gridTemplateRows: "auto auto",
+            gridTemplateRows: "auto",
             gridColumnGap: 12,
             gridRowGap: 32,
             "@media(min-width: 480px)": {
@@ -117,7 +107,7 @@ export default function Index() {
       </Box>
       <Box
         sx={{
-          p: theme.spacing(6, 2),
+          p: theme.spacing(6, 2, 3, 2),
         }}
         className="Section"
       >
@@ -127,7 +117,7 @@ export default function Index() {
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
             gridAutoRows: "1fr",
-            gridTemplateRows: "auto auto",
+            gridTemplateRows: "auto",
             gridColumnGap: 12,
             gridRowGap: 32,
             "@media(min-width: 480px)": {
@@ -154,7 +144,7 @@ export default function Index() {
       </Box>
       <Box
         sx={{
-          p: theme.spacing(6, 2),
+          p: theme.spacing(6, 2, 3, 2),
         }}
         className="Section"
       >
@@ -164,7 +154,7 @@ export default function Index() {
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
             gridAutoRows: "1fr",
-            gridTemplateRows: "auto auto",
+            gridTemplateRows: "auto",
             gridColumnGap: 12,
             gridRowGap: 32,
             "@media(min-width: 480px)": {
@@ -193,6 +183,6 @@ export default function Index() {
           })}
         </Box>
       </Box>
-    </Box>
+    </Page>
   );
 }

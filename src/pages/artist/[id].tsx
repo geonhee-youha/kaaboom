@@ -34,19 +34,23 @@ import { faqs, howKaboomWorks, purchaseTypes } from "../../data";
 import FaqItem from "../../components/molecules/FaqItem";
 import { reviews } from "../../data/review";
 import Typo from "../../components/atoms/Typo";
+import Page from "../../components/atoms/Page";
 
 export default function Index() {
+  return <Page
+    needId
+    aside
+  ><Inner /></Page>
+}
+
+function Inner() {
   const router = useRouter();
   const { id } = router.query;
-  return id && <Page id={id} />;
-}
-function Page({ id }: { id: string | string[] }) {
-  const router = useRouter();
   const item =
     artists[
-      _.findIndex(artists, (e) => {
-        return e.id === id;
-      })
+    _.findIndex(artists, (e) => {
+      return e.id === id;
+    })
     ];
   const artist = item;
   const bodies = [
@@ -56,9 +60,9 @@ function Page({ id }: { id: string | string[] }) {
   ];
   const group =
     groups[
-      _.findIndex(groups, (el) => {
-        return el.name === item.group?.name;
-      })
+    _.findIndex(groups, (el) => {
+      return el.name === item.group?.name;
+    })
     ];
   const groupArtists = _.filter(artists, (el) => {
     return el.group?.name === group.name;
@@ -105,7 +109,7 @@ function Page({ id }: { id: string | string[] }) {
     reviewSwiper.slideTo(reviewSwiperIndex + 1);
   };
   const [purchaseType, setPurchaseType] = useState<string>("");
-  const onClickPurchase = () => {};
+  const onClickPurchase = () => { };
   const data = [
     {
       label: "Real name",
@@ -147,10 +151,10 @@ function Page({ id }: { id: string | string[] }) {
                   _.filter(bodies, (el) => {
                     return el !== "";
                   }).length -
-                    1 ||
-                _.filter(bodies, (el) => {
-                  return el !== "";
-                }).length === 1
+                  1 ||
+                  _.filter(bodies, (el) => {
+                    return el !== "";
+                  }).length === 1
                   ? ""
                   : ", "}
               </span>
@@ -385,24 +389,11 @@ function Page({ id }: { id: string | string[] }) {
     },
   ];
   return (
-    <Box
-      component={"main"}
-      sx={{
-        display: "flex",
-        width: `100%`,
-        minWidth: "280px",
-        maxWidth: `1280px`,
-        m: theme.spacing(0, "auto"),
-        minHeight: "100vh",
-        flexDirection: "column-reverse",
-        "@media(min-width: 960px)": {
-          flexDirection: "row-reverse",
-        },
-      }}
-    >
+    <>
       <Box
         sx={{
           flex: 1,
+          p: theme.spacing(0, 0, 12, 0),
           "@media(min-width: 960px)": {
             width: `calc(100vw - 420px)`,
             maxWidth: `calc(1280px - 420px)`,
@@ -410,7 +401,7 @@ function Page({ id }: { id: string | string[] }) {
           width: "100%",
         }}
       >
-        <Box sx={{ width: "100%", p: theme.spacing(6, 2) }}>
+        <Box sx={{ width: "100%", p: theme.spacing(6, 2, 3, 2), }}>
           <Typography
             sx={{
               fontSize: 20,
@@ -456,9 +447,8 @@ function Page({ id }: { id: string | string[] }) {
                         onClick={onClick}
                         sx={{
                           flex: 1,
-                          border: `1px solid ${
-                            focused ? youhaBlue[400] : youhaGrey[200]
-                          }`,
+                          border: `1px solid ${focused ? youhaBlue[400] : youhaGrey[200]
+                            }`,
                           backgroundColor: focused
                             ? alpha(youhaBlue[400], 0.4)
                             : youhaGrey[700],
@@ -732,7 +722,7 @@ function Page({ id }: { id: string | string[] }) {
           spacing={2}
           className="Section"
           sx={{
-            p: theme.spacing(6, 2),
+            p: theme.spacing(6, 2, 3, 2),
           }}
         >
           <Box
@@ -781,7 +771,6 @@ function Page({ id }: { id: string | string[] }) {
               "& a": {
                 width: "100%",
               },
-              pb: 4,
               "@media(max-width: 480px)": {
                 ml: `-16px !important`,
                 mr: `-16px !important`,
@@ -962,7 +951,7 @@ function Page({ id }: { id: string | string[] }) {
         <Box
           className="Section"
           sx={{
-            p: theme.spacing(6, 2),
+            p: theme.spacing(6, 2, 3, 2),
             display: "block",
             "@media(min-width: 960px)": {
               display: "none",
@@ -982,12 +971,13 @@ function Page({ id }: { id: string | string[] }) {
           <DataSection
             data={data}
             sx={{
-              p: theme.spacing(2, 0, 0, 0),
+              m: theme.spacing(2, 0, 0, 0)
             }}
           />
         </Box>
         <Box
           sx={{
+            m: theme.spacing(6, 0, 0, 0),
             p: theme.spacing(6, 2),
             position: "relative",
             "&:before": {
@@ -1208,7 +1198,7 @@ function Page({ id }: { id: string | string[] }) {
           spacing={2}
           className="Section"
           sx={{
-            p: theme.spacing(6, 2),
+            p: theme.spacing(6, 2, 3, 2),
           }}
         >
           <Box
@@ -1257,7 +1247,6 @@ function Page({ id }: { id: string | string[] }) {
               "& a": {
                 width: "100%",
               },
-              pb: 4,
               "@media(max-width: 480px)": {
                 ml: `-16px !important`,
                 mr: `-16px !important`,
@@ -1369,7 +1358,7 @@ function Page({ id }: { id: string | string[] }) {
         {groupArtists.length > 0 && (
           <Box
             sx={{
-              p: theme.spacing(6, 2),
+              p: theme.spacing(6, 2, 3, 2),
             }}
             className="Section"
           >
@@ -1383,7 +1372,7 @@ function Page({ id }: { id: string | string[] }) {
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",
                 gridAutoRows: "1fr",
-                gridTemplateRows: "auto auto",
+                gridTemplateRows: "auto",
                 gridColumnGap: 12,
                 gridRowGap: 32,
                 "@media(min-width: 480px)": {
@@ -1418,7 +1407,7 @@ function Page({ id }: { id: string | string[] }) {
         )}
         <Box
           sx={{
-            p: theme.spacing(6, 2),
+            p: theme.spacing(6, 2, 3, 2),
           }}
           className="Section"
         >
@@ -1466,7 +1455,7 @@ function Page({ id }: { id: string | string[] }) {
           "@media(min-width: 960px)": {
             width: 420,
             display: "block",
-            p: theme.spacing(0, 2, 0, 0),
+            p: theme.spacing(0, 2, 12, 0),
           },
         }}
       >
@@ -1479,7 +1468,7 @@ function Page({ id }: { id: string | string[] }) {
         >
           <Box
             sx={{
-              p: theme.spacing(6, 2, 0, 2),
+              p: theme.spacing(6, 2, 3, 2),
               "@media(min-width: 960px)": {
                 p: theme.spacing(6, 2),
               },
@@ -1725,12 +1714,17 @@ function Page({ id }: { id: string | string[] }) {
                   },
                 }}
               >
-                <DataSection data={data} />
+                <DataSection
+                  data={data}
+                  sx={{
+                    m: theme.spacing(4, 0, 0, 0),
+                  }}
+                />
               </Box>
             </Box>
           </Box>
         </Box>
       </Box>
-    </Box>
+    </>
   );
 }

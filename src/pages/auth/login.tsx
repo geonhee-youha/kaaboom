@@ -7,8 +7,9 @@ import { useRecoilState } from "recoil";
 import { tempUserState } from "../../data/temp";
 import { isBirthday, isName } from "../../utils";
 import { loginRecoilState } from "../../constants/recoils";
+import Page from "../../components/atoms/Page";
 
-export default function Page() {
+export default function Index() {
   const router = useRouter();
   const { url } = router.query;
   const [tempUser, setTempUser] = useRecoilState(tempUserState);
@@ -37,95 +38,84 @@ export default function Page() {
     }
   };
   return (
-    <>
-      <Stack
-        spacing={4}
+    <Page
+      narrow
+    >
+      <Box
+        className="SectionTitle"
         sx={{
-          width: `100%`,
-          minWidth: "280px",
-          maxWidth: `480px`,
-          m: theme.spacing(0, "auto"),
-          p: theme.spacing(8, 2, 24, 2),
-          "@media(min-width: 960px)": {
-            p: theme.spacing(12, 2, 32, 2),
-          },
+          p: theme.spacing(6, 2, 3, 2),
+          textAlign: "center",
         }}
       >
-        <Box
-          className="SectionTitle"
+        <Typography
           sx={{
-            textAlign: "center",
+            fontSize: 20,
+            lineHeight: "32px",
+            fontWeight: "700",
+            m: theme.spacing(0, 0, 1, 0),
           }}
         >
-          <Typography
+          Log in or Sign up to KAABOOM!
+        </Typography>
+        <Typography
+          sx={{
+            fontSize: 14,
+            lineHeight: "20px",
+            color: youhaGrey[200],
+          }}
+        >
+          Log in and get personal video
+        </Typography>
+        <Button
+          size="lg"
+          fullWidth
+          borderColor={"#ffffff"}
+          onClick={onClickGoogleLogin}
+          color={"#ffffff"}
+          type="outlined"
+          sx={{
+            m: theme.spacing(4, 0, 0, 0),
+            backgroundColor: `${youhaGrey[700]} !important`,
+          }}
+        >
+          <Box
             sx={{
-              fontSize: 20,
-              lineHeight: "32px",
-              fontWeight: "700",
-              m: theme.spacing(0, 0, 1, 0),
-            }}
-          >
-            Log in or Sign up to KAABOOM!
-          </Typography>
-          <Typography
-            sx={{
-              fontSize: 14,
-              lineHeight: "20px",
-              color: youhaGrey[200],
-            }}
-          >
-            Log in and get personal video
-          </Typography>
-        </Box>
-        <Stack spacing={2}>
-          <Button
-            size="lg"
-            fullWidth
-            borderColor={"#ffffff"}
-            onClick={onClickGoogleLogin}
-            color={"#ffffff"}
-            type="outlined"
-            sx={{
-              backgroundColor: `${youhaGrey[700]} !important`,
-            }}
-          >
-            <Box
-              sx={{
-                width: 24,
-                height: 24,
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                mr: 2,
-                "& img": {
-                  width: 20,
-                  height: 20,
-                },
-              }}
-            >
-              <img src="/logos/google.png" />
-            </Box>
-            Sign in with Google
-          </Button>
-          <Typography
-            sx={{
-              color: youhaGrey[300],
-              fontSize: 14,
-              lineHeight: "20px",
-              textAlign: "center",
-              "& a": {
-                color: "#ffffff",
-                textDecoration: "underline",
+              width: 24,
+              height: 24,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              mr: 2,
+              "& img": {
+                width: 20,
+                height: 20,
               },
             }}
           >
-            By continuing you agree to KAABOOM's{" "}
-            <a target="_blank">Terms of Service</a>, including{" "}
-            <a target="_blank">Additional Terms</a>, and{" "}
-            <a target="_blank">Privacy Policy</a>.
-          </Typography>
-        </Stack>
-      </Stack>
-    </>
+            <img src="/logos/google.png" />
+          </Box>
+          Sign in with Google
+        </Button>
+        <Typography
+          sx={{
+            color: youhaGrey[300],
+            fontSize: 14,
+            lineHeight: "20px",
+            textAlign: "center",
+            "& a": {
+              color: "#ffffff",
+              textDecoration: "underline",
+            },
+            m: theme.spacing(2, 0, 0, 0),
+          }}
+        >
+          By continuing you agree to KAABOOM's{" "}
+          <a target="_blank">Terms of Service</a>, including{" "}
+          <a target="_blank">Additional Terms</a>, and{" "}
+          <a target="_blank">Privacy Policy</a>.
+        </Typography>
+      </Box>
+    </Page>
   );
 }

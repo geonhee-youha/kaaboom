@@ -19,34 +19,38 @@ import moment from "moment";
 import MessageItem from "../../components/molecules/MessageItem";
 import { messages } from "../../data/message";
 import { useState } from "react";
+import Page from "../../components/atoms/Page";
 
 export default function Index() {
+  return <Page
+    needId
+    aside
+  ><Inner /></Page>
+}
+
+function Inner() {
   const router = useRouter();
   const { id } = router.query;
-  return id && <Page id={id} />;
-}
-function Page({ id }: { id: string | string[] }) {
-  const router = useRouter();
   const item =
     groups[
-      _.findIndex(groups, (e) => {
-        return e.id === id;
-      })
+    _.findIndex(groups, (e) => {
+      return e.id === id;
+    })
     ];
   const groupArtists = _.filter(artists, (e) => {
     return e.group?.name === item.name;
   });
   const agency =
     agencies[
-      _.findIndex(agencies, (el) => {
-        return el.name === item.agency.name;
-      })
+    _.findIndex(agencies, (el) => {
+      return el.name === item.agency.name;
+    })
     ];
   const leader =
     artists[
-      _.findIndex(artists, (el) => {
-        return el.name === item.leader.name;
-      })
+    _.findIndex(artists, (el) => {
+      return el.name === item.leader.name;
+    })
     ];
   const fanMessages = _.filter(messages, (e) => {
     return _.flatMap(groupArtists, (el) => el.name).includes(e.artist.name);
@@ -197,25 +201,11 @@ function Page({ id }: { id: string | string[] }) {
   ];
   const [focusedIndex, setFocusedIndex] = useState<number>(-1);
   return (
-    <Box
-      component={"main"}
-      sx={{
-        display: "flex",
-        width: `100%`,
-        minWidth: "280px",
-        maxWidth: `1280px`,
-        m: theme.spacing(0, "auto"),
-        minHeight: "100vh",
-        flexDirection: "column-reverse",
-        "@media(min-width: 960px)": {
-          flexDirection: "row-reverse",
-        },
-      }}
-    >
-      <Stack spacing={3} sx={{ flex: 1, p: theme.spacing(6, 0) }}>
+    <>
+      <Box sx={{ flex: 1, p: theme.spacing(0, 0, 12, 0) }}>
         <Box
           sx={{
-            p: theme.spacing(0, 2),
+            p: theme.spacing(6, 2, 3, 2),
           }}
           className="Section"
         >
@@ -229,7 +219,7 @@ function Page({ id }: { id: string | string[] }) {
               display: "grid",
               gridTemplateColumns: "1fr 1fr",
               gridAutoRows: "1fr",
-              gridTemplateRows: "auto auto",
+              gridTemplateRows: "auto",
               gridColumnGap: 12,
               gridRowGap: 32,
               "@media(min-width: 480px)": {
@@ -264,7 +254,7 @@ function Page({ id }: { id: string | string[] }) {
         {fanMessages.length > 0 && (
           <Box
             sx={{
-              p: theme.spacing(0, 2),
+              p: theme.spacing(6, 2, 3, 2),
             }}
             className="Section"
           >
@@ -274,7 +264,7 @@ function Page({ id }: { id: string | string[] }) {
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",
                 gridAutoRows: "1fr",
-                gridTemplateRows: "auto auto",
+                gridTemplateRows: "auto",
                 gridColumnGap: 12,
                 gridRowGap: 32,
                 "@media(min-width: 480px)": {
@@ -315,7 +305,7 @@ function Page({ id }: { id: string | string[] }) {
             </Box>
           </Box>
         )}
-      </Stack>
+      </Box>
       <Box
         component={"aside"}
         sx={{
@@ -323,7 +313,7 @@ function Page({ id }: { id: string | string[] }) {
           "@media(min-width: 960px)": {
             width: 420,
             display: "block",
-            p: theme.spacing(0, 2, 0, 0),
+            p: theme.spacing(0, 2, 12, 0),
           },
         }}
       >
@@ -336,9 +326,9 @@ function Page({ id }: { id: string | string[] }) {
         >
           <Box
             sx={{
-              p: theme.spacing(6, 2, 6, 2),
+              p: theme.spacing(6, 2, 3, 2),
               "@media(min-width: 960px)": {
-                p: theme.spacing(6, 2),
+                p: theme.spacing(6, 2, 3, 2),
               },
             }}
             className="Section"
@@ -495,16 +485,13 @@ function Page({ id }: { id: string | string[] }) {
               <DataSection
                 data={data}
                 sx={{
-                  p: theme.spacing(4, 0, 0, 0),
-                  "@media(min-width: 960px)": {
-                    p: theme.spacing(6, 0, 0, 0),
-                  },
+                  m: theme.spacing(4, 0, 0, 0),
                 }}
               />
             </Box>
           </Box>
         </Box>
       </Box>
-    </Box>
+    </>
   );
 }

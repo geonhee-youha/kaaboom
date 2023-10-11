@@ -15,19 +15,23 @@ import youhaBlue from "../../constants/youhaBlue";
 import Icon from "../../components/atoms/Icon";
 import DataSection from "../../components/organisms/DataSection";
 import Link from "next/link";
+import Page from "../../components/atoms/Page";
 
 export default function Index() {
+  return <Page
+    needId
+    aside
+  ><Inner /></Page>
+}
+
+function Inner() {
   const router = useRouter();
   const { id } = router.query;
-  return id && <Page id={id} />;
-}
-function Page({ id }: { id: string | string[] }) {
-  const router = useRouter();
   const item =
     agencies[
-      _.findIndex(agencies, (e) => {
-        return e.id === id;
-      })
+    _.findIndex(agencies, (e) => {
+      return e.id === id;
+    })
     ];
   const agencyGroups = _.filter(groups, (e) => {
     return e.agency?.name === item.name;
@@ -37,10 +41,10 @@ function Page({ id }: { id: string | string[] }) {
   });
   const parentCompany = item.parentCompany
     ? agencies[
-        _.findIndex(agencies, (e) => {
-          return e.name === item.parentCompany?.name;
-        })
-      ] ?? { name: item.parentCompany?.name }
+    _.findIndex(agencies, (e) => {
+      return e.name === item.parentCompany?.name;
+    })
+    ] ?? { name: item.parentCompany?.name }
     : null;
   const data = [
     {
@@ -126,27 +130,11 @@ function Page({ id }: { id: string | string[] }) {
     },
   ];
   return (
-    <Box
-      component={"main"}
-      sx={{
-        display: "flex",
-        width: `100%`,
-        minWidth: "280px",
-        maxWidth: `1280px`,
-        m: theme.spacing(0, "auto"),
-        minHeight: "100vh",
-        flexDirection: "column-reverse",
-        "@media(min-width: 960px)": {
-          flexDirection: "row-reverse",
-        },
-      }}
-    >
-      <Stack spacing={3} sx={{ flex: 1, p: theme.spacing(6, 0) }}>
+    <>
+      <Box sx={{ flex: 1, p: theme.spacing(0, 0, 12, 0) }}>
         {agencyGroups.length > 0 && (
           <Box
-            sx={{
-              p: theme.spacing(0, 2),
-            }}
+            sx={{ p: theme.spacing(6, 2, 3, 2), }}
             className="Section"
           >
             <ExploreHeader
@@ -159,7 +147,7 @@ function Page({ id }: { id: string | string[] }) {
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",
                 gridAutoRows: "1fr",
-                gridTemplateRows: "auto auto",
+                gridTemplateRows: "auto",
                 gridColumnGap: 12,
                 gridRowGap: 32,
                 "@media(min-width: 480px)": {
@@ -193,11 +181,9 @@ function Page({ id }: { id: string | string[] }) {
           </Box>
         )}
         {agencyArtists.length > 0 && (
-          <Box
-            sx={{
-              p: theme.spacing(0, 2),
-            }}
-            className="Section"
+          <Box className="Section" sx={{
+            p: theme.spacing(6, 2, 3, 2),
+          }}
           >
             <ExploreHeader
               title="Affiliated artists"
@@ -209,9 +195,10 @@ function Page({ id }: { id: string | string[] }) {
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",
                 gridAutoRows: "1fr",
-                gridTemplateRows: "auto auto",
+                gridTemplateRows: "auto",
                 gridColumnGap: 12,
                 gridRowGap: 32,
+                mb: -3,
                 "@media(min-width: 480px)": {
                   gridTemplateColumns: "1fr 1fr",
                 },
@@ -242,7 +229,7 @@ function Page({ id }: { id: string | string[] }) {
             </Box>
           </Box>
         )}
-      </Stack>
+      </Box>
       <Box
         component={"aside"}
         sx={{
@@ -250,7 +237,7 @@ function Page({ id }: { id: string | string[] }) {
           "@media(min-width: 960px)": {
             width: 420,
             display: "block",
-            p: theme.spacing(0, 2, 0, 0),
+            p: theme.spacing(0, 2, 12, 0),
           },
         }}
       >
@@ -263,9 +250,9 @@ function Page({ id }: { id: string | string[] }) {
         >
           <Box
             sx={{
-              p: theme.spacing(6, 2, 6, 2),
+              p: theme.spacing(6, 2, 3, 2),
               "@media(min-width: 960px)": {
-                p: theme.spacing(6, 2),
+                p: theme.spacing(6, 2, 3, 2),
               },
             }}
             className="Section"
@@ -311,7 +298,7 @@ function Page({ id }: { id: string | string[] }) {
                         width: "100%",
                         height: "100%",
                         border: `1px solid ${youhaGrey[700]}`,
-                        borderRadius:1,
+                        borderRadius: 1,
                         overflow: "hidden",
                         aspectRatio: `1`,
                         p: theme.spacing(2),
@@ -415,16 +402,13 @@ function Page({ id }: { id: string | string[] }) {
               <DataSection
                 data={data}
                 sx={{
-                  p: theme.spacing(4, 0, 0, 0),
-                  "@media(min-width: 960px)": {
-                    p: theme.spacing(6, 0, 0, 0),
-                  },
+                  m: theme.spacing(4, 0, 0, 0),
                 }}
               />
             </Box>
           </Box>
         </Box>
       </Box>
-    </Box>
+    </>
   );
 }

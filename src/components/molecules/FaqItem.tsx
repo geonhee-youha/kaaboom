@@ -68,7 +68,7 @@ export default function FaqItem({
               flex: 1,
               fontSize: 14,
               lineHeight: "20px",
-              fontWeight: "700",
+              fontWeight: "500",
               p: theme.spacing(2),
             }}
           >

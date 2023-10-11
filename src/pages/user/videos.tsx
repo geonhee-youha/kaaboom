@@ -4,21 +4,14 @@ import _ from "lodash";
 import ExploreHeader from "../../components/organisms/ExploreHeader";
 import { artists } from "../../data/artist";
 import ArtistItem from "../../components/molecules/ArtistItem";
+import Page from "../../components/atoms/Page";
 
 export default function Index() {
   return (
-    <Box
-      sx={{
-        width: `100%`,
-        minWidth: "280px",
-        maxWidth: `1280px`,
-        m: theme.spacing(0, "auto"),
-        minHeight: "100vh",
-      }}
-    >
+    <Page>
       <Box
         sx={{
-          p: theme.spacing(6, 2),
+          p: theme.spacing(6, 2, 0, 2),
         }}
         className="Section"
       >
@@ -28,7 +21,7 @@ export default function Index() {
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
             gridAutoRows: "1fr",
-            gridTemplateRows: "auto auto",
+            gridTemplateRows: "auto",
             gridColumnGap: 12,
             gridRowGap: 32,
             "@media(min-width: 480px)": {
@@ -52,6 +45,6 @@ export default function Index() {
         </Box> */}
         <Typography>현재 제작중입니다.</Typography>
       </Box>
-    </Box>
+    </Page>
   );
 }

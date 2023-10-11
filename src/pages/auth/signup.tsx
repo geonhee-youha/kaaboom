@@ -17,12 +17,13 @@ import { theme } from "../../themes/theme";
 import { ChangeEvent, useRef, useState } from "react";
 import Input, { InputLabel } from "../../components/atoms/Input";
 import { genders } from "../../constants";
-import { contries } from "../../constants/contries";
+import { nations } from "../../constants/nations";
 import _ from "lodash";
 import { tempUserState } from "../../data/temp";
 import { isBirthday, isName } from "../../utils";
+import Page from "../../components/atoms/Page";
 
-export default function Page() {
+export default function Index() {
   const router = useRouter();
   const { url } = router.query;
   const [login, setLogin] = useRecoilState(loginRecoilState);
@@ -65,153 +66,99 @@ export default function Page() {
     }
   };
   return (
-    <>
-      <Stack
-        spacing={6}
+    <Page narrow>
+      <Box className="SectionTitle"
         sx={{
-          width: `100%`,
-          minWidth: "280px",
-          maxWidth: `480px`,
-          m: theme.spacing(0, "auto"),
-          p: theme.spacing(8, 2, 24, 2),
-          "@media(min-width: 960px)": {
-            p: theme.spacing(12, 2, 32, 2),
-          },
+          p: theme.spacing(6, 2, 3, 2),
         }}
       >
-        <Box className="SectionTitle" sx={{}}>
-          <Typography
+        <Typography
+          sx={{
+            fontSize: 20,
+            lineHeight: "32px",
+            fontWeight: "700",
+            m: theme.spacing(0, 0, 1, 0),
+          }}
+        >
+          Finish signing up
+        </Typography>
+        <Typography
+          sx={{
+            fontSize: 14,
+            lineHeight: "20px",
+            color: youhaGrey[200],
+          }}
+        >
+          You'll need a free Cameo account in order to follow your favorite
+          celebrities and get other Cameo news & special offers
+        </Typography>
+        <Input
+          label="Your Email"
+          value="lghjazzzz@naver.com"
+          onChange={() => { }}
+          uneditable
+          essential
+          sx={{
+            m: theme.spacing(3, 0, 0, 0)
+          }}
+        />
+        <Input
+          label="Your name"
+          value={name}
+          onChange={onChangeName}
+          error={!isName(name)}
+          helperText={
+            !isName(name)
+              ? "2 to 16 characters, composed of English or numbers"
+              : ""
+          }
+          essential
+          sx={{
+            m: theme.spacing(3, 0, 0, 0)
+          }}
+        />
+        <FormControl
+          fullWidth
+          sx={{
+            m: theme.spacing(3, 0, 0, 0)
+          }}
+        >
+          <InputLabel>
+            Nation<span>*</span>
+          </InputLabel>
+          <Box
             sx={{
-              fontSize: 20,
-              lineHeight: "32px",
-              fontWeight: "700",
-              m: theme.spacing(0, 0, 1, 0),
+              position: "relative",
+              background: youhaGrey[700],
+              borderRadius: 1,
             }}
           >
-            Finish signing up
-          </Typography>
-          <Typography
-            sx={{
-              fontSize: 14,
-              lineHeight: "20px",
-              color: youhaGrey[200],
-            }}
-          >
-            You'll need a free Cameo account in order to follow your favorite
-            celebrities and get other Cameo news & special offers
-          </Typography>
-        </Box>
-        <Stack spacing={3}>
-          <Input
-            label="Your Email"
-            value="lghjazzzz@naver.com"
-            onChange={() => {}}
-            uneditable
-            essential
-          />
-          <Input
-            label="Your name"
-            value={name}
-            onChange={onChangeName}
-            error={!isName(name)}
-            helperText={
-              !isName(name)
-                ? "2 to 16 characters, composed of English or numbers"
-                : ""
-            }
-            essential
-          />
-          <FormControl fullWidth>
-            <InputLabel>
-              Nation<span>*</span>
-            </InputLabel>
-            <Box
+            <Typography
               sx={{
-                position: "relative",
-                background: youhaGrey[700],
-                borderRadius: 1,
+                position: "absolute",
+                top: "50%",
+                left: 16,
+                transform: "translateY(-50%)",
+                "& img": {
+                  width: "auto",
+                  height: "16px !important",
+                  marginRight: 1,
+                },
               }}
             >
-              <Typography
-                sx={{
-                  position: "absolute",
-                  top: "50%",
-                  left: 16,
-                  transform: "translateY(-50%)",
-                  "& img": {
-                    width: "auto",
-                    height: "16px !important",
-                    marginRight: 1,
-                  },
-                }}
-              >
-                <img
-                  src={`https://img.mobiscroll.com/demos/flags/${nation}.png`}
-                />
-                {
-                  contries[_.findIndex(contries, (el) => el.value === nation)]
-                    .text
-                }
-              </Typography>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={nation}
-                onChange={onChangeNation}
-                sx={{
-                  fontSize: 16,
-                  lineHeight: "24px",
-                  fontFamily: "Poppins !important",
-                  height: 48,
-                  display: "flex",
-                  alignItems: "center",
-                  color: "transparent",
-                  "& .MuiOutlinedInput-input": {
-                    p: theme.spacing(0, 2),
-                  },
-                  "& .MuiOutlinedInput-notchedOutline": {
-                    display: "none",
-                  },
-                  "& *": { border: "none !important" },
-                  boxShadow: `${youhaGrey[600]} 0px 0px 0px 1px inset !important`,
-                  "&:hover": {
-                    boxShadow: `${youhaGrey[400]} 0px 0px 0px 1px inset !important`,
-                  },
-                  "&.Mui-focused": {
-                    outline: "none !important",
-                    boxShadow: `${"#ffffff"} 0px 0px 0px 2px inset !important`,
-                    "& input": {
-                      "&::placeholder": {
-                        color: youhaGrey[400],
-                      },
-                    },
-                    "& textarea": {
-                      "&::placeholder": {
-                        color: youhaGrey[400],
-                      },
-                    },
-                  },
-                }}
-              >
-                {contries.map((item, index) => {
-                  return (
-                    <MenuItem key={index} value={item.value}>
-                      {item.text}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            </Box>
-          </FormControl>
-          <FormControl fullWidth>
-            <InputLabel>
-              Gender<span>*</span>
-            </InputLabel>
+              <img
+                src={`https://img.mobiscroll.com/demos/flags/${nation}.png`}
+              />
+              {
+                nations[_.findIndex(nations, (el) => el.value === nation)]
+                  .text
+              }
+            </Typography>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={gender}
-              onChange={onChangeGender}
+              value={nation}
+              onChange={onChangeNation}
               sx={{
                 fontSize: 16,
                 lineHeight: "24px",
@@ -219,9 +166,7 @@ export default function Page() {
                 height: 48,
                 display: "flex",
                 alignItems: "center",
-                position: "relative",
-                background: youhaGrey[700],
-                borderRadius: 1,
+                color: "transparent",
                 "& .MuiOutlinedInput-input": {
                   p: theme.spacing(0, 2),
                 },
@@ -249,7 +194,7 @@ export default function Page() {
                 },
               }}
             >
-              {genders.map((item, index) => {
+              {nations.map((item, index) => {
                 return (
                   <MenuItem key={index} value={item.value}>
                     {item.text}
@@ -257,48 +202,115 @@ export default function Page() {
                 );
               })}
             </Select>
-          </FormControl>
-          <Input
-            label={"Date of Birth"}
-            value={birthDate}
-            onChange={onChangeBirthDate}
-            maxLength={10}
-            showMaxLength={false}
-            placeholder="02/28/1994"
-            essential
-            error={birthDate.length === 10 && !isBirthday(birthDate)}
-            helperText={
-              birthDate.length === 10 && !isBirthday(birthDate)
-                ? "Your date of birth is incorrect"
-                : ""
-            }
-          />
-          <Typography
+          </Box>
+        </FormControl>
+        <FormControl
+          fullWidth
+          sx={{
+            m: theme.spacing(3, 0, 0, 0)
+          }}
+        >
+          <InputLabel>
+            Gender<span>*</span>
+          </InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={gender}
+            onChange={onChangeGender}
             sx={{
-              color: youhaGrey[300],
-              fontSize: 12,
-              lineHeight: "20px",
-              "& a": {
-                color: "#ffffff",
-                textDecoration: "underline",
+              fontSize: 16,
+              lineHeight: "24px",
+              fontFamily: "Poppins !important",
+              height: 48,
+              display: "flex",
+              alignItems: "center",
+              position: "relative",
+              background: youhaGrey[700],
+              borderRadius: 1,
+              "& .MuiOutlinedInput-input": {
+                p: theme.spacing(0, 2),
+              },
+              "& .MuiOutlinedInput-notchedOutline": {
+                display: "none",
+              },
+              "& *": { border: "none !important" },
+              boxShadow: `${youhaGrey[600]} 0px 0px 0px 1px inset !important`,
+              "&:hover": {
+                boxShadow: `${youhaGrey[400]} 0px 0px 0px 1px inset !important`,
+              },
+              "&.Mui-focused": {
+                outline: "none !important",
+                boxShadow: `${"#ffffff"} 0px 0px 0px 2px inset !important`,
+                "& input": {
+                  "&::placeholder": {
+                    color: youhaGrey[400],
+                  },
+                },
+                "& textarea": {
+                  "&::placeholder": {
+                    color: youhaGrey[400],
+                  },
+                },
               },
             }}
           >
-            By continuing you agree to KAABOOM's{" "}
-            <a target="_blank">Terms of Service</a>, including{" "}
-            <a target="_blank">Additional Terms</a>, and{" "}
-            <a target="_blank">Privacy Policy</a>.
-          </Typography>
-        </Stack>
+            {genders.map((item, index) => {
+              return (
+                <MenuItem key={index} value={item.value}>
+                  {item.text}
+                </MenuItem>
+              );
+            })}
+          </Select>
+        </FormControl>
+        <Input
+          label={"Date of Birth"}
+          value={birthDate}
+          onChange={onChangeBirthDate}
+          maxLength={10}
+          showMaxLength={false}
+          placeholder="02/28/1994"
+          essential
+          error={birthDate.length === 10 && !isBirthday(birthDate)}
+          helperText={
+            birthDate.length === 10 && !isBirthday(birthDate)
+              ? "Your date of birth is incorrect"
+              : ""
+          }
+          sx={{
+            m: theme.spacing(3, 0, 0, 0)
+          }}
+        />
+        <Typography
+          sx={{
+            color: youhaGrey[300],
+            fontSize: 12,
+            lineHeight: "20px",
+            "& a": {
+              color: "#ffffff",
+              textDecoration: "underline",
+            },
+            m: theme.spacing(2, 0, 0, 0)
+          }}
+        >
+          By continuing you agree to KAABOOM's{" "}
+          <a target="_blank">Terms of Service</a>, including{" "}
+          <a target="_blank">Additional Terms</a>, and{" "}
+          <a target="_blank">Privacy Policy</a>.
+        </Typography>
         <Button
           fullWidth
           size="lg"
           disabled={!isName(name) || nation === "" || !isBirthday(birthDate)}
           onClick={onClickSignup}
+          sx={{
+            m: theme.spacing(6, 0, 0, 0)
+          }}
         >
           Sign up
         </Button>
-      </Stack>
-    </>
+      </Box>
+    </Page >
   );
 }

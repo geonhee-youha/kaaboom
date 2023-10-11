@@ -54,9 +54,9 @@ export default function GlobalFooter() {
           position: "relative",
           maxWidth: 1280,
           m: theme.spacing(0, "auto"),
-          p: theme.spacing(4, 2),
+          p: theme.spacing(3, 2),
           "@media(min-width: 768px)": {
-            p: theme.spacing(6, 2),
+            p: theme.spacing(3, 2),
           },
         }}
       >
@@ -72,7 +72,7 @@ export default function GlobalFooter() {
             //     alignItems: "flex-end",
             //   },
             // },
-            p: theme.spacing(0, 0, 4, 0),
+            p: theme.spacing(3, 0, 3, 0),
           }}
         >
           <Stack alignItems={"flex-start"} spacing={1}>
@@ -122,7 +122,7 @@ export default function GlobalFooter() {
           spacing={2}
           sx={{
             m: theme.spacing(2, 0, 0, 0),
-            p: theme.spacing(0, 0, 4, 0),
+            p: theme.spacing(0, 0, 3, 0),
             "& img": {
               color: "#ffffff",
               width: "auto",
@@ -140,7 +140,7 @@ export default function GlobalFooter() {
             fontSize: 14,
             lineHeight: "20px",
             color: youhaGrey[300],
-            p: theme.spacing(0, 0, 4, 0),
+            p: theme.spacing(0, 0, 3, 0),
           }}
         >
           Copyright © Ticketplace. All rights reserved.

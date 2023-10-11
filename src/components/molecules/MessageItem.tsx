@@ -13,6 +13,7 @@ import { useInView } from "react-intersection-observer";
 import Typo from "../atoms/Typo";
 import Link from "next/link";
 import IconButton from "../atoms/IconButton";
+import { useRouter } from "next/router";
 
 const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });
 
@@ -27,6 +28,7 @@ export default function MessageItem({
   focusedIndex: number;
   setFocusedIndex: Dispatch<SetStateAction<number>>;
 }) {
+  const router = useRouter()
   const { ref, inView } = useInView();
   const [isWindow, setIsWindow] = useState<boolean>(false);
   const [playing, setPlaying] = useState<boolean>(false);
@@ -65,9 +67,9 @@ export default function MessageItem({
   const playedTime = playedMin + ":" + playedSec;
   const artist =
     artists[
-      _.findIndex(artists, (el) => {
-        return el.name === item.artist.name;
-      })
+    _.findIndex(artists, (el) => {
+      return el.name === item.artist.name;
+    })
     ];
   useEffect(() => {
     const focused = focusedIndex === index;
@@ -154,7 +156,6 @@ export default function MessageItem({
         <Box sx={{
           p: theme.spacing(1.5)
         }}>
-        <Link href={`/artist/${artist.id}`} passHref>
           <ButtonBase
             disableRipple
             sx={{
@@ -165,6 +166,8 @@ export default function MessageItem({
             }}
             onClick={(e) => {
               e.stopPropagation();
+              e.preventDefault();
+              router.push(`/artist/${artist.id}`)
             }}
           >
             <Visual
@@ -207,7 +210,6 @@ export default function MessageItem({
               </Typo>
             </Box>
           </ButtonBase>
-        </Link>
         </Box>
         <Box
           sx={{

@@ -81,7 +81,6 @@ export default function DataSection({
   return (
     <Box
       sx={{
-        p: theme.spacing(6, 0, 0, 0),
         ...sx,
       }}
     >

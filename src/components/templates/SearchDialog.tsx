@@ -9,7 +9,7 @@ import { useRecoilState } from "recoil";
 import { searchDialogRecoilState } from "../../constants/recoils";
 import { useRouter } from "next/router";
 
-export default function SearchDialog({}: {}) {
+export default function SearchDialog({ }: {}) {
   const router = useRouter();
   const [searchDialog, setSearchDialog] = useRecoilState(
     searchDialogRecoilState
@@ -26,7 +26,7 @@ export default function SearchDialog({}: {}) {
   };
   const onKeyPress = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key === "Enter") {
-      router.push(`/explore/search?searchText=${value}`);
+      if (value !== "") { router.push(`/explore/search?searchText=${value}`); }
       setSearchDialog({ open: false });
     }
   };

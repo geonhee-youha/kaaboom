@@ -159,7 +159,7 @@ function Page({ id }: { id: string | string[] }) {
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",
                 gridAutoRows: "1fr",
-                gridTemplateRows: "auto auto",
+                gridTemplateRows: "auto",
                 gridColumnGap: 12,
                 gridRowGap: 32,
                 "@media(min-width: 480px)": {
@@ -206,7 +206,7 @@ function Page({ id }: { id: string | string[] }) {
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",
                 gridAutoRows: "1fr",
-                gridTemplateRows: "auto auto",
+                gridTemplateRows: "auto",
                 gridColumnGap: 12,
                 gridRowGap: 32,
                 "@media(min-width: 480px)": {
