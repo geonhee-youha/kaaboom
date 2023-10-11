@@ -299,7 +299,7 @@ export default function GlobalHeader() {
           borderBottom: `1px solid ${youhaGrey[700]}`,
           backgroundColor: alpha(youhaGrey[900], 0.8),
           backdropFilter: `blur(8px)`,
-          zIndex: 99999,
+          zIndex: 999,
           "@media(min-width: 768px)": {
             display: "flex",
           },

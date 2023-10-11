@@ -279,9 +279,9 @@ export default function Index() {
           m: theme.spacing(3, 0, 0, 0),
         }}
       />
-      <FormControl fullWidth  sx={{
-          m: theme.spacing(3, 0, 0, 0),
-        }}>
+      <FormControl fullWidth sx={{
+        m: theme.spacing(3, 0, 0, 0),
+      }}>
         <InputLabel>Nation</InputLabel>
         <Box
           sx={{
@@ -366,9 +366,9 @@ export default function Index() {
           </Select>
         </Box>
       </FormControl>
-      <FormControl fullWidth  sx={{
-          m: theme.spacing(3, 0, 0, 0),
-        }}>
+      <FormControl fullWidth sx={{
+        m: theme.spacing(3, 0, 0, 0),
+      }}>
         <InputLabel>Gender</InputLabel>
         <Select
           labelId="demo-simple-select-label"
