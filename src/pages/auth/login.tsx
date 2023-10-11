@@ -3,15 +3,38 @@ import { useRouter } from "next/router";
 import Button from "../../components/atoms/Button";
 import youhaGrey from "../../constants/youhaGrey";
 import { theme } from "../../themes/theme";
+import { useRecoilState } from "recoil";
+import { tempUserState } from "../../data/temp";
+import { isBirthday, isName } from "../../utils";
+import { loginRecoilState } from "../../constants/recoils";
 
 export default function Page() {
   const router = useRouter();
   const { url } = router.query;
+  const [tempUser, setTempUser] = useRecoilState(tempUserState);
+  const [login, setLogin] = useRecoilState(loginRecoilState);
   const onClickGoogleLogin = () => {
-    window.alert(
-      "구글 로그인 창 띄운 뒤 사인업 완료. 현재는 국적/언어/성별/출생일이 입력되어 있지 않다는 가정하에 /auth/detail로 이동시켰고 만약 정보들이 입력되어 있으면 바로 뒤로 혹은 query의 url로 이동시키면 됩니다."
-    );
-    router.push(`/auth/signup?url=${url}`);
+    if (
+      confirm(
+        "구글 로그인 창 띄운 뒤 사인업 완료. 현재는 국적/언어/성별/출생일이 입력되어 있지 않다는 가정하에 /auth/detail로 이동시켰고 만약 회원가입되어있고, 정보들이 입력되어 있으면 바로 뒤로 혹은 query의 url로 이동시키면 됩니다."
+      )
+    ) {
+      if (
+        !isName(tempUser.name) ||
+        tempUser.nation === "" ||
+        tempUser.gender === "" ||
+        !isBirthday(tempUser.birthDate)
+      ) {
+        router.push(`/auth/signup?url=${url}`);
+      } else {
+        setLogin(true);
+        if (typeof url === "string" && url !== "") {
+          router.replace(`${url.replaceAll("^", "/")}`);
+        } else {
+          router.replace("/");
+        }
+      }
+    }
   };
   return (
     <>
