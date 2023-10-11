@@ -263,7 +263,10 @@ function Page({ id }: { id: string | string[] }) {
         >
           <Box
             sx={{
-              p: theme.spacing(6, 2),
+              p: theme.spacing(6, 2, 6, 2),
+              "@media(min-width: 960px)": {
+                p: theme.spacing(6, 2),
+              },
             }}
             className="Section"
           >
@@ -271,48 +274,68 @@ function Page({ id }: { id: string | string[] }) {
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                alignItems: "center",
               }}
             >
               <Box
                 sx={{
-                  flex: 1,
+                  position: "relative",
                   display: "flex",
-                  flexDirection: "column",
+                  flexDirection: "row",
                   alignItems: "center",
+                  "@media(min-width: 960px)": {
+                    flexDirection: "column",
+                  },
                 }}
               >
                 <Box
                   sx={{
-                    width: 160,
-                    height: 160,
+                    "@media(min-width: 960px)": {
+                      position: "relative",
+                    },
                   }}
                 >
                   <Box
                     sx={{
                       position: "relative",
-                      width: "100%",
-                      height: "100%",
-                      border: `1px solid ${youhaGrey[700]}`,
-                      borderRadius: "50%",
-                      overflow: "hidden",
-                      aspectRatio: `1`,
-                      p: theme.spacing(2),
+                      width: 128,
+                      height: 128,
+                      "@media(min-width: 960px)": {
+                        width: 196,
+                        height: 196,
+                      },
                     }}
                   >
-                    <Visual src={item.thumbnail} absolute noScale={false} />
+                    <Box
+                      sx={{
+                        position: "relative",
+                        width: "100%",
+                        height: "100%",
+                        border: `1px solid ${youhaGrey[700]}`,
+                        borderRadius:1,
+                        overflow: "hidden",
+                        aspectRatio: `1`,
+                        p: theme.spacing(2),
+                      }}
+                    >
+                      <Visual src={item.thumbnail} absolute noScale={false} />
+                    </Box>
                   </Box>
                 </Box>
                 <Box
                   sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
+                    flex: 1,
+                    p: theme.spacing(0, 0, 0, 2),
+                    "@media(min-width: 960px)": {
+                      flex: "initial",
+                      p: theme.spacing(1, 0, 0, 0),
+                    },
                   }}
                 >
                   <Box
                     sx={{
-                      m: theme.spacing(1, 0, 0, 0),
+                      "@media(min-width: 960px)": {
+                        textAlign: "center",
+                      },
                     }}
                   >
                     <Typography
@@ -328,15 +351,24 @@ function Page({ id }: { id: string | string[] }) {
                   </Box>
                   <Box
                     sx={{
-                      m: theme.spacing(1, 0, 0, 0),
+                      m: theme.spacing(0.75, 0, 0, 0),
                       display: "flex",
+                      flexWrap: "wrap",
+                      "& > *": {
+                        p: theme.spacing(0.25, 0),
+                        "&:not(:nth-child(3))": {
+                          mr: 2,
+                        },
+                      },
+                      "@media(min-width: 960px)": {
+                        justifyContent: "center",
+                      },
                     }}
                   >
                     <Stack
                       direction={"row"}
                       spacing={0.5}
                       alignItems={"center"}
-                      flexWrap={"wrap"}
                     >
                       <Icon
                         name="users"
@@ -352,14 +384,13 @@ function Page({ id }: { id: string | string[] }) {
                           color: youhaGrey[200],
                         }}
                       >
-                        {agencyGroups.length} Groups
+                        {agencyGroups.length} groups
                       </Typography>
                     </Stack>
                     <Stack
                       direction={"row"}
                       spacing={0.5}
                       alignItems={"center"}
-                      sx={{ ml: 2 }}
                     >
                       <Icon
                         name="user"
@@ -375,15 +406,21 @@ function Page({ id }: { id: string | string[] }) {
                           color: youhaGrey[200],
                         }}
                       >
-                        {agencyArtists.length} Artists
+                        {agencyArtists.length} artists
                       </Typography>
                     </Stack>
                   </Box>
                 </Box>
               </Box>
-              <Box sx={{ width: "100%" }}>
-                <DataSection data={data} />
-              </Box>
+              <DataSection
+                data={data}
+                sx={{
+                  p: theme.spacing(4, 0, 0, 0),
+                  "@media(min-width: 960px)": {
+                    p: theme.spacing(6, 0, 0, 0),
+                  },
+                }}
+              />
             </Box>
           </Box>
         </Box>

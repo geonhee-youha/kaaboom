@@ -1,17 +1,11 @@
-import {
-  Box,
-  IconButton,
-  InputBase,
-  SxProps,
-  Typography,
-  alpha,
-} from "@mui/material";
+import { Box, InputBase, SxProps, Typography, alpha } from "@mui/material";
 import { red } from "@mui/material/colors";
 import { ChangeEvent, KeyboardEventHandler, useEffect, useState } from "react";
 import youhaBlue from "../../constants/youhaBlue";
 import youhaGrey from "../../constants/youhaGrey";
 import { theme } from "../../themes/theme";
 import Icon from "./Icon";
+import IconButton from "./IconButton";
 
 export default function Input({
   error,
@@ -32,6 +26,9 @@ export default function Input({
   sx,
   children,
   timer,
+  showMaxLength,
+  uneditable,
+  maxRows = 3
 }: {
   error?: boolean;
   helperText?: React.ReactNode;
@@ -53,6 +50,9 @@ export default function Input({
   sx?: SxProps;
   children?: React.ReactNode;
   timer?: string;
+  showMaxLength?: boolean;
+  uneditable?: boolean;
+  maxRows?:number
 }) {
   const [inputType, setInputType] = useState<string | undefined>(undefined);
   const onChangeValue = (event: ChangeEvent<HTMLInputElement>) => {
@@ -93,28 +93,29 @@ export default function Input({
           onKeyDown={onKeyDown}
           placeholder={placeholder}
           multiline={multiline}
-          maxRows={3}
+          maxRows={maxRows}
           sx={{
+            opacity: uneditable ? 0.4 : 1,
             width: "100%",
-            height: multiline ? "auto" : size === "sm" ? 32 : 40,
+            height: multiline ? "auto" : size === "sm" ? 40 : 48,
             minHeight: multiline
               ? size === "sm"
-                ? 32 * 2
-                : 40 * 2
+                ? 40 * 2
+                : 48 * 2
               : "initial",
             p: multiline
               ? theme.spacing(
-                  size === "small" ? 1 : 1.25,
+                  size === "small" ? 1.5 : 2,
                   8,
-                  size === "small" ? 1 : 1.25,
+                  size === "small" ? 1.5 : 2,
                   2
                 )
               : theme.spacing(0, 5, 0, 2),
-            borderRadius: 0.5,
+            borderRadius: 1,
             display: "flex",
             alignItems: multiline ? "flex-start" : "center",
             boxShadow: `${
-              error ? red[500] : youhaGrey[700]
+              error ? red[500] : youhaGrey[600]
             } 0px 0px 0px 1px inset`,
             "&:hover": {
               boxShadow: `${
@@ -124,19 +125,19 @@ export default function Input({
             "&.Mui-focused": {
               boxShadow: `${
                 error ? red[500] : "#ffffff"
-              } 0px 0px 0px 1px inset`,
+              } 0px 0px 0px 2px inset`,
               "& input": {
                 "&::placeholder": {
-                  color: youhaGrey[700],
+                  color: youhaGrey[400],
                 },
               },
               "& textarea": {
                 "&::placeholder": {
-                  color: youhaGrey[700],
+                  color: youhaGrey[400],
                 },
               },
             },
-            backgroundColor: alpha(youhaGrey[900], 1),
+            backgroundColor: alpha(youhaGrey[700], 1),
             "& input": {
               fontSize: size === "sm" ? 14 : 16,
               lineHeight: size === "sm" ? "20px" : "24px",
@@ -161,14 +162,14 @@ export default function Input({
               position: "absolute",
               top: 0,
               right: 0,
-              width: size === "sm" ? 32 : 40,
-              height: size === "sm" ? 32 : 40,
+              width: size === "sm" ? 40 : 48,
+              height: size === "sm" ? 40 : 48,
             }}
             disableRipple
             onClick={onClickSearch}
-          >
-            <Icon name="search" size={size === "sm" ? 14 : 18} />
-          </IconButton>
+            name="search"
+            size={size === "sm" ? 16 : 20}
+          />
         )}
         {type === "password" && (
           <IconButton
@@ -176,20 +177,17 @@ export default function Input({
               position: "absolute",
               top: 0,
               right: 0,
-              width: size === "sm" ? 32 : 40,
-              height: size === "sm" ? 32 : 40,
+              width: size === "sm" ? 40 : 48,
+              height: size === "sm" ? 40 : 48,
             }}
             disableRipple
             onClick={onClickEye}
-          >
-            <Icon
-              name={inputType === "password" ? "eye" : "eye-slash"}
-              size={size === "sm" ? 14 : 18}
-              color={youhaGrey[500]}
-            />
-          </IconButton>
+            name={inputType === "password" ? "eye" : "eye-slash"}
+            color={youhaGrey[400]}
+            className="eye"
+          />
         )}
-        {(maxLength || timer) && (
+        {(maxLength || timer) && showMaxLength && (
           <Typography
             sx={{
               position: "absolute",
@@ -201,9 +199,9 @@ export default function Input({
                 ? Number(timer.replace(":", "")) < 5
                   ? red[500]
                   : youhaBlue[500]
-                : youhaGrey[500],
+                : youhaGrey[200],
               "& span": {
-                color: youhaGrey[900],
+                color: youhaGrey[100],
               },
             }}
           >
@@ -255,7 +253,7 @@ export function InputLabel({ children }: { children: React.ReactNode }) {
       sx={{
         fontSize: 14,
         lineHeight: "20px",
-        fontWeight: 700,
+        fontWeight: 500,
         m: theme.spacing(0, 0, 1, 0),
         "& span": {
           color: youhaBlue[500],

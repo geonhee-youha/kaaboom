@@ -24,7 +24,7 @@ function NavItem({ item }: { item: { link: string; label: string } }) {
       <TextButton
         size={"lg"}
         label={item.label}
-        fontWeight={"700"}
+        fontWeight={"500"}
         disableRipple
         onClick={onClick}
         fullWidth
@@ -77,7 +77,7 @@ function NavItem({ item }: { item: { link: string; label: string } }) {
       <TextButton
         size={"lg"}
         label={item.label}
-        fontWeight={"700"}
+        fontWeight={"500"}
         disableRipple
         onClick={onClose}
       >

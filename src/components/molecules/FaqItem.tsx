@@ -57,8 +57,6 @@ export default function FaqItem({
             pl: "0 !important",
             pr: "0 !important",
             minHeight: `56px !important`,
-            height: `56px !important`,
-            maxHeight: `56px !important`,
             alignItems:'center',
             "& .MuiAccordionSummary-content": {
               m: `0 !important`,
@@ -71,14 +69,14 @@ export default function FaqItem({
               fontSize: 14,
               lineHeight: "20px",
               fontWeight: "700",
-              p: theme.spacing(1, 2),
+              p: theme.spacing(2),
             }}
           >
             Q. {question}
           </Typography>
           <Box
             sx={{
-              p: theme.spacing(1, 2),
+              p: theme.spacing(2),
             }}
           >
             <Icon

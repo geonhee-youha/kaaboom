@@ -50,3 +50,18 @@ export const sorts = [
     label: "Alphabetical",
   },
 ];
+
+export const genders = [
+  {
+    value: 'M',
+    text: 'male'
+  },
+  {
+    value: 'F',
+    text: 'female'
+  },
+  {
+    value: 'O',
+    text: 'Other'
+  },
+]

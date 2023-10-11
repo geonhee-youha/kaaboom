@@ -18,8 +18,15 @@ import { pink, yellow } from "@mui/material/colors";
 import _ from "lodash";
 import { groups } from "../../data/group";
 import { MouseEvent, useState } from "react";
+import { colored } from "../../utils";
 
-export default function ArtistItem({ item }: { item: ArtistProps }) {
+export default function ArtistItem({
+  item,
+  searchText,
+}: {
+  item: ArtistProps;
+  searchText?: string;
+}) {
   const [favorite, setFavorite] = useState<boolean>(false);
   const group =
     groups[
@@ -99,6 +106,10 @@ export default function ArtistItem({ item }: { item: ArtistProps }) {
         <Box
           sx={{
             m: theme.spacing(1, 0, 0, 0),
+            '& .pink': {
+              color: `${pink[400]} !important`,
+              lineHeight: 'inherit !important'
+            }
           }}
         >
           <Typography
@@ -106,10 +117,10 @@ export default function ArtistItem({ item }: { item: ArtistProps }) {
               fontSize: 16,
               lineHeight: "24px",
               fontWeight: "700",
-              color: `#ffffff !important`,
+              color: `#ffffff`,
             }}
           >
-            {item.name}
+            {colored(item.name, searchText)}
           </Typography>
           <Typography
             sx={{
@@ -119,6 +130,7 @@ export default function ArtistItem({ item }: { item: ArtistProps }) {
             }}
           >
             {item.group?.name ?? "SOLO"}
+            {/* {item.group?.name ? colored(item.group?.name, searchText) : "SOLO"} */}
           </Typography>
         </Box>
         <Box
@@ -196,26 +208,26 @@ export default function ArtistItem({ item }: { item: ArtistProps }) {
             </Typography>
           </Stack>
           {item.quickResponse && (
-          <Stack
-            direction={"row"}
-            spacing={0.25}
-            alignItems={"center"}
-            sx={{ m: theme.spacing(1, 0, 0, 0) }}
-          >
-            <Icon name="bolt" color={yellow[400]} size={16} prefix="fas" />
-            <Typography
-              sx={{
-                fontSize: 12,
-                lineHeight: "16px",
-                fontFamily: "Poppins",
-                // color: youhaGrey[200],
-                // fontWeight: '700'
-              }}
+            <Stack
+              direction={"row"}
+              spacing={0.25}
+              alignItems={"center"}
+              sx={{ m: theme.spacing(1, 0, 0, 0) }}
             >
-              24hr
-            </Typography>
-          </Stack>
-        )}
+              <Icon name="bolt" color={yellow[400]} size={16} prefix="fas" />
+              <Typography
+                sx={{
+                  fontSize: 12,
+                  lineHeight: "16px",
+                  fontFamily: "Poppins",
+                  // color: youhaGrey[200],
+                  // fontWeight: '700'
+                }}
+              >
+                24hr
+              </Typography>
+            </Stack>
+          )}
         </Stack>
       </ButtonBase>
     </Link>

@@ -15,14 +15,14 @@ export const purchaseTypes = [
   {
     value: "mini",
     label: "Mini",
-    maxVideoLength: "15s",
+    maxVideoLength: "15",
     maxLetters: "45"
   },
   {
     value: "long",
     label: "Long",
-    maxVideoLength: "45s",
-    maxLetters: "200 + @"
+    maxVideoLength: "45",
+    maxLetters: "200"
   },
 ];
 

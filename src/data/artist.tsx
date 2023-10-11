@@ -50,6 +50,7 @@ export type ArtistProps = {
   mbti: string;
   links?: LinkProps[];
   quickResponse?: boolean;
+  bio?: React.ReactNode;
 };
 
 export const artists: ArtistProps[] = [
@@ -99,7 +100,16 @@ export const artists: ArtistProps[] = [
         link: "https://twitter.com/b_fatou_s",
       },
     ],
-    quickResponse: true
+    quickResponse: true,
+    bio: (
+      <>
+        Hey army💜 I want to invite you to a wonderful group on 𝐓𝐄-𝐋𝐄 𝐆𝐑𝐌
+        メFINALDREAM_BTS~🥂🥀 𝗦𝗲𝗮𝗿𝗰𝗵:- @Bull3tproofArmy on 𝗧𝗲-𝗹𝗲 𝗴𝗿𝗺 nd join us.
+        here we talk about our 𝗕𝗔𝗡𝗚𝗧𝗔𝗡 𝗕𝗢𝗬𝗦 with army's all over the world🦋 𝗧𝗛𝗘
+        𝗚𝗥𝗢𝗨𝗣 𝗜𝗦 𝗢𝗡𝗟𝗬 𝗙𝗢𝗥 𝗚𝗜𝗥𝗟𝗦... & 𝗜𝗧'𝗦 𝗖𝗢𝗠𝗣𝗟𝗘𝗧𝗘𝗟𝗬 𝗦𝗔𝗙𝗘 !! ✨ 𝗕𝗢𝗥𝗔𝗛𝗔𝗘💜 We
+        would be very appreciate to see you there💗
+      </>
+    ),
   },
   {
     id: "2",
@@ -143,7 +153,16 @@ export const artists: ArtistProps[] = [
         link: "https://www.instagram.com/n_v.ee/",
       },
     ],
-    quickResponse: true
+    quickResponse: true,
+    bio: (
+      <>
+        Hey army💜 I want to invite you to a wonderful group on 𝐓𝐄-𝐋𝐄 𝐆𝐑𝐌
+        メFINALDREAM_BTS~🥂🥀 𝗦𝗲𝗮𝗿𝗰𝗵:- @Bull3tproofArmy on 𝗧𝗲-𝗹𝗲 𝗴𝗿𝗺 nd join us.
+        here we talk about our 𝗕𝗔𝗡𝗚𝗧𝗔𝗡 𝗕𝗢𝗬𝗦 with army's all over the world🦋 𝗧𝗛𝗘
+        𝗚𝗥𝗢𝗨𝗣 𝗜𝗦 𝗢𝗡𝗟𝗬 𝗙𝗢𝗥 𝗚𝗜𝗥𝗟𝗦... & 𝗜𝗧'𝗦 𝗖𝗢𝗠𝗣𝗟𝗘𝗧𝗘𝗟𝗬 𝗦𝗔𝗙𝗘 !! ✨ 𝗕𝗢𝗥𝗔𝗛𝗔𝗘💜 We
+        would be very appreciate to see you there💗
+      </>
+    ),
   },
   {
     id: "3",
@@ -199,6 +218,15 @@ export const artists: ArtistProps[] = [
         link: "https://www.tiktok.com/@gabsdalcin",
       },
     ],
+    bio: (
+      <>
+        Hey army💜 I want to invite you to a wonderful group on 𝐓𝐄-𝐋𝐄 𝐆𝐑𝐌
+        メFINALDREAM_BTS~🥂🥀 𝗦𝗲𝗮𝗿𝗰𝗵:- @Bull3tproofArmy on 𝗧𝗲-𝗹𝗲 𝗴𝗿𝗺 nd join us.
+        here we talk about our 𝗕𝗔𝗡𝗚𝗧𝗔𝗡 𝗕𝗢𝗬𝗦 with army's all over the world🦋 𝗧𝗛𝗘
+        𝗚𝗥𝗢𝗨𝗣 𝗜𝗦 𝗢𝗡𝗟𝗬 𝗙𝗢𝗥 𝗚𝗜𝗥𝗟𝗦... & 𝗜𝗧'𝗦 𝗖𝗢𝗠𝗣𝗟𝗘𝗧𝗘𝗟𝗬 𝗦𝗔𝗙𝗘 !! ✨ 𝗕𝗢𝗥𝗔𝗛𝗔𝗘💜 We
+        would be very appreciate to see you there💗
+      </>
+    ),
   },
   {
     id: "4",
@@ -242,6 +270,15 @@ export const artists: ArtistProps[] = [
         link: "https://www.instagram.com/sriyalenka.bs/",
       },
     ],
+    bio: (
+      <>
+        Hey army💜 I want to invite you to a wonderful group on 𝐓𝐄-𝐋𝐄 𝐆𝐑𝐌
+        メFINALDREAM_BTS~🥂🥀 𝗦𝗲𝗮𝗿𝗰𝗵:- @Bull3tproofArmy on 𝗧𝗲-𝗹𝗲 𝗴𝗿𝗺 nd join us.
+        here we talk about our 𝗕𝗔𝗡𝗚𝗧𝗔𝗡 𝗕𝗢𝗬𝗦 with army's all over the world🦋 𝗧𝗛𝗘
+        𝗚𝗥𝗢𝗨𝗣 𝗜𝗦 𝗢𝗡𝗟𝗬 𝗙𝗢𝗥 𝗚𝗜𝗥𝗟𝗦... & 𝗜𝗧'𝗦 𝗖𝗢𝗠𝗣𝗟𝗘𝗧𝗘𝗟𝗬 𝗦𝗔𝗙𝗘 !! ✨ 𝗕𝗢𝗥𝗔𝗛𝗔𝗘💜 We
+        would be very appreciate to see you there💗
+      </>
+    ),
   },
   {
     id: "5",
@@ -289,6 +326,15 @@ export const artists: ArtistProps[] = [
         link: "https://www.instagram.com/ysjsodp_77",
       },
     ],
+    bio: (
+      <>
+        Hey army💜 I want to invite you to a wonderful group on 𝐓𝐄-𝐋𝐄 𝐆𝐑𝐌
+        メFINALDREAM_BTS~🥂🥀 𝗦𝗲𝗮𝗿𝗰𝗵:- @Bull3tproofArmy on 𝗧𝗲-𝗹𝗲 𝗴𝗿𝗺 nd join us.
+        here we talk about our 𝗕𝗔𝗡𝗚𝗧𝗔𝗡 𝗕𝗢𝗬𝗦 with army's all over the world🦋 𝗧𝗛𝗘
+        𝗚𝗥𝗢𝗨𝗣 𝗜𝗦 𝗢𝗡𝗟𝗬 𝗙𝗢𝗥 𝗚𝗜𝗥𝗟𝗦... & 𝗜𝗧'𝗦 𝗖𝗢𝗠𝗣𝗟𝗘𝗧𝗘𝗟𝗬 𝗦𝗔𝗙𝗘 !! ✨ 𝗕𝗢𝗥𝗔𝗛𝗔𝗘💜 We
+        would be very appreciate to see you there💗
+      </>
+    ),
   },
   {
     id: "6",
@@ -369,6 +415,15 @@ export const artists: ArtistProps[] = [
         link: "https://www.tiktok.com/@nt.offcl",
       },
     ],
+    bio: (
+      <>
+        Hey army💜 I want to invite you to a wonderful group on 𝐓𝐄-𝐋𝐄 𝐆𝐑𝐌
+        メFINALDREAM_BTS~🥂🥀 𝗦𝗲𝗮𝗿𝗰𝗵:- @Bull3tproofArmy on 𝗧𝗲-𝗹𝗲 𝗴𝗿𝗺 nd join us.
+        here we talk about our 𝗕𝗔𝗡𝗚𝗧𝗔𝗡 𝗕𝗢𝗬𝗦 with army's all over the world🦋 𝗧𝗛𝗘
+        𝗚𝗥𝗢𝗨𝗣 𝗜𝗦 𝗢𝗡𝗟𝗬 𝗙𝗢𝗥 𝗚𝗜𝗥𝗟𝗦... & 𝗜𝗧'𝗦 𝗖𝗢𝗠𝗣𝗟𝗘𝗧𝗘𝗟𝗬 𝗦𝗔𝗙𝗘 !! ✨ 𝗕𝗢𝗥𝗔𝗛𝗔𝗘💜 We
+        would be very appreciate to see you there💗
+      </>
+    ),
   },
   {
     id: "7",
@@ -442,6 +497,15 @@ export const artists: ArtistProps[] = [
         link: "https://www.instagram.com/nt.offcl",
       },
     ],
+    bio: (
+      <>
+        Hey army💜 I want to invite you to a wonderful group on 𝐓𝐄-𝐋𝐄 𝐆𝐑𝐌
+        メFINALDREAM_BTS~🥂🥀 𝗦𝗲𝗮𝗿𝗰𝗵:- @Bull3tproofArmy on 𝗧𝗲-𝗹𝗲 𝗴𝗿𝗺 nd join us.
+        here we talk about our 𝗕𝗔𝗡𝗚𝗧𝗔𝗡 𝗕𝗢𝗬𝗦 with army's all over the world🦋 𝗧𝗛𝗘
+        𝗚𝗥𝗢𝗨𝗣 𝗜𝗦 𝗢𝗡𝗟𝗬 𝗙𝗢𝗥 𝗚𝗜𝗥𝗟𝗦... & 𝗜𝗧'𝗦 𝗖𝗢𝗠𝗣𝗟𝗘𝗧𝗘𝗟𝗬 𝗦𝗔𝗙𝗘 !! ✨ 𝗕𝗢𝗥𝗔𝗛𝗔𝗘💜 We
+        would be very appreciate to see you there💗
+      </>
+    ),
   },
   {
     id: "8",
@@ -493,5 +557,14 @@ export const artists: ArtistProps[] = [
       },
     },
     mbti: "ESTJ",
+    bio: (
+      <>
+        Hey army💜 I want to invite you to a wonderful group on 𝐓𝐄-𝐋𝐄 𝐆𝐑𝐌
+        メFINALDREAM_BTS~🥂🥀 𝗦𝗲𝗮𝗿𝗰𝗵:- @Bull3tproofArmy on 𝗧𝗲-𝗹𝗲 𝗴𝗿𝗺 nd join us.
+        here we talk about our 𝗕𝗔𝗡𝗚𝗧𝗔𝗡 𝗕𝗢𝗬𝗦 with army's all over the world🦋 𝗧𝗛𝗘
+        𝗚𝗥𝗢𝗨𝗣 𝗜𝗦 𝗢𝗡𝗟𝗬 𝗙𝗢𝗥 𝗚𝗜𝗥𝗟𝗦... & 𝗜𝗧'𝗦 𝗖𝗢𝗠𝗣𝗟𝗘𝗧𝗘𝗟𝗬 𝗦𝗔𝗙𝗘 !! ✨ 𝗕𝗢𝗥𝗔𝗛𝗔𝗘💜 We
+        would be very appreciate to see you there💗
+      </>
+    ),
   },
 ];

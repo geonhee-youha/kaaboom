@@ -34,7 +34,9 @@ export default function Button({
   mobile?: boolean;
   web?: boolean;
 }) {
-  const backgroundColor = disabled ? youhaGrey[100] : backgroundColorOrigin;
+  const backgroundColor = disabled
+    ? alpha(backgroundColorOrigin, 0.4)
+    : backgroundColorOrigin;
   return (
     <ButtonBase
       disabled={disabled}
@@ -76,7 +78,7 @@ export default function Button({
         zIndex: 1,
         fontSize: 14,
         lineHeight: "20px",
-        textAlign:'center',
+        textAlign: "center",
         color:
           type === "outlined"
             ? disabled
@@ -102,7 +104,7 @@ export default function Button({
           transition: `all 0.35s ease`,
           opacity: 0,
           zIndex: type === "outlined" ? 2 : -1,
-          display:'none'
+          display: "none",
         }}
         className="ripple"
       />

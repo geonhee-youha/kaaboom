@@ -10,8 +10,16 @@ import Icon from "../atoms/Icon";
 import youhaBlue from "../../constants/youhaBlue";
 import { artists } from "../../data/artist";
 import { useRouter } from "next/router";
+import { pink } from "@mui/material/colors";
+import { colored } from "../../utils";
 
-export default function GroupItem({ item }: { item: GroupProps }) {
+export default function GroupItem({
+  item,
+  searchText,
+}: {
+  item: GroupProps;
+  searchText?: string;
+}) {
   const router = useRouter();
   const agency =
     agencies[
@@ -26,7 +34,6 @@ export default function GroupItem({ item }: { item: GroupProps }) {
     <Link href={`/group/${item.id}`} passHref>
       <ButtonBase
         sx={{
-          width: "100%",
           flexDirection: "column",
           borderRadius: 1,
           alignItems: "center",
@@ -59,7 +66,7 @@ export default function GroupItem({ item }: { item: GroupProps }) {
               <Paper
                 elevation={5}
                 onClick={(e) => {
-                  e.preventDefault()
+                  e.preventDefault();
                   router.push(`/agency/${agency.id}`);
                 }}
                 sx={{
@@ -90,6 +97,10 @@ export default function GroupItem({ item }: { item: GroupProps }) {
                 width: "100%",
                 textAlign: "center",
               },
+              "& .pink": {
+                color: `${pink[400]} !important`,
+                lineHeight: "inherit !important",
+              },
             }}
           >
             <Typography
@@ -100,7 +111,7 @@ export default function GroupItem({ item }: { item: GroupProps }) {
                 color: `#ffffff !important`,
               }}
             >
-              {item.name}
+              {colored(item.name, searchText)}
             </Typography>
             <Typography
               sx={{
@@ -109,6 +120,7 @@ export default function GroupItem({ item }: { item: GroupProps }) {
                 color: youhaGrey[300],
               }}
             >
+              {/* {item.agency?.name ? colored(item.agency?.name, searchText) : "SOLO"} */}
               {item.agency?.name ?? "SOLO"}
             </Typography>
           </Box>

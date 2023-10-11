@@ -1,4 +1,11 @@
-import { Box, ButtonBase, Stack, Typography, alpha } from "@mui/material";
+import {
+  Box,
+  ButtonBase,
+  Paper,
+  Stack,
+  Typography,
+  alpha,
+} from "@mui/material";
 import { theme } from "../../themes/theme";
 import { agencies } from "../../data/agency";
 import AgencyItem from "../../components/molecules/AgencyItem";
@@ -345,10 +352,10 @@ function Page({ id }: { id: string | string[] }) {
         </Stack>
       ),
     },
-    {
-      label: "MBTI",
-      value: item.mbti,
-    },
+    // {
+    //   label: "MBTI",
+    //   value: item.mbti,
+    // },
     {
       label: "Links",
       value: item.links && (
@@ -449,7 +456,6 @@ function Page({ id }: { id: string | string[] }) {
                         onClick={onClick}
                         sx={{
                           flex: 1,
-                          minHeight: 136,
                           border: `1px solid ${
                             focused ? youhaBlue[400] : youhaGrey[200]
                           }`,
@@ -458,15 +464,21 @@ function Page({ id }: { id: string | string[] }) {
                             : youhaGrey[700],
                           borderRadius: 1,
                           p: theme.spacing(2),
-                          flexDirection: "column",
+                          flexDirection: "row",
                           justifyContent: "space-between",
+                          alignItems: "flex-end",
+                          "@media(min-width: 960px)": {
+                            flexDirection: "column",
+                            minHeight: 136,
+                            alignItems: "flex-start",
+                          },
                         }}
                       >
                         <Stack
                           direction={"column"}
                           spacing={0.5}
                           // justifyContent={"space-between"}
-                          sx={{ width: "100%" }}
+                          sx={{}}
                         >
                           <Icon
                             // color={focused ? youhaBlue[100] : youhaGrey[100]}
@@ -488,7 +500,61 @@ function Page({ id }: { id: string | string[] }) {
                             {item.label}
                           </Typography>
                         </Stack>
-                        <Stack spacing={1}>
+                        <Stack
+                          spacing={1}
+                          sx={{
+                            "& *": { textAlign: "right" },
+                            "@media(min-width: 960px)": {
+                              display: "none",
+                              "& *": { textAlign: "left" },
+                            },
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              m: theme.spacing(0, 0, 0, 1),
+                              "@media(min-width: 960px)": {
+                                m: theme.spacing(2, 0, 0, 0),
+                              },
+                            }}
+                          >
+                            {/* <Typography
+                              sx={{
+                                fontSize: 10,
+                                lineHeight: "14px",
+                                // color: focused
+                                //   ? youhaBlue[100]
+                                //   : youhaGrey[100],
+                                // color: youhaGrey[100],
+                              }}
+                            >
+                              Max video length / letters
+                            </Typography> */}
+                            <Typography
+                              sx={{
+                                fontSize: 12,
+                                lineHeight: "16px",
+                                // color: focused
+                                //   ? youhaBlue[100]
+                                //   : youhaGrey[100],
+                                // color: youhaGrey[100],
+                                // fontWeight: "700",
+                              }}
+                            >
+                              {item.maxVideoLength} sec <br /> {item.maxLetters}{" "}
+                              letters
+                            </Typography>
+                          </Box>
+                        </Stack>
+                        <Stack
+                          spacing={1}
+                          sx={{
+                            display: "none",
+                            "@media(min-width: 960px)": {
+                              display: "flex",
+                            },
+                          }}
+                        >
                           <Box
                             sx={{
                               m: theme.spacing(2, 0, 0, 0),
@@ -501,7 +567,7 @@ function Page({ id }: { id: string | string[] }) {
                                 // color: focused
                                 //   ? youhaBlue[100]
                                 //   : youhaGrey[100],
-                                // color: youhaGrey[100],
+                                color: youhaGrey[200],
                               }}
                             >
                               Max video length
@@ -514,10 +580,10 @@ function Page({ id }: { id: string | string[] }) {
                                 //   ? youhaBlue[100]
                                 //   : youhaGrey[100],
                                 // color: youhaGrey[100],
-                                fontWeight: "700",
+                                fontWeight: "500",
                               }}
                             >
-                              {item.maxVideoLength}
+                              {item.maxVideoLength} sec
                             </Typography>
                           </Box>
                           <Box
@@ -532,10 +598,10 @@ function Page({ id }: { id: string | string[] }) {
                                 // color: focused
                                 //   ? youhaBlue[100]
                                 //   : youhaGrey[100],
-                                // color: youhaGrey[100],
+                                color: youhaGrey[200],
                               }}
                             >
-                              Max letters
+                              Max letter length
                             </Typography>
                             <Typography
                               sx={{
@@ -545,10 +611,10 @@ function Page({ id }: { id: string | string[] }) {
                                 //   ? youhaBlue[100]
                                 //   : youhaGrey[100],
                                 // color: youhaGrey[100],
-                                fontWeight: "700",
+                                fontWeight: "500",
                               }}
                             >
-                              {item.maxLetters}
+                              {item.maxLetters} letters
                             </Typography>
                           </Box>
                         </Stack>
@@ -860,7 +926,16 @@ function Page({ id }: { id: string | string[] }) {
                 );
               })}
             </Swiper>
-            <Stack direction={"row"} spacing={1} sx={{ mt: 2 }}>
+            <Stack
+              direction={"row"}
+              spacing={1}
+              sx={{
+                mt: 2,
+                "@media(max-width: 480px)": {
+                  p: theme.spacing(0, 2),
+                },
+              }}
+            >
               <Icon name="bolt" prefix="fas" size={24} color={yellow[400]} />
               <Box>
                 <Typography
@@ -1241,7 +1316,12 @@ function Page({ id }: { id: string | string[] }) {
                         p: theme.spacing(2),
                       }}
                     >
-                      <Stack direction={"row"} spacing={1} alignItems={'center'} sx={{mb: 0.5}}>
+                      <Stack
+                        direction={"row"}
+                        spacing={1}
+                        alignItems={"center"}
+                        sx={{ mb: 0.5 }}
+                      >
                         <Typography
                           sx={{
                             fontSize: 14,
@@ -1274,7 +1354,7 @@ function Page({ id }: { id: string | string[] }) {
                         sx={{
                           fontSize: 14,
                           lineHeight: `20px`,
-                          color: youhaGrey[200]
+                          color: youhaGrey[200],
                         }}
                       >
                         {item.contents}
@@ -1410,136 +1490,233 @@ function Page({ id }: { id: string | string[] }) {
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                alignItems: "center",
               }}
             >
               <Box
                 sx={{
                   position: "relative",
-                  width: 160,
-                  height: 160,
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  "@media(min-width: 960px)": {
+                    flexDirection: "column",
+                  },
                 }}
               >
                 <Box
                   sx={{
-                    position: "relative",
-                    width: "100%",
-                    height: "100%",
-                    border: `1px solid ${youhaGrey[700]}`,
-                    borderRadius: "50%",
-                    overflow: "hidden",
-                    aspectRatio: `1`,
-                    p: theme.spacing(2),
+                    "@media(min-width: 960px)": {
+                      position: "relative",
+                    },
                   }}
                 >
-                  <Visual src={item.thumbnail} absolute noScale={false} />
+                  <IconButton
+                    name={"heart"}
+                    sx={{
+                      position: "absolute",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      "@media(min-width: 960px)": {
+                        top: 4,
+                        right: 4,
+                        transform: "none",
+                      },
+                      right: 0,
+                      zIndex: 99,
+                      boxShadow:
+                        "0px 3px 5px -1px rgba(0,0,0,0.2), 0px 5px 8px 0px rgba(0,0,0,0.14), 0px 1px 14px 0px rgba(0,0,0,0.12)",
+                    }}
+                    backgroundColor={alpha(youhaGrey[800], 1)}
+                    borderColor={youhaGrey[700]}
+                    prefix={favorite ? "fas" : "far"}
+                    onClick={onClickFavorite}
+                    color={favorite ? pink[400] : "#ffffff"}
+                  />
+                  <Box
+                    sx={{
+                      position: "relative",
+                      width: 128,
+                      height: 128,
+                      "@media(min-width: 960px)": {
+                        width: 180,
+                        height: 180,
+                      },
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        position: "relative",
+                        width: "100%",
+                        height: "100%",
+                        border: `1px solid ${youhaGrey[700]}`,
+                        borderRadius: "50%",
+                        overflow: "hidden",
+                        aspectRatio: `1`,
+                        p: theme.spacing(2),
+                      }}
+                    >
+                      <Visual src={item.thumbnail} absolute noScale={false} />
+                    </Box>
+                    {group && (
+                      <Link href={`/group/${group.id}`} passHref>
+                        <ButtonBase
+                          sx={{
+                            position: "absolute",
+                            bottom: 4,
+                            left: 4,
+                            zIndex: 99,
+                            overflow: "hidden",
+                            borderRadius: 20,
+                            width: 40,
+                            height: 40,
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            border: `1px solid ${youhaGrey[700]}`,
+                          }}
+                        >
+                          <Visual src={group.thumbnail} absolute noScale />
+                        </ButtonBase>
+                      </Link>
+                    )}
+                  </Box>
                 </Box>
-                <IconButton
-                  name={"heart"}
+                <Box
                   sx={{
-                    position: "absolute",
-                    top: 4,
-                    right: 4,
-                    zIndex: 99,
-                    boxShadow:
-                      "0px 3px 5px -1px rgba(0,0,0,0.2), 0px 5px 8px 0px rgba(0,0,0,0.14), 0px 1px 14px 0px rgba(0,0,0,0.12)",
-                  }}
-                  backgroundColor={alpha(youhaGrey[800], 1)}
-                  borderColor={youhaGrey[700]}
-                  prefix={favorite ? "fas" : "far"}
-                  onClick={onClickFavorite}
-                  color={favorite ? pink[400] : "#ffffff"}
-                />
-              </Box>
-              <Box
-                sx={{
-                  m: theme.spacing(1, 0, 0, 0),
-                  textAlign: "center",
-                }}
-              >
-                <Typography
-                  sx={{
-                    fontSize: 24,
-                    lineHeight: "36px",
-                    fontWeight: "700",
-                    color: `#ffffff !important`,
+                    flex: 1,
+                    p: theme.spacing(0, 7, 0, 2),
+                    "@media(min-width: 960px)": {
+                      flex: "initial",
+                      p: theme.spacing(1, 0, 0, 0),
+                    },
                   }}
                 >
-                  {item.name}
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: 14,
-                    lineHeight: "20px",
-                    color: youhaGrey[200],
-                  }}
-                >
-                  {item.group?.name ?? "SOLO"}
-                </Typography>
+                  <Box
+                    sx={{
+                      "@media(min-width: 960px)": {
+                        textAlign: "center",
+                      },
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: 24,
+                        lineHeight: "36px",
+                        fontWeight: "700",
+                        color: `#ffffff !important`,
+                      }}
+                    >
+                      {item.name}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: 14,
+                        lineHeight: "20px",
+                        color: youhaGrey[300],
+                      }}
+                    >
+                      {item.group?.name ?? "SOLO"}
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      m: theme.spacing(0.75, 0, 0, 0),
+                      display: "flex",
+                      flexWrap: "wrap",
+                      "& > *": {
+                        p: theme.spacing(0.25, 0),
+                        "&:not(:nth-child(3))": {
+                          mr: 2,
+                        },
+                      },
+                      "@media(min-width: 960px)": {
+                        justifyContent: "center",
+                      },
+                    }}
+                  >
+                    <Stack
+                      direction={"row"}
+                      spacing={0.5}
+                      alignItems={"center"}
+                    >
+                      <Icon
+                        name="heart"
+                        color={youhaBlue[400]}
+                        size={20}
+                        prefix="fas"
+                      />
+                      <Typography
+                        sx={{
+                          fontSize: 14,
+                          lineHeight: "20px",
+                          fontFamily: "Poppins",
+                          color: youhaGrey[200],
+                        }}
+                      >
+                        283
+                      </Typography>
+                    </Stack>
+                    <Stack
+                      direction={"row"}
+                      spacing={0.5}
+                      alignItems={"center"}
+                    >
+                      <Icon
+                        name="thumbs-up"
+                        color={youhaBlue[400]}
+                        size={20}
+                        prefix="fas"
+                      />
+                      <Typography
+                        sx={{
+                          fontSize: 14,
+                          lineHeight: "20px",
+                          fontFamily: "Poppins",
+                          color: youhaGrey[200],
+                        }}
+                      >
+                        1,230
+                      </Typography>
+                    </Stack>
+                    <Stack
+                      direction={"row"}
+                      spacing={0.5}
+                      alignItems={"center"}
+                    >
+                      <Icon
+                        name="film"
+                        color={youhaBlue[400]}
+                        size={20}
+                        prefix="fas"
+                      />
+                      <Typography
+                        sx={{
+                          fontSize: 14,
+                          lineHeight: "20px",
+                          fontFamily: "Poppins",
+                          color: youhaGrey[200],
+                        }}
+                      >
+                        00:24
+                      </Typography>
+                    </Stack>
+                  </Box>
+                </Box>
               </Box>
-              <Stack
-                direction={"row"}
-                spacing={2}
+              <Typo
+                lines={10}
                 sx={{
-                  m: theme.spacing(1, 0, 0, 0),
-                  display: "flex",
+                  m: theme.spacing(2, 0, 0, 0),
+                  fontSize: 14,
+                  lineHeight: "20px",
+                  color: youhaGrey[200],
+                  "@media(min-width: 960px)": {
+                    m: theme.spacing(1.75, 0, 0, 0),
+                  },
                 }}
               >
-                <Stack direction={"row"} spacing={0.5} alignItems={"center"}>
-                  <Icon
-                    name="heart"
-                    color={youhaBlue[400]}
-                    size={20}
-                    prefix="fas"
-                  />
-                  <Typography
-                    sx={{
-                      fontSize: 14,
-                      lineHeight: "20px",
-                      fontFamily: "Poppins",
-                      color: youhaGrey[200],
-                    }}
-                  >
-                    283
-                  </Typography>
-                </Stack>
-                <Stack direction={"row"} spacing={0.5} alignItems={"center"}>
-                  <Icon
-                    name="thumbs-up"
-                    color={youhaBlue[400]}
-                    size={20}
-                    prefix="fas"
-                  />
-                  <Typography
-                    sx={{
-                      fontSize: 14,
-                      lineHeight: "20px",
-                      fontFamily: "Poppins",
-                      color: youhaGrey[200],
-                    }}
-                  >
-                    1,230
-                  </Typography>
-                </Stack>
-                <Stack direction={"row"} spacing={0.5} alignItems={"center"}>
-                  <Icon
-                    name="film"
-                    color={youhaBlue[400]}
-                    size={20}
-                    prefix="fas"
-                  />
-                  <Typography
-                    sx={{
-                      fontSize: 14,
-                      lineHeight: "20px",
-                      fontFamily: "Poppins",
-                      color: youhaGrey[200],
-                    }}
-                  >
-                    00:24
-                  </Typography>
-                </Stack>
-              </Stack>
+                {item.bio}
+              </Typo>
               <Box
                 sx={{
                   display: "none",

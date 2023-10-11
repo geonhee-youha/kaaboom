@@ -1,5 +1,5 @@
 import { Box, Dialog, InputBase, Stack, alpha } from "@mui/material";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useState } from "react";
 import { theme } from "../../themes/theme";
 import IconButton from "../atoms/IconButton";
 import TextButton from "../atoms/TextButton";
@@ -7,8 +7,10 @@ import youhaGrey from "../../constants/youhaGrey";
 import youhaBlue from "../../constants/youhaBlue";
 import { useRecoilState } from "recoil";
 import { searchDialogRecoilState } from "../../constants/recoils";
+import { useRouter } from "next/router";
 
 export default function SearchDialog({}: {}) {
+  const router = useRouter();
   const [searchDialog, setSearchDialog] = useRecoilState(
     searchDialogRecoilState
   );
@@ -21,6 +23,12 @@ export default function SearchDialog({}: {}) {
   const onClose = () => {
     setSearchDialog({ open: false });
     setValue("");
+  };
+  const onKeyPress = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter") {
+      router.push(`/explore/search?searchText=${value}`);
+      setSearchDialog({ open: false });
+    }
   };
   return (
     <Dialog
@@ -88,6 +96,7 @@ export default function SearchDialog({}: {}) {
           <InputBase
             value={value}
             onChange={onChange}
+            onKeyPress={onKeyPress}
             placeholder="Search for Kpop idols"
             sx={{
               borderRadius: 1,

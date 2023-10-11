@@ -201,7 +201,7 @@ const reset = css`
   }
   input {
     /* font-family: 'Montserrat', sans-serif !important; */
-    font-family: 'Poppins', Helvetica, sans-serif;
+    font-family: 'Poppins', Helvetica, sans-serif !important;
     font-size: 16px;
     color: #ffffff;
     vertical-align: middle;
@@ -213,6 +213,7 @@ const reset = css`
     font-size: 17px;
     color: #ffffff;
     vertical-align: middle;
+    font-family: 'Poppins', Helvetica, sans-serif !important;
   }
   a,
   a:link,
@@ -324,6 +325,10 @@ const reset = css`
     box-sizing: border-box;
     touch-action: pan-y;
   }
+  input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #181924 inset; // 배경색 변경
+    -webkit-text-fill-color: white // 글자색 변경
+ }
   input,
   textarea {
     caret-color: #2F59CC !important

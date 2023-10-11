@@ -14,12 +14,17 @@ import Link from "next/link";
 import TextButton from "../atoms/TextButton";
 import { useRecoilState } from "recoil";
 import {
+  loginRecoilState,
   searchDialogRecoilState,
   sideDrawerRecoilState,
 } from "../../constants/recoils";
 import { artistsMenus, globalMenus } from "../../constants";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Icon from "../atoms/Icon";
+import { useRouter } from "next/router";
+import { tempUserState } from "../../data/temp";
+import Visual from "../atoms/Visual";
+import { cyan, deepPurple, indigo, pink } from "@mui/material/colors";
 
 function NavItem({ item }: { item: { link: string; label: string } }) {
   const [open, setOpen] = useState<boolean>(false);
@@ -36,17 +41,6 @@ function NavItem({ item }: { item: { link: string; label: string } }) {
     <Box
       sx={{
         position: "relative",
-        // "& .Icon": {
-        //   transform: `rotate(0deg)`,
-        // },
-        // "&:hover": {
-        //   "& .Stack": {
-        //     display: "flex",
-        //   },
-        //   "& .Icon": {
-        //     transform: `rotate(180deg)`,
-        //   },
-        // },
       }}
       onMouseOver={onMouseOver}
       onMouseOut={onMouseOut}
@@ -54,7 +48,7 @@ function NavItem({ item }: { item: { link: string; label: string } }) {
       <TextButton
         size={"lg"}
         label={item.label}
-        fontWeight={"700"}
+        fontWeight={"500"}
         disableRipple
         onClick={onClick}
         fullWidth
@@ -79,7 +73,6 @@ function NavItem({ item }: { item: { link: string; label: string } }) {
           left: -8,
           top: 48,
           transition: `all 0.35s ease`,
-          p: theme.spacing(0, 1),
           backgroundColor: youhaGrey[800],
           backgroundImage: "none",
           border: `1px solid ${youhaGrey[700]}`,
@@ -118,17 +111,163 @@ function NavItem({ item }: { item: { link: string; label: string } }) {
       <TextButton
         size={"lg"}
         label={item.label}
-        fontWeight={"700"}
+        fontWeight={"500"}
         disableRipple
       />
     </Link>
   );
 }
 
+const userMenus = [
+  {
+    url: "/user/account",
+    label: "Account",
+  },
+  {
+    url: "/user/favorites",
+    label: "Favorites",
+  },
+  {
+    url: "/user/orders",
+    label: "Orders",
+  },
+  {
+    url: "/user/videos",
+    label: "Videos",
+  },
+];
+
+function User() {
+  const router = useRouter();
+  const ref = useRef<any>(null);
+  const [login, setLogin] = useRecoilState(loginRecoilState);
+  const [tempUser, setTempUser] = useRecoilState(tempUserState);
+  const [open, setOpen] = useState<boolean>(false);
+  const onClick = () => {
+    setOpen((prev) => !prev);
+  };
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+  const handleClickOutside = (event: any) => {
+    if (ref && !ref.current.contains(event.target)) {
+      setOpen(false);
+    }
+  };
+  const onClickLogout = () => {
+    setLogin(false);
+  };
+  return (
+    <Box
+      ref={ref}
+      sx={{
+        position: "relative",
+      }}
+    >
+      {tempUser.thumbnail ? (
+        <ButtonBase onClick={onClick}>
+          <Visual
+            src={tempUser.thumbnail}
+            sx={{
+              width: 40,
+              height: 40,
+              borderRadius: "50%",
+              overflow: "hidden",
+              backgroundColor: youhaGrey[800],
+              border: `1px solid ${youhaGrey[600]}`,
+            }}
+          />
+        </ButtonBase>
+      ) : (
+        <ButtonBase
+          sx={{
+            width: 40,
+            height: 40,
+            borderRadius: "50%",
+            overflow: "hidden",
+            backgroundColor:
+              tempUser.gender === "M"
+                ? indigo["A400"]
+                : tempUser.gender === "M"
+                ? pink["A400"]
+                : deepPurple["A400"],
+            border: `1px solid ${youhaGrey[600]}`,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          onClick={onClick}
+        >
+          <Icon name="user" prefix="fas" color={youhaGrey[100]} />
+        </ButtonBase>
+      )}
+      <Box
+        ref={ref}
+        sx={{
+          position: "absolute",
+          top: 32,
+          right: 0,
+          display: open ? "flex" : "none",
+          boxShadow: `rgb(0 0 0 / 10%) 0px 2px 10px`,
+          flexDirection: "column",
+          p: theme.spacing(1, 0),
+          zIndex: 9,
+          backgroundColor: youhaGrey[800],
+          border: `1px solid ${youhaGrey[600]}`,
+          borderRadius: 0.5,
+        }}
+        className="languages"
+      >
+        {userMenus.map((item, index) => {
+          const { url, label } = item;
+          const onClick = () => {
+            router.push(url);
+            setOpen(false);
+          };
+          return (
+            <Link key={index} href={`${item.url}`} passHref>
+              <TextButton
+                size={"lg"}
+                label={item.label}
+                fontWeight={"400"}
+                onClick={onClick}
+              >
+                <Box
+                  sx={{
+                    m: theme.spacing(0, 0, 0, "auto"),
+                  }}
+                />
+              </TextButton>
+            </Link>
+          );
+        })}
+        <TextButton
+          size={"lg"}
+          label={"Log out"}
+          fontWeight={"400"}
+          onClick={onClickLogout}
+        >
+          <Box
+            sx={{
+              m: theme.spacing(0, 0, 0, "auto"),
+            }}
+          />
+        </TextButton>
+      </Box>
+    </Box>
+  );
+}
+
 export default function GlobalHeader() {
+  const router = useRouter();
+  const [login, setLogin] = useRecoilState(loginRecoilState);
   const [searchDialog, setSearchDialog] = useRecoilState(
     searchDialogRecoilState
   );
+  console.log(router)
   const [sideDrawer, setSideDrawer] = useRecoilState(sideDrawerRecoilState);
   const onClickBars = () => {
     setSideDrawer({ open: true });
@@ -233,18 +372,30 @@ export default function GlobalHeader() {
               return <NavItem key={index} item={item} />;
             })}
           </Stack>
-          <IconButton
-            name="user"
-            borderColor={youhaGrey[700]}
-            color={youhaBlue[400]}
-            onClick={() => {}}
-            size={20}
+          <Box
             sx={{
               "@media(min-width: 768px)": {
                 display: "none",
               },
             }}
-          />
+          >
+            {login ? (
+              <User />
+            ) : (
+              <Link
+              href={`/auth/login?url=${router.asPath.split('?')[0].replaceAll("/", "^")}`}
+                passHref
+              >
+                <IconButton
+                  name="user"
+                  borderColor={youhaGrey[700]}
+                  color={youhaBlue[400]}
+                  onClick={() => {}}
+                  size={20}
+                />
+              </Link>
+            )}
+          </Box>
         </Stack>
         <Stack
           direction={"row"}
@@ -311,20 +462,31 @@ export default function GlobalHeader() {
               </ButtonBase>
             </Box>
           </Stack>
-          <TextButton
-            size="md"
-            label="Log in"
-            borderColor={youhaGrey[700]}
-            // backgroundColor={alpha(youhaGrey[800], 1)}
-            color={youhaBlue[400]}
-            onClick={onClickSignin}
+          <Box
             sx={{
               display: "none",
               "@media(min-width: 768px)": {
                 display: "flex",
               },
             }}
-          />
+          >
+            {login ? (
+              <User />
+            ) : (
+              <Link
+                href={`/auth/login?url=${router.asPath.split('?')[0].replaceAll("/", "^")}`}
+                passHref
+              >
+                <TextButton
+                  size="md"
+                  label="Log in"
+                  borderColor={youhaGrey[700]}
+                  // backgroundColor={alpha(youhaGrey[800], 1)}
+                  color={youhaBlue[400]}
+                />
+              </Link>
+            )}
+          </Box>
         </Stack>
       </Box>
     </>

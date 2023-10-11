@@ -13,10 +13,12 @@ export default function ExploreHeader({
   title,
   data,
   size,
+  label = 'results',
 }: {
   title: string;
   data: any;
   size?: string;
+  label?:string;
 }) {
   const router = useRouter();
   const currentValue = router.query.sortBy ?? "featured";
@@ -67,7 +69,7 @@ export default function ExploreHeader({
             color: youhaGrey[300],
           }}
         >
-          {data.length} results
+          {data.length}{' '}{label}
         </Typography>
         {/* <Stack
           sx={{

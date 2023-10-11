@@ -12,6 +12,7 @@ import youhaGrey from "../../constants/youhaGrey";
 import { useInView } from "react-intersection-observer";
 import Typo from "../atoms/Typo";
 import Link from "next/link";
+import IconButton from "../atoms/IconButton";
 
 const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });
 
@@ -124,7 +125,7 @@ export default function MessageItem({
           right: 0,
           zIndex: 999,
           background: "linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0))",
-          p: theme.spacing(1),
+          p: theme.spacing(2),
         }}
       >
         <Typography
@@ -146,17 +147,19 @@ export default function MessageItem({
           right: 0,
           zIndex: 999,
           background: "linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8))",
-          p: theme.spacing(4, 1, 2, 1),
+          p: theme.spacing(4, 0.5, 0.5, 0.5),
           transition: `all 0.35s ease`,
         }}
       >
+        <Box sx={{
+          p: theme.spacing(1.5)
+        }}>
         <Link href={`/artist/${artist.id}`} passHref>
           <ButtonBase
             disableRipple
             sx={{
               display: "flex",
               alignItems: "center",
-              pb: 2,
               transform: controlls ? "translateY(0)" : "translateY(40px)",
               transition: `all 0.35s ease`,
             }}
@@ -176,6 +179,7 @@ export default function MessageItem({
             />
             <Box
               sx={{
+                flex: 1,
                 ml: 1,
               }}
             >
@@ -185,7 +189,7 @@ export default function MessageItem({
                   fontSize: 14,
                   lineHeight: "20px",
                   fontWeight: "700",
-                  whiteSpace: "nowrap",
+                  wordBreak: "break-all",
                 }}
               >
                 {artist.name}
@@ -195,8 +199,8 @@ export default function MessageItem({
                 sx={{
                   fontSize: 12,
                   lineHeight: "16px",
-                  whiteSpace: "nowrap",
-                  color: youhaGrey[200]
+                  wordBreak: "break-all",
+                  color: youhaGrey[200],
                 }}
               >
                 {artist.group?.name ?? "SOLO"}
@@ -204,6 +208,7 @@ export default function MessageItem({
             </Box>
           </ButtonBase>
         </Link>
+        </Box>
         <Box
           sx={{
             width: "100%",
@@ -211,29 +216,31 @@ export default function MessageItem({
             alignItems: "center",
             transform: controlls ? "translateY(0)" : "translateY(40px)",
             transition: `all 0.35s ease`,
-            height: 20,
-            overflow: 'visible'
+            overflow: "visible",
           }}
         >
-          <Icon
+          <IconButton
             name={playing ? "pause" : "play"}
             prefix="fas"
             size={20}
             onClick={onClickPlay}
             sx={{
-              mr: 1,
+              width: 40,
+              height: 40,
             }}
           />
           <Typography
             sx={{
+              flex: 1,
               fontSize: 12,
               lineHeight: "16px",
               transition: `all 0.35s ease`,
+              wordBreak: 'break-all'
             }}
           >
             {playedTime} / {time}
           </Typography>
-          <Icon
+          <IconButton
             name={!muted ? "volume" : "volume-xmark"}
             prefix="far"
             size={20}
@@ -241,7 +248,8 @@ export default function MessageItem({
               setMuted(!muted);
             }}
             sx={{
-              ml: "auto",
+              width: 40,
+              height: 40,
             }}
           />
         </Box>

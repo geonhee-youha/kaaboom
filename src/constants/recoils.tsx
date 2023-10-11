@@ -20,3 +20,8 @@ export const sideDrawerRecoilState = atom({
     open: false,
   },
 });
+
+export const loginRecoilState = atom({
+  key: "login",
+  default: false,
+});

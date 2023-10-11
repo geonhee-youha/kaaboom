@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, ButtonBase, Stack, Typography } from "@mui/material";
 import { theme } from "../../themes/theme";
 import { agencies } from "../../data/agency";
 import AgencyItem from "../../components/molecules/AgencyItem";
@@ -336,7 +336,10 @@ function Page({ id }: { id: string | string[] }) {
         >
           <Box
             sx={{
-              p: theme.spacing(6, 2),
+              p: theme.spacing(6, 2, 6, 2),
+              "@media(min-width: 960px)": {
+                p: theme.spacing(6, 2),
+              },
             }}
             className="Section"
           >
@@ -344,72 +347,160 @@ function Page({ id }: { id: string | string[] }) {
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                alignItems: "center",
               }}
             >
               <Box
                 sx={{
-                  width: 160,
-                  height: 160,
+                  position: "relative",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  "@media(min-width: 960px)": {
+                    flexDirection: "column",
+                  },
                 }}
               >
                 <Box
                   sx={{
-                    position: "relative",
-                    width: "100%",
-                    height: "100%",
-                    border: `1px solid ${youhaGrey[700]}`,
-                    borderRadius: "50%",
-                    overflow: "hidden",
-                    aspectRatio: `1`,
-                    p: theme.spacing(2),
+                    "@media(min-width: 960px)": {
+                      position: "relative",
+                    },
                   }}
                 >
-                  <Visual src={item.thumbnail} absolute noScale={false} />
-                </Box>
-              </Box>
-              <Box
-                sx={{
-                  m: theme.spacing(1, 0, 0, 0),
-                }}
-              >
-                <Typography
-                  sx={{
-                    fontSize: 24,
-                    lineHeight: "36px",
-                    fontWeight: "700",
-                    color: `#ffffff !important`,
-                  }}
-                >
-                  {item.name}
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  m: theme.spacing(1, 0, 0, 0),
-                  display: "flex",
-                }}
-              >
-                <Stack direction={"row"} spacing={0.5} alignItems={"center"}>
-                  <Icon
-                    name="user"
-                    color={youhaBlue[400]}
-                    size={20}
-                    prefix="fas"
-                  />
-                  <Typography
+                  <Box
                     sx={{
-                      fontSize: 14,
-                      lineHeight: "20px",
-                      fontFamily: "Poppins",
-                      color: youhaGrey[200],
+                      position: "relative",
+                      width: 128,
+                      height: 128,
+                      "@media(min-width: 960px)": {
+                        width: 196,
+                        height: 196,
+                      },
                     }}
                   >
-                    {groupArtists.length} Artists
-                  </Typography>
-                </Stack>
+                    <Box
+                      sx={{
+                        position: "relative",
+                        width: "100%",
+                        height: "100%",
+                        border: `1px solid ${youhaGrey[700]}`,
+                        borderRadius: "50%",
+                        overflow: "hidden",
+                        aspectRatio: `1`,
+                        p: theme.spacing(2),
+                      }}
+                    >
+                      <Visual src={item.thumbnail} absolute noScale={false} />
+                    </Box>
+                    <Link href={`/agency/${agency.id}`} passHref>
+                      <ButtonBase
+                        sx={{
+                          position: "absolute",
+                          bottom: 4,
+                          left: 4,
+                          zIndex: 99,
+                          overflow: "hidden",
+                          borderRadius: 1,
+                          width: 40,
+                          height: 40,
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          border: `1px solid ${youhaGrey[700]}`,
+                        }}
+                      >
+                        <Visual src={agency.thumbnail} absolute noScale />
+                      </ButtonBase>
+                    </Link>
+                  </Box>
+                </Box>
+                <Box
+                  sx={{
+                    flex: 1,
+                    p: theme.spacing(0, 0, 0, 2),
+                    "@media(min-width: 960px)": {
+                      flex: "initial",
+                      p: theme.spacing(1, 0, 0, 0),
+                    },
+                  }}
+                >
+                  <Box
+                    sx={{
+                      "@media(min-width: 960px)": {
+                        textAlign: "center",
+                      },
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: 24,
+                        lineHeight: "36px",
+                        fontWeight: "700",
+                        color: `#ffffff !important`,
+                      }}
+                    >
+                      {item.name}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: 14,
+                        lineHeight: "20px",
+                        color: youhaGrey[300],
+                      }}
+                    >
+                      {agency.name}
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      m: theme.spacing(0.75, 0, 0, 0),
+                      display: "flex",
+                      flexWrap: "wrap",
+                      "& > *": {
+                        p: theme.spacing(0.25, 0),
+                        "&:not(:nth-child(3))": {
+                          mr: 2,
+                        },
+                      },
+                      "@media(min-width: 960px)": {
+                        justifyContent: "center",
+                      },
+                    }}
+                  >
+                    <Stack
+                      direction={"row"}
+                      spacing={0.5}
+                      alignItems={"center"}
+                    >
+                      <Icon
+                        name="user"
+                        color={youhaBlue[400]}
+                        size={20}
+                        prefix="fas"
+                      />
+                      <Typography
+                        sx={{
+                          fontSize: 14,
+                          lineHeight: "20px",
+                          fontFamily: "Poppins",
+                          color: youhaGrey[200],
+                        }}
+                      >
+                        {groupArtists.length} artists
+                      </Typography>
+                    </Stack>
+                  </Box>
+                </Box>
               </Box>
-              <DataSection data={data} />
+              <DataSection
+                data={data}
+                sx={{
+                  p: theme.spacing(4, 0, 0, 0),
+                  "@media(min-width: 960px)": {
+                    p: theme.spacing(6, 0, 0, 0),
+                  },
+                }}
+              />
             </Box>
           </Box>
         </Box>

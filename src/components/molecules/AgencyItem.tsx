@@ -9,8 +9,16 @@ import { AgencyProps } from "../../data/agency";
 import { artists } from "../../data/artist";
 import Icon from "../atoms/Icon";
 import youhaBlue from "../../constants/youhaBlue";
+import { pink } from "@mui/material/colors";
+import { colored } from "../../utils";
 
-export default function AgencyItem({ item }: { item: AgencyProps }) {
+export default function AgencyItem({
+  item,
+  searchText,
+}: {
+  item: AgencyProps;
+  searchText?: string;
+}) {
   const agencyGroups = _.filter(groups, (el) => {
     return el.agency !== undefined && el.agency.name === item.name;
   });
@@ -53,6 +61,10 @@ export default function AgencyItem({ item }: { item: AgencyProps }) {
               width: "100%",
               textAlign: "center",
             },
+            "& .pink": {
+              color: `${pink[400]} !important`,
+              lineHeight: "inherit !important",
+            },
           }}
         >
           <Typography
@@ -63,7 +75,7 @@ export default function AgencyItem({ item }: { item: AgencyProps }) {
               color: `#ffffff !important`,
             }}
           >
-            {item.name}
+            {colored(item.name, searchText)}
           </Typography>
           {/* <Typography
             sx={{
