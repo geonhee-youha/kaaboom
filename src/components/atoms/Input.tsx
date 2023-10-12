@@ -28,7 +28,8 @@ export default function Input({
   timer,
   showMaxLength,
   uneditable,
-  maxRows = 3
+  maxRows = 3,
+  minRows,
 }: {
   error?: boolean;
   helperText?: React.ReactNode;
@@ -52,7 +53,8 @@ export default function Input({
   timer?: string;
   showMaxLength?: boolean;
   uneditable?: boolean;
-  maxRows?:number
+  maxRows?: number;
+  minRows?: number;
 }) {
   const [inputType, setInputType] = useState<string | undefined>(undefined);
   const onChangeValue = (event: ChangeEvent<HTMLInputElement>) => {
@@ -93,11 +95,17 @@ export default function Input({
           onKeyDown={onKeyDown}
           placeholder={placeholder}
           multiline={multiline}
-          maxRows={maxRows}
+          maxRows={minRows ?? maxRows}
           sx={{
             opacity: uneditable ? 0.4 : 1,
             width: "100%",
-            height: multiline ? "auto" : size === "sm" ? 40 : 48,
+            height: multiline
+              ? minRows
+                ? minRows * 24 + (size === "small" ? 12 : 16) * 2
+                : "auto"
+              : size === "sm"
+              ? 40
+              : 48,
             minHeight: multiline
               ? size === "sm"
                 ? 40 * 2

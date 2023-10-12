@@ -1,31 +1,32 @@
 import { Box, ButtonBase, Stack, Typography } from "@mui/material";
-import { theme } from "../../themes/theme";
-import { agencies } from "../../data/agency";
-import AgencyItem from "../../components/molecules/AgencyItem";
+import { theme } from "../../../themes/theme";
+import { agencies } from "../../../data/agency";
+import AgencyItem from "../../../components/molecules/AgencyItem";
 import _ from "lodash";
-import ExploreHeader from "../../components/organisms/ExploreHeader";
+import ExploreHeader from "../../../components/organisms/ExploreHeader";
 import { useRouter } from "next/router";
-import youhaGrey from "../../constants/youhaGrey";
-import Visual from "../../components/atoms/Visual";
-import { groups } from "../../data/group";
-import GroupItem from "../../components/molecules/GroupItem";
-import { artists } from "../../data/artist";
-import ArtistItem from "../../components/molecules/ArtistItem";
-import youhaBlue from "../../constants/youhaBlue";
-import Icon from "../../components/atoms/Icon";
-import DataSection from "../../components/organisms/DataSection";
+import youhaGrey from "../../../constants/youhaGrey";
+import Visual from "../../../components/atoms/Visual";
+import { groups } from "../../../data/group";
+import GroupItem from "../../../components/molecules/GroupItem";
+import { artists } from "../../../data/artist";
+import ArtistItem from "../../../components/molecules/ArtistItem";
+import youhaBlue from "../../../constants/youhaBlue";
+import Icon from "../../../components/atoms/Icon";
+import DataSection from "../../../components/organisms/DataSection";
 import Link from "next/link";
 import moment from "moment";
-import MessageItem from "../../components/molecules/MessageItem";
-import { messages } from "../../data/message";
+import MessageItem from "../../../components/molecules/MessageItem";
+import { messages } from "../../../data/message";
 import { useState } from "react";
-import Page from "../../components/atoms/Page";
+import Page from "../../../components/atoms/Page";
 
 export default function Index() {
-  return <Page
-    needId
-    aside
-  ><Inner /></Page>
+  return (
+    <Page needId aside>
+      <Inner />
+    </Page>
+  );
 }
 
 function Inner() {
@@ -33,24 +34,24 @@ function Inner() {
   const { id } = router.query;
   const item =
     groups[
-    _.findIndex(groups, (e) => {
-      return e.id === id;
-    })
+      _.findIndex(groups, (e) => {
+        return e.id === id;
+      })
     ];
   const groupArtists = _.filter(artists, (e) => {
     return e.group?.name === item.name;
   });
   const agency =
     agencies[
-    _.findIndex(agencies, (el) => {
-      return el.name === item.agency.name;
-    })
+      _.findIndex(agencies, (el) => {
+        return el.name === item.agency.name;
+      })
     ];
   const leader =
     artists[
-    _.findIndex(artists, (el) => {
-      return el.name === item.leader.name;
-    })
+      _.findIndex(artists, (el) => {
+        return el.name === item.leader.name;
+      })
     ];
   const fanMessages = _.filter(messages, (e) => {
     return _.flatMap(groupArtists, (el) => el.name).includes(e.artist.name);
@@ -202,121 +203,7 @@ function Inner() {
   const [focusedIndex, setFocusedIndex] = useState<number>(-1);
   return (
     <>
-      <Box sx={{ flex: 1, p: theme.spacing(0, 0, 12, 0) }}>
-        <Box
-          sx={{
-            p: theme.spacing(6, 2, 3, 2),
-          }}
-          className="Section"
-        >
-          <ExploreHeader
-            title="Affiliated artists"
-            data={groupArtists}
-            size="sm"
-          />
-          <Box
-            sx={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gridAutoRows: "1fr",
-              gridTemplateRows: "auto",
-              gridColumnGap: 12,
-              gridRowGap: 32,
-              "@media(min-width: 480px)": {
-                gridTemplateColumns: "1fr 1fr",
-              },
-              "@media(min-width: 600px)": {
-                gridTemplateColumns: "1fr 1fr 1fr",
-              },
-              "@media(min-width: 720px)": {
-                gridTemplateColumns: "1fr 1fr 1fr 1fr",
-              },
-              "@media(min-width: 840px)": {
-                gridTemplateColumns: "1fr 1fr 1fr 1fr",
-              },
-              "@media(min-width: 960px)": {
-                gridTemplateColumns: "1fr 1fr 1fr",
-              },
-              "@media(min-width: 1080px)": {
-                gridTemplateColumns: "1fr 1fr 1fr 1fr",
-              },
-              "@media(min-width: 1200px)": {
-                gridTemplateColumns: "1fr 1fr 1fr 1fr",
-              },
-            }}
-            className="SectionContents"
-          >
-            {groupArtists.map((item, index) => {
-              return <ArtistItem key={index} item={item} />;
-            })}
-          </Box>
-        </Box>
-        {fanMessages.length > 0 && (
-          <Box
-            sx={{
-              p: theme.spacing(6, 2, 3, 2),
-            }}
-            className="Section"
-          >
-            <ExploreHeader title="Fan messages" data={messages} size="sm" />
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gridAutoRows: "1fr",
-                gridTemplateRows: "auto",
-                gridColumnGap: 12,
-                gridRowGap: 32,
-                "@media(min-width: 480px)": {
-                  gridTemplateColumns: "1fr 1fr",
-                },
-                "@media(min-width: 600px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr",
-                },
-                "@media(min-width: 720px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
-                },
-                "@media(min-width: 840px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
-                },
-                "@media(min-width: 960px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr",
-                },
-                "@media(min-width: 1080px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
-                },
-                "@media(min-width: 1200px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
-                },
-              }}
-              className="SectionContents"
-            >
-              {fanMessages.map((item, index) => {
-                return (
-                  <MessageItem
-                    key={index}
-                    item={item}
-                    index={index}
-                    focusedIndex={focusedIndex}
-                    setFocusedIndex={setFocusedIndex}
-                  />
-                );
-              })}
-            </Box>
-          </Box>
-        )}
-      </Box>
-      <Box
-        component={"aside"}
-        sx={{
-          width: "100%",
-          "@media(min-width: 960px)": {
-            width: 420,
-            display: "block",
-            p: theme.spacing(0, 2, 12, 0),
-          },
-        }}
-      >
+      <Box>
         <Box
           sx={{
             position: "sticky",
@@ -448,7 +335,7 @@ function Inner() {
                       flexWrap: "wrap",
                       "& > *": {
                         p: theme.spacing(0.25, 0),
-                        "&:not(:nth-child(3))": {
+                        "&:not(:nth-of-type(3))": {
                           mr: 2,
                         },
                       },
@@ -464,7 +351,7 @@ function Inner() {
                     >
                       <Icon
                         name="user"
-                        color={youhaBlue[400]}
+                        color={youhaBlue[500]}
                         size={20}
                         prefix="fas"
                       />
@@ -491,6 +378,110 @@ function Inner() {
             </Box>
           </Box>
         </Box>
+      </Box>
+      <Box>
+        <Box
+          sx={{
+            p: theme.spacing(6, 2, 3, 2),
+          }}
+          className="Section"
+        >
+          <ExploreHeader
+            title="Affiliated artists"
+            data={groupArtists}
+            size="sm"
+          />
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr",
+              gridAutoRows: "1fr",
+              gridTemplateRows: "auto",
+              gridColumnGap: 12,
+              gridRowGap: 32,
+              "@media(min-width: 480px)": {
+                gridTemplateColumns: "1fr 1fr",
+              },
+              "@media(min-width: 600px)": {
+                gridTemplateColumns: "1fr 1fr 1fr",
+              },
+              "@media(min-width: 720px)": {
+                gridTemplateColumns: "1fr 1fr 1fr 1fr",
+              },
+              "@media(min-width: 840px)": {
+                gridTemplateColumns: "1fr 1fr 1fr 1fr",
+              },
+              "@media(min-width: 960px)": {
+                gridTemplateColumns: "1fr 1fr 1fr",
+              },
+              "@media(min-width: 1080px)": {
+                gridTemplateColumns: "1fr 1fr 1fr 1fr",
+              },
+              "@media(min-width: 1200px)": {
+                gridTemplateColumns: "1fr 1fr 1fr 1fr",
+              },
+            }}
+            className="SectionContents"
+          >
+            {groupArtists.map((item, index) => {
+              return <ArtistItem key={index} item={item} />;
+            })}
+          </Box>
+        </Box>
+        {fanMessages.length > 0 && (
+          <Box
+            sx={{
+              p: theme.spacing(6, 2, 3, 2),
+            }}
+            className="Section"
+          >
+            <ExploreHeader title="Fan messages" data={messages} size="sm" />
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gridAutoRows: "1fr",
+                gridTemplateRows: "auto",
+                gridColumnGap: 12,
+                gridRowGap: 32,
+                "@media(min-width: 480px)": {
+                  gridTemplateColumns: "1fr 1fr",
+                },
+                "@media(min-width: 600px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr",
+                },
+                "@media(min-width: 720px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                },
+                "@media(min-width: 840px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                },
+                "@media(min-width: 960px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr",
+                },
+                "@media(min-width: 1080px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                },
+                "@media(min-width: 1200px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                },
+              }}
+              className="SectionContents"
+            >
+              {fanMessages.map((item, index) => {
+                return (
+                  <MessageItem
+                    key={index}
+                    item={item}
+                    index={index}
+                    focusedIndex={focusedIndex}
+                    setFocusedIndex={setFocusedIndex}
+                  />
+                );
+              })}
+            </Box>
+          </Box>
+        )}
       </Box>
     </>
   );

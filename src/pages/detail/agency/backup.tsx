@@ -1,19 +1,19 @@
 import { Box, Stack, Typography } from "@mui/material";
-import { theme } from "../../themes/theme";
-import { agencies } from "../../data/agency";
-import AgencyItem from "../../components/molecules/AgencyItem";
+import { theme } from "../../../themes/theme";
+import { agencies } from "../../../data/agency";
+import AgencyItem from "../../../components/molecules/AgencyItem";
 import _ from "lodash";
-import ExploreHeader from "../../components/organisms/ExploreHeader";
+import ExploreHeader from "../../../components/organisms/ExploreHeader";
 import { useRouter } from "next/router";
-import youhaGrey from "../../constants/youhaGrey";
-import Visual from "../../components/atoms/Visual";
-import { groups } from "../../data/group";
-import GroupItem from "../../components/molecules/GroupItem";
-import { artists } from "../../data/artist";
-import ArtistItem from "../../components/molecules/ArtistItem";
-import youhaBlue from "../../constants/youhaBlue";
-import Icon from "../../components/atoms/Icon";
-import DataSection from "../../components/organisms/DataSection";
+import youhaGrey from "../../../constants/youhaGrey";
+import Visual from "../../../components/atoms/Visual";
+import { groups } from "../../../data/group";
+import GroupItem from "../../../components/molecules/GroupItem";
+import { artists } from "../../../data/artist";
+import ArtistItem from "../../../components/molecules/ArtistItem";
+import youhaBlue from "../../../constants/youhaBlue";
+import Icon from "../../../components/atoms/Icon";
+import DataSection from "../../../components/organisms/DataSection";
 import Link from "next/link";
 
 export default function Index() {
@@ -319,7 +319,7 @@ function Page({ id }: { id: string | string[] }) {
                 >
                   <Icon
                     name="users"
-                    color={youhaBlue[400]}
+                    color={youhaBlue[500]}
                     size={20}
                     prefix="fas"
                   />
@@ -342,7 +342,7 @@ function Page({ id }: { id: string | string[] }) {
                 >
                   <Icon
                     name="user"
-                    color={youhaBlue[400]}
+                    color={youhaBlue[500]}
                     size={20}
                     prefix="fas"
                   />

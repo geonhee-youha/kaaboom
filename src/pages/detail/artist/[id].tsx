@@ -6,41 +6,45 @@ import {
   Typography,
   alpha,
 } from "@mui/material";
-import { theme } from "../../themes/theme";
-import { agencies } from "../../data/agency";
-import AgencyItem from "../../components/molecules/AgencyItem";
+import { theme } from "../../../themes/theme";
+import { agencies } from "../../../data/agency";
+import AgencyItem from "../../../components/molecules/AgencyItem";
 import _ from "lodash";
-import ExploreHeader from "../../components/organisms/ExploreHeader";
+import ExploreHeader from "../../../components/organisms/ExploreHeader";
 import { useRouter } from "next/router";
-import youhaGrey from "../../constants/youhaGrey";
-import Visual from "../../components/atoms/Visual";
-import { groups } from "../../data/group";
-import GroupItem from "../../components/molecules/GroupItem";
-import { artists } from "../../data/artist";
-import ArtistItem from "../../components/molecules/ArtistItem";
-import youhaBlue from "../../constants/youhaBlue";
-import Icon from "../../components/atoms/Icon";
-import DataSection from "../../components/organisms/DataSection";
+import youhaGrey from "../../../constants/youhaGrey";
+import Visual from "../../../components/atoms/Visual";
+import { groups } from "../../../data/group";
+import GroupItem from "../../../components/molecules/GroupItem";
+import { artists } from "../../../data/artist";
+import ArtistItem from "../../../components/molecules/ArtistItem";
+import youhaBlue from "../../../constants/youhaBlue";
+import Icon from "../../../components/atoms/Icon";
+import DataSection from "../../../components/organisms/DataSection";
 import Link from "next/link";
 import moment from "moment";
-import { messages } from "../../data/message";
-import MessageItem from "../../components/molecules/MessageItem";
+import { messages } from "../../../data/message";
+import MessageItem from "../../../components/molecules/MessageItem";
 import { MouseEvent, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import IconButton from "../../components/atoms/IconButton";
+import IconButton from "../../../components/atoms/IconButton";
 import { pink, yellow } from "@mui/material/colors";
-import Button from "../../components/atoms/Button";
-import { faqs, howKaboomWorks, purchaseTypes } from "../../data";
-import FaqItem from "../../components/molecules/FaqItem";
-import { reviews } from "../../data/review";
-import Typo from "../../components/atoms/Typo";
-import Page from "../../components/atoms/Page";
+import Button from "../../../components/atoms/Button";
+import { faqs, howKaboomWorks, videoTypes } from "../../../data";
+import FaqItem from "../../../components/molecules/FaqItem";
+import { reviews } from "../../../data/review";
+import Typo from "../../../components/atoms/Typo";
+import Page from "../../../components/atoms/Page";
+import { comma } from "../../../utils";
+import { useRecoilState } from "recoil";
+import { favoriteIdsState } from "../../../constants/recoils";
 
 export default function Index() {
-  return <Page
-    needId
-    aside
-  ><Inner /></Page>
+  return (
+    <Page needId aside>
+      <Inner />
+    </Page>
+  );
 }
 
 function Inner() {
@@ -48,9 +52,9 @@ function Inner() {
   const { id } = router.query;
   const item =
     artists[
-    _.findIndex(artists, (e) => {
-      return e.id === id;
-    })
+      _.findIndex(artists, (e) => {
+        return e.id === id;
+      })
     ];
   const artist = item;
   const bodies = [
@@ -60,9 +64,9 @@ function Inner() {
   ];
   const group =
     groups[
-    _.findIndex(groups, (el) => {
-      return el.name === item.group?.name;
-    })
+      _.findIndex(groups, (el) => {
+        return el.name === item.group?.name;
+      })
     ];
   const groupArtists = _.filter(artists, (el) => {
     return el.group?.name === group.name;
@@ -71,12 +75,21 @@ function Inner() {
     return _.flatMap(item.agencies, (el) => el.name).includes(e.name);
   });
   const [focusedIndex, setFocusedIndex] = useState<number>(-1);
-  const [favorite, setFavorite] = useState<boolean>(false);
+  const [favoriteIds, setFavoriteIDs] = useRecoilState(favoriteIdsState);
+  const favorite = _.findIndex(favoriteIds, (el) => el === item.id) !== -1;
   const onClickFavorite = (
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
   ) => {
     e.preventDefault();
-    setFavorite(!favorite);
+    setFavoriteIDs((prev) => {
+      let prevState = _.cloneDeep(prev);
+      if (favorite) {
+        prevState = _.filter(prevState, (el) => el !== item.id);
+      } else {
+        prevState = [...prevState, item.id];
+      }
+      return prevState;
+    });
   };
   const [messageSwiper, setMessageSwiper] = useState<any>(null);
   const [messageSwiperIndex, setMessageSwiperIndex] = useState<number>(0);
@@ -108,8 +121,10 @@ function Inner() {
     if (reviewSwiperIndex === reviews.length - 1) return;
     reviewSwiper.slideTo(reviewSwiperIndex + 1);
   };
-  const [purchaseType, setPurchaseType] = useState<string>("");
-  const onClickPurchase = () => { };
+  const [videoType, setVideoType] = useState<string>("");
+  const onClickOrder = () => {
+    router.push(`/order?id=${id}&videoType=${videoType}`);
+  };
   const data = [
     {
       label: "Real name",
@@ -142,7 +157,6 @@ function Inner() {
             item.body.weight ?? "",
             item.body.bloodType ?? "",
           ].map((item, index) => {
-            console.log(item);
             return (
               <span key={index} style={{ marginRight: 4 }}>
                 {item}
@@ -151,10 +165,10 @@ function Inner() {
                   _.filter(bodies, (el) => {
                     return el !== "";
                   }).length -
-                  1 ||
-                  _.filter(bodies, (el) => {
-                    return el !== "";
-                  }).length === 1
+                    1 ||
+                _.filter(bodies, (el) => {
+                  return el !== "";
+                }).length === 1
                   ? ""
                   : ", "}
               </span>
@@ -238,6 +252,7 @@ function Inner() {
           {artistAgencies.map((item, index) => {
             return (
               <Box
+                key={index}
                 sx={{
                   display: "inline-flex",
                   position: "relative",
@@ -249,11 +264,8 @@ function Inner() {
                   mr: 1,
                 }}
               >
-                <Link href={`/agency/${item.id}`} passHref>
-                  <a
-                    href={`/agency/${item.id}`}
-                    style={{ textDecoration: "underline", cursor: "pointer" }}
-                  >
+                <Link href={`/detail/agency/${item.id}`} passHref>
+                  <a style={{ textDecoration: "underline", cursor: "pointer" }}>
                     <Visual
                       src={item.thumbnail}
                       absolute
@@ -390,18 +402,275 @@ function Inner() {
   ];
   return (
     <>
-      <Box
-        sx={{
-          flex: 1,
-          p: theme.spacing(0, 0, 12, 0),
-          "@media(min-width: 960px)": {
-            width: `calc(100vw - 420px)`,
-            maxWidth: `calc(1280px - 420px)`,
-          },
-          width: "100%",
-        }}
-      >
-        <Box sx={{ width: "100%", p: theme.spacing(6, 2, 3, 2), }}>
+      <Box>
+        <Box
+          sx={{
+            position: "sticky",
+            top: 56,
+            width: "100%",
+          }}
+        >
+          <Box
+            sx={{
+              p: theme.spacing(6, 2, 3, 2),
+              "@media(min-width: 960px)": {
+                p: theme.spacing(6, 2),
+              },
+            }}
+            className="Section"
+          >
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <Box
+                sx={{
+                  position: "relative",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                  "@media(min-width: 960px)": {
+                    flexDirection: "column",
+                  },
+                }}
+              >
+                <Box
+                  sx={{
+                    "@media(min-width: 960px)": {
+                      position: "relative",
+                    },
+                  }}
+                >
+                  <IconButton
+                    name={"heart"}
+                    sx={{
+                      position: "absolute",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      "@media(min-width: 960px)": {
+                        top: 4,
+                        right: 4,
+                        transform: "none",
+                      },
+                      right: 0,
+                      zIndex: 99,
+                      boxShadow:
+                        "0px 3px 5px -1px rgba(0,0,0,0.2), 0px 5px 8px 0px rgba(0,0,0,0.14), 0px 1px 14px 0px rgba(0,0,0,0.12)",
+                    }}
+                    backgroundColor={alpha(youhaGrey[800], 1)}
+                    borderColor={youhaGrey[700]}
+                    prefix={favorite ? "fas" : "far"}
+                    onClick={onClickFavorite}
+                    color={favorite ? pink[400] : "#ffffff"}
+                  />
+                  <Box
+                    sx={{
+                      position: "relative",
+                      width: 128,
+                      height: 128,
+                      "@media(min-width: 960px)": {
+                        width: 180,
+                        height: 180,
+                      },
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        position: "relative",
+                        width: "100%",
+                        height: "100%",
+                        border: `1px solid ${youhaGrey[700]}`,
+                        borderRadius: "50%",
+                        overflow: "hidden",
+                        aspectRatio: `1`,
+                        p: theme.spacing(2),
+                      }}
+                    >
+                      <Visual src={item.thumbnail} absolute noScale={false} />
+                    </Box>
+                    {group && (
+                      <Link href={`/group/${group.id}`} passHref>
+                        <ButtonBase
+                          sx={{
+                            position: "absolute",
+                            bottom: 4,
+                            left: 4,
+                            zIndex: 99,
+                            overflow: "hidden",
+                            borderRadius: 20,
+                            width: 40,
+                            height: 40,
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            border: `1px solid ${youhaGrey[700]}`,
+                          }}
+                        >
+                          <Visual src={group.thumbnail} absolute noScale />
+                        </ButtonBase>
+                      </Link>
+                    )}
+                  </Box>
+                </Box>
+                <Box
+                  sx={{
+                    flex: 1,
+                    p: theme.spacing(0, 7, 0, 2),
+                    "@media(min-width: 960px)": {
+                      flex: "initial",
+                      p: theme.spacing(1, 0, 0, 0),
+                    },
+                  }}
+                >
+                  <Box
+                    sx={{
+                      "@media(min-width: 960px)": {
+                        textAlign: "center",
+                      },
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        fontSize: 24,
+                        lineHeight: "36px",
+                        fontWeight: "700",
+                        color: `#ffffff !important`,
+                      }}
+                    >
+                      {item.name}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: 14,
+                        lineHeight: "20px",
+                        color: youhaGrey[300],
+                      }}
+                    >
+                      {item.group?.name ?? "SOLO"}
+                    </Typography>
+                  </Box>
+                  <Box
+                    sx={{
+                      m: theme.spacing(0.75, 0, 0, 0),
+                      display: "flex",
+                      flexWrap: "wrap",
+                      "& > *": {
+                        p: theme.spacing(0.25, 0),
+                        "&:not(:nth-of-type(3))": {
+                          mr: 2,
+                        },
+                      },
+                      "@media(min-width: 960px)": {
+                        justifyContent: "center",
+                      },
+                    }}
+                  >
+                    <Stack
+                      direction={"row"}
+                      spacing={0.5}
+                      alignItems={"center"}
+                    >
+                      <Icon
+                        name="heart"
+                        color={youhaBlue[500]}
+                        size={20}
+                        prefix="fas"
+                      />
+                      <Typography
+                        sx={{
+                          fontSize: 14,
+                          lineHeight: "20px",
+                          fontFamily: "Poppins",
+                          color: youhaGrey[200],
+                        }}
+                      >
+                        283
+                      </Typography>
+                    </Stack>
+                    <Stack
+                      direction={"row"}
+                      spacing={0.5}
+                      alignItems={"center"}
+                    >
+                      <Icon
+                        name="thumbs-up"
+                        color={youhaBlue[500]}
+                        size={20}
+                        prefix="fas"
+                      />
+                      <Typography
+                        sx={{
+                          fontSize: 14,
+                          lineHeight: "20px",
+                          fontFamily: "Poppins",
+                          color: youhaGrey[200],
+                        }}
+                      >
+                        1,230
+                      </Typography>
+                    </Stack>
+                    <Stack
+                      direction={"row"}
+                      spacing={0.5}
+                      alignItems={"center"}
+                    >
+                      <Icon
+                        name="film"
+                        color={youhaBlue[500]}
+                        size={20}
+                        prefix="fas"
+                      />
+                      <Typography
+                        sx={{
+                          fontSize: 14,
+                          lineHeight: "20px",
+                          fontFamily: "Poppins",
+                          color: youhaGrey[200],
+                        }}
+                      >
+                        00:24
+                      </Typography>
+                    </Stack>
+                  </Box>
+                </Box>
+              </Box>
+              <Typo
+                lines={10}
+                sx={{
+                  m: theme.spacing(2, 0, 0, 0),
+                  fontSize: 14,
+                  lineHeight: "20px",
+                  color: youhaGrey[200],
+                  "@media(min-width: 960px)": {
+                    m: theme.spacing(1.75, 0, 0, 0),
+                  },
+                }}
+              >
+                {item.bio}
+              </Typo>
+              <Box
+                sx={{
+                  display: "none",
+                  "@media(min-width: 960px)": {
+                    display: "flex",
+                  },
+                }}
+              >
+                <DataSection
+                  data={data}
+                  sx={{
+                    m: theme.spacing(4, 0, 0, 0),
+                  }}
+                />
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+      </Box>
+      <Box>
+        <Box sx={{ width: "100%", p: theme.spacing(6, 2, 3, 2) }}>
           <Typography
             sx={{
               fontSize: 20,
@@ -423,7 +692,7 @@ function Inner() {
               <Box
                 sx={{
                   display: "flex",
-                  "& > *:not(:nth-child(1))": {
+                  "& > *:not(:nth-of-type(1))": {
                     ml: 1.5,
                   },
                 }}
@@ -437,20 +706,22 @@ function Inner() {
                     // m: theme.spacing(2, 0, 0, 0)
                   }}
                 >
-                  {purchaseTypes.map((item, index) => {
-                    const focused = purchaseType === item.value;
+                  {videoTypes.map((item, index) => {
+                    const focused = videoType === item.value;
                     const onClick = () => {
-                      setPurchaseType(focused ? "" : item.value);
+                      setVideoType(focused ? "" : item.value);
                     };
                     return (
                       <ButtonBase
+                        key={index}
                         onClick={onClick}
                         sx={{
                           flex: 1,
-                          border: `1px solid ${focused ? youhaBlue[400] : youhaGrey[200]
-                            }`,
+                          border: `1px solid ${
+                            focused ? youhaBlue[500] : youhaGrey[400]
+                          }`,
                           backgroundColor: focused
-                            ? alpha(youhaBlue[400], 0.4)
+                            ? alpha(youhaBlue[500], 0.4)
                             : youhaGrey[700],
                           borderRadius: 1,
                           p: theme.spacing(2),
@@ -662,15 +933,17 @@ function Inner() {
                 <Button
                   size="lg"
                   fullWidth
-                  // backgroundColor={youhaBlue[500]}
                   backgroundColor={`linear-gradient(135deg, ${alpha(
-                    youhaBlue[400],
+                    youhaBlue[500],
                     1
                   )}, ${alpha(youhaBlue[800], 1)})`}
                   color={"#ffffff"}
+                  onClick={onClickOrder}
                 >
                   Get a personal video reply $
-                  {purchaseType === "long" ? `1,250,00` : `250.00`}
+                  {videoType === "long"
+                    ? `${comma(videoTypes[1].price)}.00`
+                    : `${comma(videoTypes[0].price)}.00`}
                 </Button>
               </Stack>
               <Box
@@ -829,7 +1102,7 @@ function Inner() {
                       aspectRatio: `9 / 16`,
                       borderRadius: 1,
                       overflow: "hidden",
-                      "& > div:first-child": {
+                      "& > div:nth-of-type(1)": {
                         width: "100% !important",
                         height: "100% !important",
                       },
@@ -845,7 +1118,7 @@ function Inner() {
                         opacity: 0,
                       },
                       background: `linear-gradient(135deg, ${alpha(
-                        youhaBlue[400],
+                        youhaBlue[500],
                         1
                       )}, ${alpha(youhaBlue[800], 1)})`,
                       display: "flex",
@@ -855,7 +1128,7 @@ function Inner() {
                       p: theme.spacing(2),
                       textAlign: "center",
                     }}
-                    onClick={onClickPurchase}
+                    onClick={onClickOrder}
                   >
                     <Box
                       sx={{
@@ -915,37 +1188,39 @@ function Inner() {
                 );
               })}
             </Swiper>
-            <Stack
-              direction={"row"}
-              spacing={1}
-              sx={{
-                mt: 2,
-                "@media(max-width: 480px)": {
-                  p: theme.spacing(0, 2),
-                },
-              }}
-            >
-              <Icon name="bolt" prefix="fas" size={24} color={yellow[400]} />
-              <Box>
-                <Typography
-                  sx={{
-                    fontSize: 14,
-                    lineHeight: `20px`,
-                  }}
-                >
-                  24hr delivery
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: 14,
-                    lineHeight: `20px`,
-                    color: youhaGrey[200],
-                  }}
-                >
-                  For every occasion
-                </Typography>
-              </Box>
-            </Stack>
+            {item.quickResponse && (
+              <Stack
+                direction={"row"}
+                spacing={1}
+                sx={{
+                  mt: 2,
+                  "@media(max-width: 480px)": {
+                    p: theme.spacing(0, 2),
+                  },
+                }}
+              >
+                <Icon name="bolt" prefix="fas" size={24} color={yellow[400]} />
+                <Box>
+                  <Typography
+                    sx={{
+                      fontSize: 14,
+                      lineHeight: `20px`,
+                    }}
+                  >
+                    24hr delivery
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: 14,
+                      lineHeight: `20px`,
+                      color: youhaGrey[200],
+                    }}
+                  >
+                    For every occasion
+                  </Typography>
+                </Box>
+              </Stack>
+            )}
           </Box>
         </Stack>
         <Box
@@ -971,7 +1246,7 @@ function Inner() {
           <DataSection
             data={data}
             sx={{
-              m: theme.spacing(2, 0, 0, 0)
+              m: theme.spacing(2, 0, 0, 0),
             }}
           />
         </Box>
@@ -1056,7 +1331,7 @@ function Inner() {
                 display: "flex",
                 position: "relative",
                 flexDirection: "column",
-                "& > div:not(:nth-child(1))": {
+                "& > div:not(:nth-of-type(1))": {
                   m: theme.spacing(2, 0, 0, 0),
                 },
                 "&:after": {
@@ -1070,7 +1345,7 @@ function Inner() {
                 },
                 "@media(min-width: 960px)": {
                   flexDirection: "row",
-                  "& > div:not(:nth-child(1))": {
+                  "& > div:not(:nth-of-type(1))": {
                     m: theme.spacing(0, 0, 0, 4),
                   },
                   "&:after": {
@@ -1322,7 +1597,7 @@ function Inner() {
                         </Typography>
                         <Icon
                           name="thumbs-up"
-                          color={youhaBlue[400]}
+                          color={youhaBlue[500]}
                           prefix="fas"
                           size={20}
                         />
@@ -1445,283 +1720,6 @@ function Inner() {
             {faqs.map((item, index) => {
               return <FaqItem key={index} item={item} />;
             })}
-          </Box>
-        </Box>
-      </Box>
-      <Box
-        component={"aside"}
-        sx={{
-          width: "100%",
-          "@media(min-width: 960px)": {
-            width: 420,
-            display: "block",
-            p: theme.spacing(0, 2, 12, 0),
-          },
-        }}
-      >
-        <Box
-          sx={{
-            position: "sticky",
-            top: 56,
-            width: "100%",
-          }}
-        >
-          <Box
-            sx={{
-              p: theme.spacing(6, 2, 3, 2),
-              "@media(min-width: 960px)": {
-                p: theme.spacing(6, 2),
-              },
-            }}
-            className="Section"
-          >
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <Box
-                sx={{
-                  position: "relative",
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  "@media(min-width: 960px)": {
-                    flexDirection: "column",
-                  },
-                }}
-              >
-                <Box
-                  sx={{
-                    "@media(min-width: 960px)": {
-                      position: "relative",
-                    },
-                  }}
-                >
-                  <IconButton
-                    name={"heart"}
-                    sx={{
-                      position: "absolute",
-                      top: "50%",
-                      transform: "translateY(-50%)",
-                      "@media(min-width: 960px)": {
-                        top: 4,
-                        right: 4,
-                        transform: "none",
-                      },
-                      right: 0,
-                      zIndex: 99,
-                      boxShadow:
-                        "0px 3px 5px -1px rgba(0,0,0,0.2), 0px 5px 8px 0px rgba(0,0,0,0.14), 0px 1px 14px 0px rgba(0,0,0,0.12)",
-                    }}
-                    backgroundColor={alpha(youhaGrey[800], 1)}
-                    borderColor={youhaGrey[700]}
-                    prefix={favorite ? "fas" : "far"}
-                    onClick={onClickFavorite}
-                    color={favorite ? pink[400] : "#ffffff"}
-                  />
-                  <Box
-                    sx={{
-                      position: "relative",
-                      width: 128,
-                      height: 128,
-                      "@media(min-width: 960px)": {
-                        width: 180,
-                        height: 180,
-                      },
-                    }}
-                  >
-                    <Box
-                      sx={{
-                        position: "relative",
-                        width: "100%",
-                        height: "100%",
-                        border: `1px solid ${youhaGrey[700]}`,
-                        borderRadius: "50%",
-                        overflow: "hidden",
-                        aspectRatio: `1`,
-                        p: theme.spacing(2),
-                      }}
-                    >
-                      <Visual src={item.thumbnail} absolute noScale={false} />
-                    </Box>
-                    {group && (
-                      <Link href={`/group/${group.id}`} passHref>
-                        <ButtonBase
-                          sx={{
-                            position: "absolute",
-                            bottom: 4,
-                            left: 4,
-                            zIndex: 99,
-                            overflow: "hidden",
-                            borderRadius: 20,
-                            width: 40,
-                            height: 40,
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            border: `1px solid ${youhaGrey[700]}`,
-                          }}
-                        >
-                          <Visual src={group.thumbnail} absolute noScale />
-                        </ButtonBase>
-                      </Link>
-                    )}
-                  </Box>
-                </Box>
-                <Box
-                  sx={{
-                    flex: 1,
-                    p: theme.spacing(0, 7, 0, 2),
-                    "@media(min-width: 960px)": {
-                      flex: "initial",
-                      p: theme.spacing(1, 0, 0, 0),
-                    },
-                  }}
-                >
-                  <Box
-                    sx={{
-                      "@media(min-width: 960px)": {
-                        textAlign: "center",
-                      },
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        fontSize: 24,
-                        lineHeight: "36px",
-                        fontWeight: "700",
-                        color: `#ffffff !important`,
-                      }}
-                    >
-                      {item.name}
-                    </Typography>
-                    <Typography
-                      sx={{
-                        fontSize: 14,
-                        lineHeight: "20px",
-                        color: youhaGrey[300],
-                      }}
-                    >
-                      {item.group?.name ?? "SOLO"}
-                    </Typography>
-                  </Box>
-                  <Box
-                    sx={{
-                      m: theme.spacing(0.75, 0, 0, 0),
-                      display: "flex",
-                      flexWrap: "wrap",
-                      "& > *": {
-                        p: theme.spacing(0.25, 0),
-                        "&:not(:nth-child(3))": {
-                          mr: 2,
-                        },
-                      },
-                      "@media(min-width: 960px)": {
-                        justifyContent: "center",
-                      },
-                    }}
-                  >
-                    <Stack
-                      direction={"row"}
-                      spacing={0.5}
-                      alignItems={"center"}
-                    >
-                      <Icon
-                        name="heart"
-                        color={youhaBlue[400]}
-                        size={20}
-                        prefix="fas"
-                      />
-                      <Typography
-                        sx={{
-                          fontSize: 14,
-                          lineHeight: "20px",
-                          fontFamily: "Poppins",
-                          color: youhaGrey[200],
-                        }}
-                      >
-                        283
-                      </Typography>
-                    </Stack>
-                    <Stack
-                      direction={"row"}
-                      spacing={0.5}
-                      alignItems={"center"}
-                    >
-                      <Icon
-                        name="thumbs-up"
-                        color={youhaBlue[400]}
-                        size={20}
-                        prefix="fas"
-                      />
-                      <Typography
-                        sx={{
-                          fontSize: 14,
-                          lineHeight: "20px",
-                          fontFamily: "Poppins",
-                          color: youhaGrey[200],
-                        }}
-                      >
-                        1,230
-                      </Typography>
-                    </Stack>
-                    <Stack
-                      direction={"row"}
-                      spacing={0.5}
-                      alignItems={"center"}
-                    >
-                      <Icon
-                        name="film"
-                        color={youhaBlue[400]}
-                        size={20}
-                        prefix="fas"
-                      />
-                      <Typography
-                        sx={{
-                          fontSize: 14,
-                          lineHeight: "20px",
-                          fontFamily: "Poppins",
-                          color: youhaGrey[200],
-                        }}
-                      >
-                        00:24
-                      </Typography>
-                    </Stack>
-                  </Box>
-                </Box>
-              </Box>
-              <Typo
-                lines={10}
-                sx={{
-                  m: theme.spacing(2, 0, 0, 0),
-                  fontSize: 14,
-                  lineHeight: "20px",
-                  color: youhaGrey[200],
-                  "@media(min-width: 960px)": {
-                    m: theme.spacing(1.75, 0, 0, 0),
-                  },
-                }}
-              >
-                {item.bio}
-              </Typo>
-              <Box
-                sx={{
-                  display: "none",
-                  "@media(min-width: 960px)": {
-                    display: "flex",
-                  },
-                }}
-              >
-                <DataSection
-                  data={data}
-                  sx={{
-                    m: theme.spacing(4, 0, 0, 0),
-                  }}
-                />
-              </Box>
-            </Box>
           </Box>
         </Box>
       </Box>

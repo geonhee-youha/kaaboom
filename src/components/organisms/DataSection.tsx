@@ -89,7 +89,7 @@ export default function DataSection({
           width: "100%",
           borderRadius: 1,
           border: `1px solid ${youhaGrey[700]}`,
-          "& > *:not(:nth-child(1))": {
+          "& > *:not(:nth-of-type(1))": {
             borderTop: `1px solid ${youhaGrey[700]}`,
           },
           display: "flex",

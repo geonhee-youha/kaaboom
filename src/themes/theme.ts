@@ -12,7 +12,7 @@ export const theme = createTheme({
   palette: {
     mode: "dark",
     primary: {
-      main: youhaBlue[400],
+      main: youhaBlue[500],
       ...youhaBlue
     },
     secondary: purple,

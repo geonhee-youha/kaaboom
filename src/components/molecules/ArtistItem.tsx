@@ -15,10 +15,13 @@ import Link from "next/link";
 import youhaBlue from "../../constants/youhaBlue";
 import Icon from "../atoms/Icon";
 import { pink, yellow } from "@mui/material/colors";
-import _ from "lodash";
+import _, { findIndex } from "lodash";
 import { groups } from "../../data/group";
 import { MouseEvent, useState } from "react";
 import { colored } from "../../utils";
+import { videoTypes } from "../../data";
+import { useRecoilState } from "recoil";
+import { favoriteIdsState } from "../../constants/recoils";
 
 export default function ArtistItem({
   item,
@@ -27,21 +30,30 @@ export default function ArtistItem({
   item: ArtistProps;
   searchText?: string;
 }) {
-  const [favorite, setFavorite] = useState<boolean>(false);
   const group =
-    groups[
-      _.findIndex(groups, (e) => {
-        return item.group !== undefined && e.name === item.group.name;
-      })
-    ];
+  groups[
+    _.findIndex(groups, (e) => {
+      return item.group !== undefined && e.name === item.group.name;
+    })
+  ];
+  const [favoriteIds, setFavoriteIDs] = useRecoilState(favoriteIdsState);
+  const favorite = _.findIndex(favoriteIds, (el) => el === item.id) !== -1;
   const onClickFavorite = (
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
   ) => {
     e.preventDefault();
-    setFavorite(!favorite);
+    setFavoriteIDs((prev) => {
+      let prevState = _.cloneDeep(prev);
+      if (favorite) {
+        prevState = _.filter(prevState, (el) => el !== item.id);
+      } else {
+        prevState = [...prevState, item.id];
+      }
+      return prevState;
+    });
   };
   return (
-    <Link href={`/artist/${item.id}`} passHref>
+    <Link href={`/detail/artist/${item.id}`} passHref>
       <ButtonBase
         sx={{
           flexDirection: "column",
@@ -96,6 +108,7 @@ export default function ArtistItem({
                   alignItems: "center",
                   border: `1px solid ${youhaGrey[700]}`,
                   cursor: "pointer",
+                  backgroundColor: youhaGrey[600]
                 }}
               >
                 <Visual src={group.thumbnail} absolute noScale />
@@ -106,10 +119,10 @@ export default function ArtistItem({
         <Box
           sx={{
             m: theme.spacing(1, 0, 0, 0),
-            '& .pink': {
+            "& .pink": {
               color: `${pink[400]} !important`,
-              lineHeight: 'inherit !important'
-            }
+              lineHeight: "inherit !important",
+            },
           }}
         >
           <Typography
@@ -144,7 +157,7 @@ export default function ArtistItem({
           }}
         >
           <Stack direction={"row"} spacing={0.25} alignItems={"center"}>
-            <Icon name="heart" color={youhaBlue[400]} size={16} prefix="fas" />
+            <Icon name="heart" color={youhaBlue[500]} size={16} prefix="fas" />
             <Typography
               sx={{
                 fontSize: 12,
@@ -159,7 +172,7 @@ export default function ArtistItem({
           <Stack direction={"row"} spacing={0.25} alignItems={"center"}>
             <Icon
               name="thumbs-up"
-              color={youhaBlue[400]}
+              color={youhaBlue[500]}
               size={16}
               prefix="fas"
             />
@@ -175,7 +188,7 @@ export default function ArtistItem({
             </Typography>
           </Stack>
           <Stack direction={"row"} spacing={0.25} alignItems={"center"}>
-            <Icon name="film" color={youhaBlue[400]} size={16} prefix="fas" />
+            <Icon name="film" color={youhaBlue[500]} size={16} prefix="fas" />
             <Typography
               sx={{
                 fontSize: 12,
@@ -204,7 +217,7 @@ export default function ArtistItem({
                 fontFamily: "Poppins",
               }}
             >
-              $250.00
+              ${videoTypes[0].price}.00
             </Typography>
           </Stack>
           {item.quickResponse && (

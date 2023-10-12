@@ -100,7 +100,6 @@ export const artists: ArtistProps[] = [
         link: "https://twitter.com/b_fatou_s",
       },
     ],
-    quickResponse: true,
     bio: (
       <>
         Hey army💜 I want to invite you to a wonderful group on 𝐓𝐄-𝐋𝐄 𝐆𝐑𝐌
@@ -153,7 +152,6 @@ export const artists: ArtistProps[] = [
         link: "https://www.instagram.com/n_v.ee/",
       },
     ],
-    quickResponse: true,
     bio: (
       <>
         Hey army💜 I want to invite you to a wonderful group on 𝐓𝐄-𝐋𝐄 𝐆𝐑𝐌

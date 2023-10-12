@@ -22,10 +22,10 @@ export default function Checkbox({
       sx={{
         width: 20,
         height: 20,
-        borderRadius: 0.5,
-        boxShadow: `${focused ? color : youhaGrey[200]} 0px 0px 0px 1px`,
+        borderRadius: 0.25,
+        boxShadow: `${focused ? color : youhaGrey[400]} 0px 0px 0px 1px`,
         m: theme.spacing(0, 1, 0, 0),
-        backgroundColor: focused ? color : "#ffffff",
+        backgroundColor: focused ? color : youhaGrey[600],
         display: "flex",
         justifyContent: "center",
         alignItems: "center",

@@ -67,7 +67,8 @@ export default function Index() {
   };
   return (
     <Page narrow>
-      <Box className="SectionTitle"
+      <Box
+        className="SectionTitle"
         sx={{
           p: theme.spacing(6, 2, 3, 2),
         }}
@@ -95,11 +96,11 @@ export default function Index() {
         <Input
           label="Your Email"
           value="lghjazzzz@naver.com"
-          onChange={() => { }}
+          onChange={() => {}}
           uneditable
           essential
           sx={{
-            m: theme.spacing(3, 0, 0, 0)
+            m: theme.spacing(3, 0, 0, 0),
           }}
         />
         <Input
@@ -114,13 +115,13 @@ export default function Index() {
           }
           essential
           sx={{
-            m: theme.spacing(3, 0, 0, 0)
+            m: theme.spacing(3, 0, 0, 0),
           }}
         />
         <FormControl
           fullWidth
           sx={{
-            m: theme.spacing(3, 0, 0, 0)
+            m: theme.spacing(3, 0, 0, 0),
           }}
         >
           <InputLabel>
@@ -149,10 +150,7 @@ export default function Index() {
               <img
                 src={`https://img.mobiscroll.com/demos/flags/${nation}.png`}
               />
-              {
-                nations[_.findIndex(nations, (el) => el.value === nation)]
-                  .text
-              }
+              {nations[_.findIndex(nations, (el) => el.value === nation)].text}
             </Typography>
             <Select
               labelId="demo-simple-select-label"
@@ -207,7 +205,7 @@ export default function Index() {
         <FormControl
           fullWidth
           sx={{
-            m: theme.spacing(3, 0, 0, 0)
+            m: theme.spacing(3, 0, 0, 0),
           }}
         >
           <InputLabel>
@@ -279,8 +277,9 @@ export default function Index() {
               : ""
           }
           sx={{
-            m: theme.spacing(3, 0, 0, 0)
+            m: theme.spacing(3, 0, 0, 0),
           }}
+          type="demical"
         />
         <Typography
           sx={{
@@ -291,7 +290,7 @@ export default function Index() {
               color: "#ffffff",
               textDecoration: "underline",
             },
-            m: theme.spacing(2, 0, 0, 0)
+            m: theme.spacing(2, 0, 0, 0),
           }}
         >
           By continuing you agree to KAABOOM's{" "}
@@ -305,12 +304,12 @@ export default function Index() {
           disabled={!isName(name) || nation === "" || !isBirthday(birthDate)}
           onClick={onClickSignup}
           sx={{
-            m: theme.spacing(6, 0, 0, 0)
+            m: theme.spacing(6, 0, 0, 0),
           }}
         >
           Sign up
         </Button>
       </Box>
-    </Page >
+    </Page>
   );
 }

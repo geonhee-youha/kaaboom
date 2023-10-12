@@ -1,27 +1,28 @@
 import { Box, Stack, Typography } from "@mui/material";
-import { theme } from "../../themes/theme";
-import { agencies } from "../../data/agency";
-import AgencyItem from "../../components/molecules/AgencyItem";
+import { theme } from "../../../themes/theme";
+import { agencies } from "../../../data/agency";
+import AgencyItem from "../../../components/molecules/AgencyItem";
 import _ from "lodash";
-import ExploreHeader from "../../components/organisms/ExploreHeader";
+import ExploreHeader from "../../../components/organisms/ExploreHeader";
 import { useRouter } from "next/router";
-import youhaGrey from "../../constants/youhaGrey";
-import Visual from "../../components/atoms/Visual";
-import { groups } from "../../data/group";
-import GroupItem from "../../components/molecules/GroupItem";
-import { artists } from "../../data/artist";
-import ArtistItem from "../../components/molecules/ArtistItem";
-import youhaBlue from "../../constants/youhaBlue";
-import Icon from "../../components/atoms/Icon";
-import DataSection from "../../components/organisms/DataSection";
+import youhaGrey from "../../../constants/youhaGrey";
+import Visual from "../../../components/atoms/Visual";
+import { groups } from "../../../data/group";
+import GroupItem from "../../../components/molecules/GroupItem";
+import { artists } from "../../../data/artist";
+import ArtistItem from "../../../components/molecules/ArtistItem";
+import youhaBlue from "../../../constants/youhaBlue";
+import Icon from "../../../components/atoms/Icon";
+import DataSection from "../../../components/organisms/DataSection";
 import Link from "next/link";
-import Page from "../../components/atoms/Page";
+import Page from "../../../components/atoms/Page";
 
 export default function Index() {
-  return <Page
-    needId
-    aside
-  ><Inner /></Page>
+  return (
+    <Page needId aside>
+      <Inner />
+    </Page>
+  );
 }
 
 function Inner() {
@@ -29,9 +30,9 @@ function Inner() {
   const { id } = router.query;
   const item =
     agencies[
-    _.findIndex(agencies, (e) => {
-      return e.id === id;
-    })
+      _.findIndex(agencies, (e) => {
+        return e.id === id;
+      })
     ];
   const agencyGroups = _.filter(groups, (e) => {
     return e.agency?.name === item.name;
@@ -41,10 +42,10 @@ function Inner() {
   });
   const parentCompany = item.parentCompany
     ? agencies[
-    _.findIndex(agencies, (e) => {
-      return e.name === item.parentCompany?.name;
-    })
-    ] ?? { name: item.parentCompany?.name }
+        _.findIndex(agencies, (e) => {
+          return e.name === item.parentCompany?.name;
+        })
+      ] ?? { name: item.parentCompany?.name }
     : null;
   const data = [
     {
@@ -131,116 +132,7 @@ function Inner() {
   ];
   return (
     <>
-      <Box sx={{ flex: 1, p: theme.spacing(0, 0, 12, 0) }}>
-        {agencyGroups.length > 0 && (
-          <Box
-            sx={{ p: theme.spacing(6, 2, 3, 2), }}
-            className="Section"
-          >
-            <ExploreHeader
-              title="Affiliated groups"
-              data={agencyGroups}
-              size="sm"
-            />
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gridAutoRows: "1fr",
-                gridTemplateRows: "auto",
-                gridColumnGap: 12,
-                gridRowGap: 32,
-                "@media(min-width: 480px)": {
-                  gridTemplateColumns: "1fr 1fr",
-                },
-                "@media(min-width: 600px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr",
-                },
-                "@media(min-width: 720px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
-                },
-                "@media(min-width: 840px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
-                },
-                "@media(min-width: 960px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr",
-                },
-                "@media(min-width: 1080px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
-                },
-                "@media(min-width: 1200px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
-                },
-              }}
-              className="SectionContents"
-            >
-              {agencyGroups.map((item, index) => {
-                return <GroupItem key={index} item={item} />;
-              })}
-            </Box>
-          </Box>
-        )}
-        {agencyArtists.length > 0 && (
-          <Box className="Section" sx={{
-            p: theme.spacing(6, 2, 3, 2),
-          }}
-          >
-            <ExploreHeader
-              title="Affiliated artists"
-              data={agencyArtists}
-              size="sm"
-            />
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gridAutoRows: "1fr",
-                gridTemplateRows: "auto",
-                gridColumnGap: 12,
-                gridRowGap: 32,
-                mb: -3,
-                "@media(min-width: 480px)": {
-                  gridTemplateColumns: "1fr 1fr",
-                },
-                "@media(min-width: 600px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr",
-                },
-                "@media(min-width: 720px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
-                },
-                "@media(min-width: 840px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
-                },
-                "@media(min-width: 960px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr",
-                },
-                "@media(min-width: 1080px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
-                },
-                "@media(min-width: 1200px)": {
-                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
-                },
-              }}
-              className="SectionContents"
-            >
-              {agencyArtists.map((item, index) => {
-                return <ArtistItem key={index} item={item} />;
-              })}
-            </Box>
-          </Box>
-        )}
-      </Box>
-      <Box
-        component={"aside"}
-        sx={{
-          width: "100%",
-          "@media(min-width: 960px)": {
-            width: 420,
-            display: "block",
-            p: theme.spacing(0, 2, 12, 0),
-          },
-        }}
-      >
+      <Box>
         <Box
           sx={{
             position: "sticky",
@@ -343,7 +235,7 @@ function Inner() {
                       flexWrap: "wrap",
                       "& > *": {
                         p: theme.spacing(0.25, 0),
-                        "&:not(:nth-child(3))": {
+                        "&:not(:nth-of-type(3))": {
                           mr: 2,
                         },
                       },
@@ -359,7 +251,7 @@ function Inner() {
                     >
                       <Icon
                         name="users"
-                        color={youhaBlue[400]}
+                        color={youhaBlue[500]}
                         size={20}
                         prefix="fas"
                       />
@@ -381,7 +273,7 @@ function Inner() {
                     >
                       <Icon
                         name="user"
-                        color={youhaBlue[400]}
+                        color={youhaBlue[500]}
                         size={20}
                         prefix="fas"
                       />
@@ -408,6 +300,104 @@ function Inner() {
             </Box>
           </Box>
         </Box>
+      </Box>
+      <Box>
+        {agencyGroups.length > 0 && (
+          <Box sx={{ p: theme.spacing(6, 2, 3, 2) }} className="Section">
+            <ExploreHeader
+              title="Affiliated groups"
+              data={agencyGroups}
+              size="sm"
+            />
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gridAutoRows: "1fr",
+                gridTemplateRows: "auto",
+                gridColumnGap: 12,
+                gridRowGap: 32,
+                "@media(min-width: 480px)": {
+                  gridTemplateColumns: "1fr 1fr",
+                },
+                "@media(min-width: 600px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr",
+                },
+                "@media(min-width: 720px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                },
+                "@media(min-width: 840px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                },
+                "@media(min-width: 960px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr",
+                },
+                "@media(min-width: 1080px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                },
+                "@media(min-width: 1200px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                },
+              }}
+              className="SectionContents"
+            >
+              {agencyGroups.map((item, index) => {
+                return <GroupItem key={index} item={item} />;
+              })}
+            </Box>
+          </Box>
+        )}
+        {agencyArtists.length > 0 && (
+          <Box
+            className="Section"
+            sx={{
+              p: theme.spacing(6, 2, 3, 2),
+            }}
+          >
+            <ExploreHeader
+              title="Affiliated artists"
+              data={agencyArtists}
+              size="sm"
+            />
+            <Box
+              sx={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gridAutoRows: "1fr",
+                gridTemplateRows: "auto",
+                gridColumnGap: 12,
+                gridRowGap: 32,
+                mb: -3,
+                "@media(min-width: 480px)": {
+                  gridTemplateColumns: "1fr 1fr",
+                },
+                "@media(min-width: 600px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr",
+                },
+                "@media(min-width: 720px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                },
+                "@media(min-width: 840px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                },
+                "@media(min-width: 960px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr",
+                },
+                "@media(min-width: 1080px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                },
+                "@media(min-width: 1200px)": {
+                  gridTemplateColumns: "1fr 1fr 1fr 1fr",
+                },
+              }}
+              className="SectionContents"
+            >
+              {agencyArtists.map((item, index) => {
+                return <ArtistItem key={index} item={item} />;
+              })}
+            </Box>
+          </Box>
+        )}
       </Box>
     </>
   );

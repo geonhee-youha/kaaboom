@@ -1,17 +1,21 @@
 import { Box, ButtonBase, Typography } from "@mui/material";
 import { MessageProps } from "../../data/message";
 import dynamic from "next/dynamic";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import {
+  Dispatch,
+  MouseEvent,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { theme } from "../../themes/theme";
 import { OnProgressProps } from "react-player/base";
-import Icon from "../atoms/Icon";
 import Visual from "../atoms/Visual";
 import { artists } from "../../data/artist";
 import _ from "lodash";
 import youhaGrey from "../../constants/youhaGrey";
 import { useInView } from "react-intersection-observer";
 import Typo from "../atoms/Typo";
-import Link from "next/link";
 import IconButton from "../atoms/IconButton";
 import { useRouter } from "next/router";
 
@@ -28,7 +32,7 @@ export default function MessageItem({
   focusedIndex: number;
   setFocusedIndex: Dispatch<SetStateAction<number>>;
 }) {
-  const router = useRouter()
+  const router = useRouter();
   const { ref, inView } = useInView();
   const [isWindow, setIsWindow] = useState<boolean>(false);
   const [playing, setPlaying] = useState<boolean>(false);
@@ -53,8 +57,22 @@ export default function MessageItem({
   const onProgress = (state: OnProgressProps) => {
     setProgress(Number(state.playedSeconds.toFixed(0)));
   };
+  const onClickArtist = (
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
+  ) => {
+    e.stopPropagation();
+    e.preventDefault();
+    router.push(`/artist/${artist.id}`);
+  };
   const onClickPlay = () => {
     setPlaying(!playing);
+  };
+  const onClickMute = (
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
+  ) => {
+    e.stopPropagation();
+    e.preventDefault();
+    setMuted(!muted);
   };
   const min = String(parseInt(" " + (duration % 3600) / 60)).padStart(2, "0");
   const sec = String(duration % 60).padStart(2, "0");
@@ -67,9 +85,9 @@ export default function MessageItem({
   const playedTime = playedMin + ":" + playedSec;
   const artist =
     artists[
-    _.findIndex(artists, (el) => {
-      return el.name === item.artist.name;
-    })
+      _.findIndex(artists, (el) => {
+        return el.name === item.artist.name;
+      })
     ];
   useEffect(() => {
     const focused = focusedIndex === index;
@@ -91,7 +109,7 @@ export default function MessageItem({
         aspectRatio: `9 / 16`,
         borderRadius: 1,
         overflow: "hidden",
-        "& > div:first-child": {
+        "& > div:nth-of-type(1)": {
           width: "100% !important",
           height: "100% !important",
         },
@@ -118,6 +136,13 @@ export default function MessageItem({
         url={`${item.src}`}
         onDuration={onDuration}
         onProgress={onProgress}
+        config={{
+          file: {
+            attributes: {
+              poster: item.thumbnail,
+            },
+          },
+        }}
       />
       <Box
         sx={{
@@ -153,9 +178,11 @@ export default function MessageItem({
           transition: `all 0.35s ease`,
         }}
       >
-        <Box sx={{
-          p: theme.spacing(1.5)
-        }}>
+        <Box
+          sx={{
+            p: theme.spacing(1.5),
+          }}
+        >
           <ButtonBase
             disableRipple
             sx={{
@@ -164,11 +191,7 @@ export default function MessageItem({
               transform: controlls ? "translateY(0)" : "translateY(40px)",
               transition: `all 0.35s ease`,
             }}
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              router.push(`/artist/${artist.id}`)
-            }}
+            onClick={onClickArtist}
           >
             <Visual
               sx={{
@@ -237,7 +260,7 @@ export default function MessageItem({
               fontSize: 12,
               lineHeight: "16px",
               transition: `all 0.35s ease`,
-              wordBreak: 'break-all'
+              wordBreak: "break-all",
             }}
           >
             {playedTime} / {time}
@@ -246,9 +269,7 @@ export default function MessageItem({
             name={!muted ? "volume" : "volume-xmark"}
             prefix="far"
             size={20}
-            onClick={() => {
-              setMuted(!muted);
-            }}
+            onClick={onClickMute}
             sx={{
               width: 40,
               height: 40,

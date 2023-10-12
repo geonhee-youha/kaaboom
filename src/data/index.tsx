@@ -11,18 +11,70 @@ export type LinkProps = {
   label?: string;
 };
 
-export const purchaseTypes = [
+export const videoTypes = [
   {
     value: "mini",
     label: "Mini",
     maxVideoLength: "15",
-    maxLetters: "45"
+    maxLetters: "45",
+    price: 20,
   },
   {
     value: "long",
     label: "Long",
     maxVideoLength: "45",
-    maxLetters: "200"
+    maxLetters: "200",
+    price: 90,
+  },
+];
+
+export const whomTypes = [
+  {
+    value: "someoneElse",
+    label: "Someone else",
+  },
+  {
+    value: "myself",
+    label: "Myself",
+  },
+];
+
+export const toOrFromTypes = [
+  {
+    value: "he",
+    label: "He/Him",
+  },
+  {
+    value: "she",
+    label: "She/Her",
+  },
+  {
+    value: "they",
+    label: "They/Them",
+  },
+];
+
+export const deliverySpeeds = [
+  {
+    value: "standard",
+    label: "Standard",
+    description: "Up to 7 days",
+  },
+  {
+    value: "24hr",
+    label: "24hr Delivery",
+    description: "Up to 24 hours",
+  },
+];
+
+export const paymentMethods = [
+  // {
+  //   value: "card",
+  //   label: "card",
+  // }, //추후 추가
+  {
+    value: "paypal",
+    label: "PayPal",
   },
 ];
 
@@ -45,6 +97,23 @@ export const howKaboomWorks = [
     title: "Share with loved ones",
     description:
       "Send the video to friends and family and don’t forget to capture their priceless reactions.",
+  },
+];
+
+export const howKaboomOrder = [
+  {
+    title: "Pick a celebrity",
+    description: "Browse thousands of stars offering personalized videos.",
+  },
+  {
+    title: "Write your request",
+    description:
+      "The more details you give, the more personalized your video will be.",
+  },
+  {
+    title: "Review and pay",
+    description:
+      "Choose your delivery speed and enter your payment information.",
   },
 ];
 
@@ -102,26 +171,28 @@ export const faqs: FaqProps[] = [
     ),
   },
   {
-    question: "What if the celebrity doesn’t accept or fulfill my request in time?",
-    answer: (
-      <>
-       If the request is declined or expires, we’ll notify you.
-      </>
-    ),
+    question:
+      "What if the celebrity doesn’t accept or fulfill my request in time?",
+    answer: <>If the request is declined or expires, we’ll notify you.</>,
   },
   {
     question: "Do I get to keep my personalized Cameo video?",
     answer: (
       <>
-        You sure do! You can always download the Cameo to your device, and it will live in your Cameo account.
+        You sure do! You can always download the Cameo to your device, and it
+        will live in your Cameo account.
       </>
     ),
   },
   {
-    question: "I’m not happy with my personalized Cameo video. Is there anything I can do?",
+    question:
+      "I’m not happy with my personalized Cameo video. Is there anything I can do?",
     answer: (
       <>
-       Unfortunately, personalized Cameo videos are non-refundable. If you believe your video is unusable or completely missed the mark of your request, please reach out to hello@cameo.com so our team can take a look.
+        Unfortunately, personalized Cameo videos are non-refundable. If you
+        believe your video is unusable or completely missed the mark of your
+        request, please reach out to hello@cameo.com so our team can take a
+        look.
       </>
     ),
   },
@@ -129,7 +200,8 @@ export const faqs: FaqProps[] = [
     question: "Can my video include closed captioning?",
     answer: (
       <>
-       Yes! Once you receive your Cameo video link, you'll have the option to turn on 'CC' at the top right corner of the video player.
+        Yes! Once you receive your Cameo video link, you'll have the option to
+        turn on 'CC' at the top right corner of the video player.
       </>
     ),
   },

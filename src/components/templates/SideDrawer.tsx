@@ -31,7 +31,7 @@ function NavItem({ item }: { item: { link: string; label: string } }) {
       >
         <Icon
           name="angle-down"
-          prefix="fas"
+          prefix="far"
           size={20}
           sx={{
             transition: `all 0.35s ease`,

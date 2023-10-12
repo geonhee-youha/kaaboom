@@ -84,14 +84,14 @@ export default function SearchDialog({ }: {}) {
               width: 56,
               height: 56,
               zIndex: 99,
-              "@media(min-width: 768px)": {
+              "@media(min-width: 961px)": {
                 color: `${youhaGrey[300]} !important`,
               },
             }}
             disableRipple
             name="search"
             size={24}
-            color={youhaBlue[400]}
+            color={youhaBlue[500]}
           />
           <InputBase
             value={value}

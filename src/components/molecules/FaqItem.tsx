@@ -88,7 +88,7 @@ export default function FaqItem({
                 height: 24,
                 color: youhaGrey[300],
               }}
-              prefix="fas"
+              prefix="far"
               className="icon-angle-down"
             />
           </Box>

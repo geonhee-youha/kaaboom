@@ -11,7 +11,7 @@ export default function Button({
   size = "md",
   fullWidth,
   name,
-  backgroundColor: backgroundColorOrigin = youhaBlue[400],
+  backgroundColor: backgroundColorOrigin = youhaBlue[500],
   color,
   borderColor,
   children,

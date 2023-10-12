@@ -69,8 +69,8 @@ export default function Index() {
         Math.round((file.size / 1024 / 1024) * 100) / 100 + "MB";
       alert(
         `${limitSize}MB 이하 파일만 등록할 수 있습니다.\n\n` +
-        "현재파일 용량 : " +
-        currentFileSize
+          "현재파일 용량 : " +
+          currentFileSize
       );
     }
     event.target.value = "";
@@ -117,9 +117,7 @@ export default function Index() {
     });
   };
   return (
-    <Page
-      narrow
-    >
+    <Page narrow>
       <Box
         sx={{
           display: "flex",
@@ -144,14 +142,14 @@ export default function Index() {
           />
           <label
             htmlFor="file-picker"
-          // onClick={() => {
-          //   setMessageLoader((prevState) => {
-          //     return {
-          //       ...prevState,
-          //       open: true,
-          //     };
-          //   });
-          // }}
+            // onClick={() => {
+            //   setMessageLoader((prevState) => {
+            //     return {
+            //       ...prevState,
+            //       open: true,
+            //     };
+            //   });
+            // }}
           >
             {thumbnail ? (
               <Box
@@ -207,8 +205,8 @@ export default function Index() {
                       tempUser.gender === "M"
                         ? indigo["A400"]
                         : tempUser.gender === "M"
-                          ? pink["A400"]
-                          : deepPurple["A400"],
+                        ? pink["A400"]
+                        : deepPurple["A400"],
                     border: `1px solid ${youhaGrey[600]}`,
                     display: "flex",
                     justifyContent: "center",
@@ -247,7 +245,7 @@ export default function Index() {
       <Input
         label="Your Email"
         value="lghjazzzz@naver.com"
-        onChange={() => { }}
+        onChange={() => {}}
         uneditable
         sx={{
           m: theme.spacing(6, 0, 0, 0),
@@ -279,9 +277,12 @@ export default function Index() {
           m: theme.spacing(3, 0, 0, 0),
         }}
       />
-      <FormControl fullWidth sx={{
-        m: theme.spacing(3, 0, 0, 0),
-      }}>
+      <FormControl
+        fullWidth
+        sx={{
+          m: theme.spacing(3, 0, 0, 0),
+        }}
+      >
         <InputLabel>Nation</InputLabel>
         <Box
           sx={{
@@ -308,9 +309,8 @@ export default function Index() {
                 <img
                   src={`https://img.mobiscroll.com/demos/flags/${nation}.png`}
                 />
-                {nations[
-                  _.findIndex(nations, (el) => el.value === nation)
-                ].text ?? ""}
+                {nations[_.findIndex(nations, (el) => el.value === nation)]
+                  .text ?? ""}
               </>
             ) : (
               ""
@@ -366,9 +366,12 @@ export default function Index() {
           </Select>
         </Box>
       </FormControl>
-      <FormControl fullWidth sx={{
-        m: theme.spacing(3, 0, 0, 0),
-      }}>
+      <FormControl
+        fullWidth
+        sx={{
+          m: theme.spacing(3, 0, 0, 0),
+        }}
+      >
         <InputLabel>Gender</InputLabel>
         <Select
           labelId="demo-simple-select-label"
@@ -437,6 +440,7 @@ export default function Index() {
         sx={{
           m: theme.spacing(3, 0, 0, 0),
         }}
+        type="demical"
       />
       <Typography
         sx={{
@@ -458,7 +462,9 @@ export default function Index() {
       <Button
         fullWidth
         size="lg"
-        disabled={!changable || !isName(name) || nation === "" || !isBirthday(birthDate)}
+        disabled={
+          !changable || !isName(name) || nation === "" || !isBirthday(birthDate)
+        }
         onClick={onClickSave}
         sx={{
           m: theme.spacing(6, 0, 0, 0),

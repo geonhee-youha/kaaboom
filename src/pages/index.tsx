@@ -89,7 +89,7 @@ export default function Index() {
         "& > *": {
           maxWidth: `calc((1280px - 32px - ${12 * (7 - 1)}px) / ${7})`,
           width: `calc((100vw - 32px - ${12 * (3 - 1)}px) / ${3})`,
-          ":not(:first-child)": {
+          ":not(:nth-of-type(1))": {
             ml: `11px`,
           },
           "@media(min-width: 480px)": {

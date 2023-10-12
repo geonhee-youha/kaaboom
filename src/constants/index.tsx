@@ -54,11 +54,11 @@ export const sorts = [
 export const genders = [
   {
     value: 'M',
-    text: 'male'
+    text: 'Male'
   },
   {
     value: 'F',
-    text: 'female'
+    text: 'Female'
   },
   {
     value: 'O',

@@ -52,7 +52,7 @@ export default function ExploreHeader({
           flexDirection: "column",
           alignItems: "flex-start",
           m: theme.spacing(0, 0, 2, 0),
-          "@media(min-width: 768px)": {
+          "@media(min-width: 961px)": {
             flexDirection: "row",
             alignItems: "center",
           },
@@ -71,7 +71,7 @@ export default function ExploreHeader({
         {/* <Stack
           sx={{
             m: theme.spacing(1, 0, 0, 0),
-            "@media(min-width: 768px)": {
+            "@media(min-width: 961px)": {
               m: theme.spacing(0, 0, 0, 0),
             },
           }}

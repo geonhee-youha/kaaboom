@@ -12,6 +12,7 @@ import { artists } from "../../data/artist";
 import { useRouter } from "next/router";
 import { pink } from "@mui/material/colors";
 import { colored } from "../../utils";
+import { MouseEvent } from "react";
 
 export default function GroupItem({
   item,
@@ -30,8 +31,14 @@ export default function GroupItem({
   const groupArtists = _.filter(artists, (el) => {
     return el.group !== undefined && el.group.name === item.name;
   });
+  const onClickAgency = (
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
+  ) => {
+    e.preventDefault();
+    router.push(`/agency/${agency.id}`);
+  };
   return (
-    <Link href={`/group/${item.id}`} passHref>
+    <Link href={`/detail/group/${item.id}`} passHref>
       <ButtonBase
         sx={{
           flexDirection: "column",
@@ -63,12 +70,8 @@ export default function GroupItem({
               <Visual src={item.thumbnail} absolute noScale={false} />
             </Box>
             {agency && (
-              <Paper
-                elevation={5}
-                onClick={(e) => {
-                  e.preventDefault();
-                  router.push(`/agency/${agency.id}`);
-                }}
+              <ButtonBase
+                onClick={onClickAgency}
                 sx={{
                   position: "absolute",
                   bottom: 4,
@@ -83,10 +86,12 @@ export default function GroupItem({
                   border: `1px solid ${youhaGrey[700]}`,
                   overflow: "hidden",
                   cursor: "pointer",
+                  backgroundColor: youhaGrey[600]
                 }}
+                disableRipple
               >
                 <Visual src={agency.thumbnail} absolute noScale />
-              </Paper>
+              </ButtonBase>
             )}
           </Box>
           <Box
@@ -132,7 +137,7 @@ export default function GroupItem({
             }}
           >
             <Stack direction={"row"} spacing={0.5} alignItems={"center"}>
-              <Icon name="user" color={youhaBlue[400]} size={16} prefix="fas" />
+              <Icon name="user" color={youhaBlue[500]} size={16} prefix="fas" />
               <Typography
                 sx={{
                   fontSize: 12,

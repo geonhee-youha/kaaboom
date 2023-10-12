@@ -25,6 +25,7 @@ import { useRouter } from "next/router";
 import { tempUserState } from "../../data/temp";
 import Visual from "../atoms/Visual";
 import { cyan, deepPurple, indigo, pink } from "@mui/material/colors";
+import Typo from "../atoms/Typo";
 
 function NavItem({ item }: { item: { link: string; label: string } }) {
   const [open, setOpen] = useState<boolean>(false);
@@ -55,7 +56,7 @@ function NavItem({ item }: { item: { link: string; label: string } }) {
       >
         <Icon
           name="angle-down"
-          prefix="fas"
+          prefix="far"
           size={20}
           className="Icon"
           sx={{
@@ -263,11 +264,12 @@ function User() {
 
 export default function GlobalHeader() {
   const router = useRouter();
+  const inOrderPage = router.pathname.split("/")[1] === "order";
+  const { name } = router.query;
   const [login, setLogin] = useRecoilState(loginRecoilState);
   const [searchDialog, setSearchDialog] = useRecoilState(
     searchDialogRecoilState
   );
-  console.log(router)
   const [sideDrawer, setSideDrawer] = useRecoilState(sideDrawerRecoilState);
   const onClickBars = () => {
     setSideDrawer({ open: true });
@@ -275,17 +277,33 @@ export default function GlobalHeader() {
   const onClickSearch = () => {
     setSearchDialog({ open: true });
   };
-  const onClickSignin = () => {};
-  const [loaded, setLoaded] = useState(false);
+  const [mounted, setMounted] = useState(false);
   useEffect(() => {
-    setLoaded(true);
-  }, [setLoaded]);
-  return loaded ? (
+    setMounted(true);
+  }, [setMounted]);
+  const checkLogin = () => {
+    const pathname1 = router.pathname.split("/")[1];
+    const pathname2 = router.pathname.split("/")[2];
+    const userPages = pathname1 === "user" || pathname2 === "video";
+    if (userPages && !login) {
+      if (confirm("잘못된 접근입니다.")) {
+        setLogin(false);
+        router.replace("/");
+      }
+    }
+  };
+  useEffect(() => {
+    checkLogin();
+  }, []);
+  useEffect(() => {
+    checkLogin();
+  }, [login]);
+  return mounted ? (
     <>
       <Box
         sx={{
-          height: 120,
-          "@media(min-width: 768px)": {
+          height: inOrderPage ? 56 : 120,
+          "@media(min-width: 961px)": {
             height: 56,
           },
         }}
@@ -300,9 +318,10 @@ export default function GlobalHeader() {
           backgroundColor: alpha(youhaGrey[900], 0.8),
           backdropFilter: `blur(8px)`,
           zIndex: 999,
-          "@media(min-width: 768px)": {
+          "@media(min-width: 961px)": {
             display: "flex",
           },
+          display: inOrderPage ? "none !important" : "initial",
         }}
       >
         <Stack
@@ -313,7 +332,7 @@ export default function GlobalHeader() {
             display: "flex",
             height: 56,
             p: theme.spacing(0, 2),
-            "@media(min-width: 768px)": {
+            "@media(min-width: 961px)": {
               display: "flex",
               flex: 1,
             },
@@ -322,7 +341,7 @@ export default function GlobalHeader() {
           <IconButton
             name="bars"
             borderColor={youhaGrey[700]}
-            color={youhaBlue[400]}
+            color={youhaBlue[500]}
             onClick={onClickBars}
             size={20}
             sx={{
@@ -337,7 +356,7 @@ export default function GlobalHeader() {
               display: "flex",
               justifyContent: "center",
               p: theme.spacing(0, 1),
-              "@media(min-width: 768px)": {
+              "@media(min-width: 961px)": {
                 flex: "initial",
                 justifyContent: "flex-start",
               },
@@ -374,7 +393,7 @@ export default function GlobalHeader() {
           </Stack>
           <Box
             sx={{
-              "@media(min-width: 768px)": {
+              "@media(min-width: 961px)": {
                 display: "none",
               },
             }}
@@ -383,13 +402,15 @@ export default function GlobalHeader() {
               <User />
             ) : (
               <Link
-              href={`/auth/login?url=${router.asPath.split('?')[0].replaceAll("/", "^")}`}
+                href={`/auth/login?url=${router.asPath
+                  .split("?")[0]
+                  .replaceAll("/", "^")}`}
                 passHref
               >
                 <IconButton
                   name="user"
                   borderColor={youhaGrey[700]}
-                  color={youhaBlue[400]}
+                  color={youhaBlue[500]}
                   onClick={() => {}}
                   size={20}
                 />
@@ -402,7 +423,7 @@ export default function GlobalHeader() {
           spacing={2}
           sx={{
             p: theme.spacing(1, 2, 2, 2),
-            "@media(min-width: 768px)": {
+            "@media(min-width: 961px)": {
               p: theme.spacing(1, 2, 1, 2),
             },
           }}
@@ -433,7 +454,7 @@ export default function GlobalHeader() {
                 disableRipple
                 name="search"
                 size={20}
-                color={youhaBlue[400]}
+                color={youhaBlue[500]}
               />
               <ButtonBase
                 onClick={onClickSearch}
@@ -445,7 +466,7 @@ export default function GlobalHeader() {
                   height: 40,
                   p: theme.spacing(0, 5, 0, 5),
                   alignItems: "center",
-                  "@media(min-width: 768px)": {
+                  "@media(min-width: 961px)": {
                     minWidth: 280,
                   },
                 }}
@@ -465,7 +486,7 @@ export default function GlobalHeader() {
           <Box
             sx={{
               display: "none",
-              "@media(min-width: 768px)": {
+              "@media(min-width: 961px)": {
                 display: "flex",
               },
             }}
@@ -474,7 +495,9 @@ export default function GlobalHeader() {
               <User />
             ) : (
               <Link
-                href={`/auth/login?url=${router.asPath.split('?')[0].replaceAll("/", "^")}`}
+                href={`/auth/login?url=${router.asPath
+                  .split("?")[0]
+                  .replaceAll("/", "^")}`}
                 passHref
               >
                 <TextButton
@@ -482,7 +505,7 @@ export default function GlobalHeader() {
                   label="Log in"
                   borderColor={youhaGrey[700]}
                   // backgroundColor={alpha(youhaGrey[800], 1)}
-                  color={youhaBlue[400]}
+                  color={youhaBlue[500]}
                 />
               </Link>
             )}

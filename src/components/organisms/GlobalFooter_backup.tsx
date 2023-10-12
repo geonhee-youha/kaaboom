@@ -55,7 +55,7 @@ export default function GlobalFooter() {
           maxWidth: 1280,
           m: theme.spacing(0, "auto"),
           p: theme.spacing(4, 2),
-          "@media(min-width: 768px)": {
+          "@media(min-width: 961px)": {
             p: theme.spacing(6, 2),
           },
         }}
@@ -151,7 +151,7 @@ export default function GlobalFooter() {
           className="Section"
           spacing={3}
           sx={{
-            "@media(min-width: 768px)": {
+            "@media(min-width: 961px)": {
               position: "absolute",
               top: 24,
               right: 16,

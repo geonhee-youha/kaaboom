@@ -29,7 +29,7 @@ export default function AgencyItem({
     );
   });
   return (
-    <Link href={`/agency/${item.id}`} passHref>
+    <Link href={`/detail/agency/${item.id}`} passHref>
       <ButtonBase
         sx={{
           flexDirection: "column",
@@ -100,7 +100,7 @@ export default function AgencyItem({
             alignItems={"center"}
             flexWrap={"wrap"}
           >
-            <Icon name="users" color={youhaBlue[400]} size={16} prefix="fas" />
+            <Icon name="users" color={youhaBlue[500]} size={16} prefix="fas" />
             <Typography
               sx={{
                 fontSize: 12,
@@ -113,7 +113,7 @@ export default function AgencyItem({
             </Typography>
           </Stack>
           <Stack direction={"row"} spacing={0.5} alignItems={"center"}>
-            <Icon name="user" color={youhaBlue[400]} size={16} prefix="fas" />
+            <Icon name="user" color={youhaBlue[500]} size={16} prefix="fas" />
             <Typography
               sx={{
                 fontSize: 12,
