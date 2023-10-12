@@ -230,9 +230,9 @@ function Inner() {
             mr: 1,
           }}
         >
-          <Link href={`/group/${group.id}`} passHref>
+          <Link href={`/detail/group/${group.id}`} passHref>
             <a
-              href={`/group/${group.id}`}
+              href={`/detail/group/${group.id}`}
               style={{ textDecoration: "underline", cursor: "pointer" }}
             >
               <Visual
@@ -414,7 +414,7 @@ function Inner() {
             sx={{
               p: theme.spacing(6, 2, 3, 2),
               "@media(min-width: 960px)": {
-                p: theme.spacing(6, 2),
+                p: theme.spacing(6, 2, 3, 2),
               },
             }}
             className="Section"
@@ -491,7 +491,7 @@ function Inner() {
                       <Visual src={item.thumbnail} absolute noScale={false} />
                     </Box>
                     {group && (
-                      <Link href={`/group/${group.id}`} passHref>
+                      <Link href={`/detail/group/${group.id}`} passHref>
                         <ButtonBase
                           sx={{
                             position: "absolute",

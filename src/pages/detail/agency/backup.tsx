@@ -84,9 +84,9 @@ function Page({ id }: { id: string | string[] }) {
           }}
         >
           {parentCompany.id ? (
-            <Link href={`/agency/${parentCompany.id}`} passHref>
+            <Link href={`/detail/agency/${parentCompany.id}`} passHref>
               <a
-                href={`/agency/${parentCompany.id}`}
+                href={`/detail/agency/${parentCompany.id}`}
                 style={{ textDecoration: "underline", cursor: "pointer" }}
               >
                 <Visual

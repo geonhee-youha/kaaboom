@@ -80,9 +80,9 @@ function Inner() {
             mr: 1,
           }}
         >
-          <Link href={`/artist/${leader.id}`} passHref>
+          <Link href={`/detail/artist/${leader.id}`} passHref>
             <a
-              href={`/artist/${leader.id}`}
+              href={`/detail/artist/${leader.id}`}
               style={{ textDecoration: "underline", cursor: "pointer" }}
             >
               <Visual
@@ -110,9 +110,9 @@ function Inner() {
             mr: 1,
           }}
         >
-          <Link href={`/agency/${agency.id}`} passHref>
+          <Link href={`/detail/agency/${agency.id}`} passHref>
             <a
-              href={`/agency/${agency.id}`}
+              href={`/detail/agency/${agency.id}`}
               style={{ textDecoration: "underline", cursor: "pointer" }}
             >
               <Visual
@@ -269,7 +269,7 @@ function Inner() {
                     >
                       <Visual src={item.thumbnail} absolute noScale={false} />
                     </Box>
-                    <Link href={`/agency/${agency.id}`} passHref>
+                    <Link href={`/detail/agency/${agency.id}`} passHref>
                       <ButtonBase
                         sx={{
                           position: "absolute",

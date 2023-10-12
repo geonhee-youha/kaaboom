@@ -89,9 +89,9 @@ function Inner() {
           }}
         >
           {parentCompany.id ? (
-            <Link href={`/agency/${parentCompany.id}`} passHref>
+            <Link href={`/detail/agency/${parentCompany.id}`} passHref>
               <a
-                href={`/agency/${parentCompany.id}`}
+                href={`/detail/agency/${parentCompany.id}`}
                 style={{ textDecoration: "underline", cursor: "pointer" }}
               >
                 <Visual
@@ -367,7 +367,6 @@ function Inner() {
                 gridTemplateRows: "auto",
                 gridColumnGap: 12,
                 gridRowGap: 32,
-                mb: -3,
                 "@media(min-width: 480px)": {
                   gridTemplateColumns: "1fr 1fr",
                 },

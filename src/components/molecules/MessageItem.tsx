@@ -62,7 +62,7 @@ export default function MessageItem({
   ) => {
     e.stopPropagation();
     e.preventDefault();
-    router.push(`/artist/${artist.id}`);
+    router.push(`/detail/artist/${artist.id}`);
   };
   const onClickPlay = () => {
     setPlaying(!playing);

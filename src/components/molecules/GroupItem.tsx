@@ -35,7 +35,7 @@ export default function GroupItem({
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
   ) => {
     e.preventDefault();
-    router.push(`/agency/${agency.id}`);
+    router.push(`/detail/agency/${agency.id}`);
   };
   return (
     <Link href={`/detail/group/${item.id}`} passHref>

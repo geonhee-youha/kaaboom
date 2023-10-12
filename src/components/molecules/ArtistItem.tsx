@@ -91,7 +91,7 @@ export default function ArtistItem({
             color={favorite ? pink[400] : "#ffffff"}
           />
           {group && (
-            <Link href={`/group/${group.id}`} passHref>
+            <Link href={`/detail/group/${group.id}`} passHref>
               <Paper
                 elevation={5}
                 sx={{

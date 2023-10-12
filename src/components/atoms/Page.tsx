@@ -43,7 +43,7 @@ export default function Page({
                 minWidth: "280px",
                 maxWidth: `1280px`,
                 m: theme.spacing(0, "auto"),
-                minHeight: "100vh",
+                minHeight: "60vh",
                 flexDirection: asideReverse ? "column-reverse" : "column",
                 "@media(min-width: 960px)": {
                   flexDirection: asideReverse ? "row-reverse" : "row",
