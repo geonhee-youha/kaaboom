@@ -45,8 +45,8 @@ export default function Index() {
             </Link>
             <Typography
               sx={{
-                fontSize: 12,
-                lineHeight: "16px",
+                fontSize: 14,
+                lineHeight: "20px",
                 color: youhaGrey[200],
                 textAlign: "center",
               }}
