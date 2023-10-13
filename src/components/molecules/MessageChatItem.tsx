@@ -23,12 +23,16 @@ export default function MessageChatItem({
 }) {
   const [rateDialog, setRateDialog] = useRecoilState(rateDialogRecoilState);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
+  const [playsinline, setPlaysinline] = useState<boolean>(false);
   const artist =
     artists[
-      _.findIndex(artists, (el) => {
-        return el.name === item.artist.name;
-      })
+    _.findIndex(artists, (el) => {
+      return el.name === item.artist.name;
+    })
     ];
+  const onClickFullscreen = () => {
+
+  }
   const onClickDownload = () => {
     alert("다운로드 기능");
   };
@@ -90,6 +94,7 @@ export default function MessageChatItem({
                 setSelectedIndex={setSelectedIndex}
                 item={item}
                 type="chat"
+                playsinline={playsinline}
               />
             </Box>
             <Stack
@@ -99,7 +104,7 @@ export default function MessageChatItem({
                 m: theme.spacing(0, 0, 0, 2),
               }}
             >
-              {/* <Box
+              <Box
                 sx={{
                   display: "flex",
                   flexDirection: "column",
@@ -116,6 +121,7 @@ export default function MessageChatItem({
                     borderRadius: "50%",
                   }}
                   prefix="fal"
+                  onClick={onClickFullscreen}
                 />
                 <Typography
                   sx={{
@@ -127,7 +133,7 @@ export default function MessageChatItem({
                 >
                   Full screen
                 </Typography>
-              </Box> */}
+              </Box>
               <Box
                 sx={{
                   display: "flex",

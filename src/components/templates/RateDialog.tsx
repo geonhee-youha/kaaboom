@@ -21,7 +21,7 @@ import _ from "lodash";
 import Button from "../atoms/Button";
 import Icon from "../atoms/Icon";
 
-export default function RateDialog({}: {}) {
+export default function RateDialog({ }: {}) {
   const router = useRouter();
   const [rateDialog, setRateDialog] = useRecoilState(rateDialogRecoilState);
   const [messages, setMessages] = useRecoilState(messagesState);
@@ -31,13 +31,18 @@ export default function RateDialog({}: {}) {
   const unavailable = value === "" || value.length > 250;
   const artist =
     artists[
-      _.findIndex(artists, (el) => {
-        return el.id === id;
-      })
+    _.findIndex(artists, (el) => {
+      return el.id === id;
+    })
     ];
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setValue(value);
+    if (value.length < 20 || value.length > 250) {
+      setError(true)
+    } else {
+      setError(false)
+    }
   };
   const onClose = () => {
     setRateDialog({ id: "", open: false });
@@ -49,9 +54,9 @@ export default function RateDialog({}: {}) {
       console.log(newPrev, id);
       let targetEl =
         newPrev[
-          _.findIndex(newPrev, (el) => {
-            return el.id === id;
-          })
+        _.findIndex(newPrev, (el) => {
+          return el.id === id;
+        })
         ];
       targetEl.rated = true;
       return newPrev;
@@ -148,10 +153,13 @@ export default function RateDialog({}: {}) {
           helperText={
             error &&
             (value === ""
-              ? "Required"
-              : `Total character count cannot exceed ${250}`)
+              ? "Required" :
+              value.length < 20 ?
+                `Total character count must exceed ${20}`
+                : `Total character count cannot exceed ${250}`)
           }
           showMaxLength
+          canOverMaxLength
         />
         <Button
           disabled={unavailable}

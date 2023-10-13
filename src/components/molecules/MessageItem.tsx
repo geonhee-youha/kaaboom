@@ -29,12 +29,14 @@ export default function MessageItem({
   index,
   selectedIndex,
   setSelectedIndex,
+  playsinline = true
 }: {
   type?: string;
   item: MessageProps;
   index: number;
   selectedIndex: number;
   setSelectedIndex: Dispatch<SetStateAction<number>>;
+  playsinline?: boolean
 }) {
   const router = useRouter();
   const { ref, inView } = useInView();
@@ -112,9 +114,9 @@ export default function MessageItem({
   const playedTime = playedMin + ":" + playedSec;
   const artist =
     artists[
-      _.findIndex(artists, (el) => {
-        return el.name === item.artist.name;
-      })
+    _.findIndex(artists, (el) => {
+      return el.name === item.artist.name;
+    })
     ];
   useEffect(() => {
     const focused = selectedIndex === index;
@@ -160,6 +162,7 @@ export default function MessageItem({
       <Video
         videoRef={videoRef}
         playing={playing}
+        playsinline={playsinline}
         muted={muted}
         url={`${item.src}`}
         onDuration={onDuration}
@@ -356,9 +359,8 @@ export default function MessageItem({
                     left: 0,
                     bottom: 0,
                     transition: "all 1s ease",
-                    width: `calc(${
-                      (seconds.loadedSeconds / duration) * 100
-                    }% + 8px)`,
+                    width: `calc(${(seconds.loadedSeconds / duration) * 100
+                      }% + 8px)`,
                     backgroundColor: "rgba(255,255,255,0.6)",
                   },
                 }}
