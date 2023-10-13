@@ -286,10 +286,9 @@ export default function GlobalHeader() {
     const pathname2 = router.pathname.split("/")[2];
     const userPages = pathname1 === "user" || pathname2 === "video";
     if (userPages && !login) {
-      if (confirm("잘못된 접근입니다.")) {
-        setLogin(false);
-        router.replace("/");
-      }
+      setLogin(false);
+      router.replace("/");
+      alert("잘못된 접근입니다.")
     }
   };
   useEffect(() => {
