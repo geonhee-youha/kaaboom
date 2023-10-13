@@ -52,7 +52,7 @@ export function OrderItem({ item }: { item: OrderProps }) {
     },
   ];
   const onClickView = () => {
-    router.push(`/detail/video/${item.id}`);
+    router.push(`/user/messages?id=${item.id}`);
   };
   const onClickModify = () => {
     alert("고객센터 메일로 연결");
@@ -262,7 +262,7 @@ export function OrderItem({ item }: { item: OrderProps }) {
                   prefix="fas"
                   sx={{ m: theme.spacing(0, 1, 0, 0) }}
                 />
-                View video
+                View message
               </Button>
             ) : (
               <Button

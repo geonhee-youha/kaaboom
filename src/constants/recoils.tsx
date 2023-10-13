@@ -1,6 +1,7 @@
 import { atom } from "recoil";
 import { videoTypes } from "../data";
 import _ from "lodash";
+import { MessageProps, messages } from "../data/message";
 
 export const searchDialogRecoilState = atom({
   key: "searchDialog",
@@ -12,6 +13,14 @@ export const searchDialogRecoilState = atom({
 export const sortDialogRecoilState = atom({
   key: "sortDialog",
   default: {
+    open: false,
+  },
+});
+
+export const rateDialogRecoilState = atom({
+  key: "rateDialog",
+  default: {
+    id: '',
     open: false,
   },
 });
@@ -107,8 +116,13 @@ export const tempOrders = [
 ];
 
 export const ordersState = atom<OrderProps[]>({
-  key: "login",
+  key: "ordersState",
   default: [],
+});
+
+export const messagesState = atom<MessageProps[]>({
+  key: "messagesState",
+  default: messages,
 });
 
 export const favoriteIdsState = atom<string[]>({

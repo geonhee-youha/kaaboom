@@ -29,7 +29,7 @@ export default function Index() {
         router.push(`/auth/signup?url=${url}`);
       } else {
         setLogin(true);
-        if (typeof url === "string" && url !== "") {
+        if (typeof url === "string" && url !== "" && url !== "undefined") {
           router.replace(`${url.replaceAll("^", "/")}`);
         } else {
           router.replace("/");

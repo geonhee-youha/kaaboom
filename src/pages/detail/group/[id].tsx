@@ -200,7 +200,7 @@ function Inner() {
       ),
     },
   ];
-  const [focusedIndex, setFocusedIndex] = useState<number>(-1);
+  const [selectedIndex, setSelectedIndex] = useState<number>(-1);
   return (
     <>
       <Box>
@@ -474,8 +474,8 @@ function Inner() {
                     key={index}
                     item={item}
                     index={index}
-                    focusedIndex={focusedIndex}
-                    setFocusedIndex={setFocusedIndex}
+                    selectedIndex={selectedIndex}
+                    setSelectedIndex={setSelectedIndex}
                   />
                 );
               })}

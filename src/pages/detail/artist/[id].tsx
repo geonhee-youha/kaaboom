@@ -37,7 +37,7 @@ import Typo from "../../../components/atoms/Typo";
 import Page from "../../../components/atoms/Page";
 import { comma } from "../../../utils";
 import { useRecoilState } from "recoil";
-import { favoriteIdsState } from "../../../constants/recoils";
+import { favoriteIdsState, loginRecoilState } from "../../../constants/recoils";
 
 export default function Index() {
   return (
@@ -50,6 +50,7 @@ export default function Index() {
 function Inner() {
   const router = useRouter();
   const { id } = router.query;
+  const [login, setLogin] = useRecoilState(loginRecoilState);
   const item =
     artists[
       _.findIndex(artists, (e) => {
@@ -74,7 +75,7 @@ function Inner() {
   const artistAgencies = _.filter(agencies, (e) => {
     return _.flatMap(item.agencies, (el) => el.name).includes(e.name);
   });
-  const [focusedIndex, setFocusedIndex] = useState<number>(-1);
+  const [selectedIndex, setSelectedIndex] = useState<number>(-1);
   const [favoriteIds, setFavoriteIDs] = useRecoilState(favoriteIdsState);
   const favorite = _.findIndex(favoriteIds, (el) => el === item.id) !== -1;
   const onClickFavorite = (
@@ -123,7 +124,13 @@ function Inner() {
   };
   const [videoType, setVideoType] = useState<string>("");
   const onClickOrder = () => {
-    router.push(`/order?id=${id}&videoType=${videoType}`);
+    if (login) {
+      router.push(`/order?id=${id}&videoType=${videoType}`);
+    } else {
+      router.push(
+        `/auth/login?url=${router.asPath.split("?")[0].replaceAll("/", "^")}`
+      );
+    }
   };
   const data = [
     {
@@ -1181,8 +1188,8 @@ function Inner() {
                     <MessageItem
                       item={item}
                       index={index}
-                      focusedIndex={focusedIndex}
-                      setFocusedIndex={setFocusedIndex}
+                      selectedIndex={selectedIndex}
+                      setSelectedIndex={setSelectedIndex}
                     />
                   </SwiperSlide>
                 );

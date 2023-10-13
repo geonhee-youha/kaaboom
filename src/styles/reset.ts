@@ -284,19 +284,31 @@ const reset = css`
     text-size-adjust: 100%;
   }
   /* 사파리 누를때 줌 안되게 */
-  * {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+  // * {
+  //   -webkit-touch-callout: none;
+  //   -webkit-user-select: none;
+  //   -khtml-user-select: none;
+  //   -moz-user-select: none;
+  //   -ms-user-select: none;
+  //   user-select: none;
+  // }
+  // ::-moz-scrollbar {
+  //   display: none !important;
+  // }
+  // ::-webkit-scrollbar {
+  //   display: none !important;
+  // }
+  body::-webkit-scrollbar-track,
+  .scroller::-webkit-scrollbar-track {
+    background-color: #ACBAC8 !important
   }
-  ::-moz-scrollbar {
-    display: none !important;
+  body::-webkit-scrollbar-thumb:hover,
+  .scroller::-webkit-scrollbar-thumb:hover  {
+    background-color: #4B5E71 !important
   }
-  ::-webkit-scrollbar {
-    display: none !important;
+  body::-webkit-scrollbar-thumb 
+  .scroller::-webkit-scrollbar-thumb {
+    background-color: #2F3A46 !important
   }
   img {
     border: none;

@@ -1,4 +1,4 @@
-import { Box, ButtonBase, Typography } from "@mui/material";
+import { Box, ButtonBase, Slider, Typography, alpha } from "@mui/material";
 import { MessageProps } from "../../data/message";
 import dynamic from "next/dynamic";
 import {
@@ -6,6 +6,7 @@ import {
   MouseEvent,
   SetStateAction,
   useEffect,
+  useRef,
   useState,
 } from "react";
 import { theme } from "../../themes/theme";
@@ -18,19 +19,22 @@ import { useInView } from "react-intersection-observer";
 import Typo from "../atoms/Typo";
 import IconButton from "../atoms/IconButton";
 import { useRouter } from "next/router";
+import { formatTimer } from "../../utils";
 
-const ReactPlayer = dynamic(() => import("react-player/lazy"), { ssr: false });
+const Video = dynamic(() => import("../atoms/Video"), { ssr: false });
 
 export default function MessageItem({
+  type,
   item,
   index,
-  focusedIndex,
-  setFocusedIndex,
+  selectedIndex,
+  setSelectedIndex,
 }: {
+  type?: string;
   item: MessageProps;
   index: number;
-  focusedIndex: number;
-  setFocusedIndex: Dispatch<SetStateAction<number>>;
+  selectedIndex: number;
+  setSelectedIndex: Dispatch<SetStateAction<number>>;
 }) {
   const router = useRouter();
   const { ref, inView } = useInView();
@@ -39,23 +43,45 @@ export default function MessageItem({
   const [muted, setMuted] = useState<boolean>(true);
   const [controlls, setControlls] = useState<boolean>(false);
   const [duration, setDuration] = useState<number>(0);
-  const [progress, setProgress] = useState<number>(0);
+  const videoRef = useRef<any>(null);
+  const [seconds, setSeconds] = useState<{
+    playedSeconds: number;
+    loadedSeconds: number;
+  }>({ playedSeconds: 0, loadedSeconds: 0 });
+  const [seeking, setSeeking] = useState<boolean>(false);
+  const onSliderChange = () => {
+    setSeeking(true);
+  };
+  const onSliderChangeCommitted = (e: any, value: any) => {
+    setSeeking(false);
+    if (videoRef) videoRef.current?.seekTo(value);
+    setSeconds({
+      ...seconds,
+      playedSeconds: value,
+    });
+  };
+  const onEnded = () => {
+    setPlaying(false);
+  };
   useEffect(() => {
     setIsWindow(true);
   }, []);
   const onMouseOver = () => {
-    setFocusedIndex(index);
+    setSelectedIndex(index);
     setControlls(true);
   };
   const onMouseOut = () => {
     setControlls(false);
-    setMuted(true);
   };
   const onDuration = (duration: number) => {
     setDuration(Number(duration.toFixed(0)));
   };
   const onProgress = (state: OnProgressProps) => {
-    setProgress(Number(state.playedSeconds.toFixed(0)));
+    if (seeking) return null;
+    setSeconds({
+      playedSeconds: state.playedSeconds,
+      loadedSeconds: state.loadedSeconds,
+    });
   };
   const onClickArtist = (
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
@@ -77,11 +103,12 @@ export default function MessageItem({
   const min = String(parseInt(" " + (duration % 3600) / 60)).padStart(2, "0");
   const sec = String(duration % 60).padStart(2, "0");
   const time = min + ":" + sec;
-  const playedMin = String(parseInt(" " + (progress % 3600) / 60)).padStart(
-    2,
-    "0"
-  );
-  const playedSec = String(progress % 60).padStart(2, "0");
+  const playedMin = String(
+    parseInt(" " + (Number(seconds.playedSeconds.toFixed(0)) % 3600) / 60)
+  ).padStart(2, "0");
+  const playedSec = String(
+    Number(seconds.playedSeconds.toFixed(0)) % 60
+  ).padStart(2, "0");
   const playedTime = playedMin + ":" + playedSec;
   const artist =
     artists[
@@ -90,13 +117,13 @@ export default function MessageItem({
       })
     ];
   useEffect(() => {
-    const focused = focusedIndex === index;
+    const focused = selectedIndex === index;
     setPlaying(focused);
-  }, [focusedIndex]);
+  }, [selectedIndex]);
   useEffect(() => {
     if (!inView) {
       setPlaying(false);
-      setFocusedIndex(-1);
+      setSelectedIndex(-1);
     }
   }, [inView]);
   return (
@@ -130,12 +157,14 @@ export default function MessageItem({
       onMouseOut={onMouseOut}
       onClick={onClickPlay}
     >
-      <ReactPlayer
+      <Video
+        videoRef={videoRef}
         playing={playing}
-        muted={true}
+        muted={muted}
         url={`${item.src}`}
         onDuration={onDuration}
         onProgress={onProgress}
+        onEnded={onEnded}
         config={{
           file: {
             attributes: {
@@ -150,7 +179,7 @@ export default function MessageItem({
           top: 0,
           left: 0,
           right: 0,
-          zIndex: 999,
+          zIndex: 98,
           background: "linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0))",
           p: theme.spacing(2),
         }}
@@ -172,7 +201,7 @@ export default function MessageItem({
           bottom: 0,
           left: 0,
           right: 0,
-          zIndex: 999,
+          zIndex: 98,
           background: "linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8))",
           p: theme.spacing(4, 0.5, 0.5, 0.5),
           transition: `all 0.35s ease`,
@@ -188,7 +217,10 @@ export default function MessageItem({
             sx={{
               display: "flex",
               alignItems: "center",
-              transform: controlls ? "translateY(0)" : "translateY(40px)",
+              transform:
+                controlls || type === "chat"
+                  ? "translateY(0)"
+                  : "translateY(40px)",
               transition: `all 0.35s ease`,
             }}
             onClick={onClickArtist}
@@ -239,7 +271,7 @@ export default function MessageItem({
             width: "100%",
             display: "flex",
             alignItems: "center",
-            transform: controlls ? "translateY(0)" : "translateY(40px)",
+            transform: controlls || type === "chat" ? "translateY(0)" : "translateY(40px)",
             transition: `all 0.35s ease`,
             overflow: "visible",
           }}
@@ -254,17 +286,96 @@ export default function MessageItem({
               height: 40,
             }}
           />
-          <Typography
+          <Box
             sx={{
               flex: 1,
-              fontSize: 12,
-              lineHeight: "16px",
-              transition: `all 0.35s ease`,
-              wordBreak: "break-all",
+              display: "flex",
+              alignItems: "center",
             }}
           >
-            {playedTime} / {time}
-          </Typography>
+            <Typography
+              sx={{
+                fontSize: 12,
+                lineHeight: "16px",
+                transition: `all 0.35s ease`,
+                wordBreak: "break-all",
+                display: type === "chat" ? "none" : "flex",
+              }}
+            >
+              {playedTime} / {time}
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: 12,
+                lineHeight: "16px",
+                transition: `all 0.35s ease`,
+                wordBreak: "break-all",
+                display: type === "chat" ? "flex" : "none",
+              }}
+            >
+              {playedTime}
+            </Typography>
+            <Box
+              sx={{
+                position: "relative",
+                p: theme.spacing(0, 3),
+                flex: 1,
+                display: type === "chat" ? "flex" : "none",
+              }}
+            >
+              <Slider
+                key={`Slider-${seconds.playedSeconds}`}
+                defaultValue={seconds.playedSeconds}
+                max={duration}
+                aria-label="Default"
+                valueLabelDisplay="auto"
+                getAriaValueText={formatTimer}
+                valueLabelFormat={formatTimer}
+                onChange={onSliderChange}
+                onChangeCommitted={onSliderChangeCommitted}
+                // size="small"
+                sx={{
+                  "&.MuiSlider-root": {
+                    padding: "18px 0",
+                  },
+                  "& .MuiSlider-rail": {
+                    opacity: "1 !important",
+                    backgroundColor: alpha(youhaGrey[900], 0.2),
+                    overflow: "hidden",
+                    left: "-8px",
+                    right: "-8px",
+                    width: "auto",
+                  },
+                  "& .MuiSlider-track": {
+                    left: "-8px !important",
+                  },
+                  "& .MuiSlider-rail::after": {
+                    position: "absolute",
+                    content: '""',
+                    top: 0,
+                    left: 0,
+                    bottom: 0,
+                    transition: "all 1s ease",
+                    width: `calc(${
+                      (seconds.loadedSeconds / duration) * 100
+                    }% + 8px)`,
+                    backgroundColor: "rgba(255,255,255,0.6)",
+                  },
+                }}
+              />
+            </Box>
+            <Typography
+              sx={{
+                fontSize: 12,
+                lineHeight: "16px",
+                transition: `all 0.35s ease`,
+                wordBreak: "break-all",
+                display: type === "chat" ? "flex" : "none",
+              }}
+            >
+              {time}
+            </Typography>
+          </Box>
           <IconButton
             name={!muted ? "volume" : "volume-xmark"}
             prefix="far"

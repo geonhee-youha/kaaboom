@@ -133,8 +133,8 @@ const userMenus = [
     label: "Orders",
   },
   {
-    url: "/user/videos",
-    label: "Videos",
+    url: "/user/messages",
+    label: "Messages",
   },
 ];
 

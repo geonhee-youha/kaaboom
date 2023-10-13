@@ -2,14 +2,17 @@ import { Box, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import { theme } from "../../themes/theme";
 import { useRouter } from "next/router";
+import youhaGrey from "../../constants/youhaGrey";
 
 export default function Page({
+  fixed,
   needId,
   aside,
   asideReverse,
   narrow,
   children,
 }: {
+  fixed?: boolean;
   needId?: boolean;
   aside?: boolean;
   asideReverse?: boolean;
@@ -66,6 +69,33 @@ export default function Page({
                     maxWidth: `calc(1280px - 420px)`,
                   },
                   width: "100%",
+                },
+              }
+            : fixed
+            ? {
+                width: `100%`,
+                minWidth: "280px",
+                maxWidth: `1280px`,
+                m: theme.spacing(0, "auto"),
+                minHeight: "60vh",
+                p: theme.spacing(0, 0, 12, 0),
+                "@media(min-width: 960px)": {
+                  position: "fixed",
+                  top: 56,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  zIndex: 9,
+                  maxWidth: `initial`,
+                  minHeight: "initial",
+                  backgroundColor: youhaGrey[900],
+                  p: theme.spacing(
+                    0,
+                    `calc((100vw - 1280px) / 2)`,
+                    12,
+                    `calc((100vw - 1280px) / 2)`
+                  ),
+                  overflowY: "auto",
                 },
               }
             : {

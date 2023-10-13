@@ -23,7 +23,7 @@ console.error = (...args) => {
 };
 
 export default function Index() {
-  const [focusedIndex, setFocusedIndex] = useState<number>(-1);
+  const [selectedIndex, setSelectedIndex] = useState<number>(-1);
   const [artistSwiper, setArtistSwiper] = useState<any>(null);
   const [artistSwiperIndex, setArtistSwiperIndex] = useState<number>(0);
   const onArtistSlideChange = (swiper: any) => {
@@ -310,8 +310,8 @@ export default function Index() {
                 <MessageItem
                   item={item}
                   index={index}
-                  focusedIndex={focusedIndex}
-                  setFocusedIndex={setFocusedIndex}
+                  selectedIndex={selectedIndex}
+                  setSelectedIndex={setSelectedIndex}
                 />
               </SwiperSlide>
             );

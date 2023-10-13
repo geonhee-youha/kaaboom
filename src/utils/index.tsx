@@ -160,3 +160,23 @@ export const colored = (text: string, query?: string) => {
   }
   return text;
 };
+
+export const formatTimer = (sec: number) => {
+  let hours = Math.floor(sec / 3600); // get hours
+  let minutes = Math.floor((sec - hours * 3600) / 60); // get minutes
+  let seconds = Math.floor(sec - hours * 3600 - minutes * 60); //  get seconds
+  // add 0 if value < 10; Example: 2 => 02
+  let stringHours = hours.toString();
+  let stringMinuites = minutes.toString();
+  let stringSeconds = seconds.toString();
+  if (hours < 10) {
+    stringHours = "0" + stringHours;
+  }
+  if (minutes < 10) {
+    stringMinuites = "0" + stringMinuites;
+  }
+  if (seconds < 10) {
+    stringSeconds = "0" + stringSeconds;
+  }
+  return stringMinuites + ":" + stringSeconds; // Return is HH : MM : SS
+};

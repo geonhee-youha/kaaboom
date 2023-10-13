@@ -1,4 +1,12 @@
-import { Box, Dialog, InputBase, Stack, alpha } from "@mui/material";
+import {
+  Box,
+  Dialog,
+  InputBase,
+  Paper,
+  Stack,
+  Typography,
+  alpha,
+} from "@mui/material";
 import { ChangeEvent, KeyboardEvent, useState } from "react";
 import { theme } from "../../themes/theme";
 import IconButton from "../atoms/IconButton";
@@ -8,8 +16,14 @@ import youhaBlue from "../../constants/youhaBlue";
 import { useRecoilState } from "recoil";
 import { searchDialogRecoilState } from "../../constants/recoils";
 import { useRouter } from "next/router";
+import _ from "lodash";
+import { artists } from "../../data/artist";
+import { groups } from "../../data/group";
+import { agencies } from "../../data/agency";
+import SearchItem from "../molecules/SearchItem";
+import Empty from "../atoms/Empty";
 
-export default function SearchDialog({ }: {}) {
+export default function SearchDialog({}: {}) {
   const router = useRouter();
   const [searchDialog, setSearchDialog] = useRecoilState(
     searchDialogRecoilState
@@ -26,10 +40,22 @@ export default function SearchDialog({ }: {}) {
   };
   const onKeyPress = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key === "Enter") {
-      if (value !== "") { router.push(`/explore/search?searchText=${value}`); }
-      setSearchDialog({ open: false });
+      if (value !== "") {
+        router.push(`/explore/search?searchText=${value}`);
+      }
+      onClose();
     }
   };
+  const searchText = value;
+  const searchedArtists = _.filter(artists, (el) => {
+    return el.name.toLowerCase().includes(`${searchText}`.toLowerCase());
+  });
+  const searchedGroups = _.filter(groups, (el) => {
+    return el.name.toLowerCase().includes(`${searchText}`.toLowerCase());
+  });
+  const searchedAgencies = _.filter(agencies, (el) => {
+    return el.name.toLowerCase().includes(`${searchText}`.toLowerCase());
+  });
   return (
     <Dialog
       open={open}
@@ -48,7 +74,7 @@ export default function SearchDialog({ }: {}) {
           backgroundImage: `none`,
           width: "100%",
           maxWidth: 700,
-          height: 600,
+          height: 480,
           "@media(max-width: 767px)": {
             maxWidth: "initial",
             maxHeight: "initial",
@@ -106,14 +132,22 @@ export default function SearchDialog({ }: {}) {
               display: "flex",
               alignItems: "center",
               "& input": {
-                fontSize: 20,
-                lineHeight: "32px !important",
+                fontSize: 16,
+                lineHeight: "24px !important",
                 "&::placeholder": {
-                  fontSize: 20,
-                  lineHeight: "32px !important",
+                  fontSize: 16,
+                  lineHeight: "24px !important",
                   color: youhaGrey[400],
                   opacity: `1 important`,
                   fontWeight: "400",
+                },
+                "@media(min-width: 961px)": {
+                  fontSize: 20,
+                  lineHeight: "32px !important",
+                  "&::placeholder": {
+                    fontSize: 20,
+                    lineHeight: "32px !important",
+                  },
                 },
               },
             }}
@@ -127,7 +161,127 @@ export default function SearchDialog({ }: {}) {
           onClick={onClose}
         />
       </Stack>
-      <Box sx={{ height: 400 }}></Box>
+      <Box
+        sx={{
+          height: "100%",
+          flex: 1,
+          overflowY: "scroll",
+          position: "relative",
+        }}
+      >
+        {value === "" ? (
+          <></>
+        ) : [...searchedArtists, ...searchedGroups, ...searchedAgencies]
+            .length <= 0 ? (
+          <Empty full>
+            <Typography
+              sx={{
+                fontSize: 14,
+                lineHeight: "20px",
+                color: youhaGrey[200],
+              }}
+            >
+              No results for "{value}"
+            </Typography>
+          </Empty>
+        ) : (
+          <Box
+            sx={{
+              p: theme.spacing(7, 0, 1, 0),
+              "@media(min-width: 961px)": {
+                p: theme.spacing(1, 0, 7, 0),
+              },
+            }}
+          >
+            {searchedArtists.map((item, index) => {
+              const newItem = {
+                id: item.id,
+                name: item.name,
+                description: item.group?.name ?? "SOLO",
+                thumbnail: item.thumbnail,
+              };
+              return (
+                <SearchItem
+                  key={index}
+                  searchText={value}
+                  type="artist"
+                  item={newItem}
+                />
+              );
+            })}
+            {searchedGroups.map((item, index) => {
+              const newItem = {
+                id: item.id,
+                name: item.name,
+                description: item.agency?.name ?? "SOLO",
+                thumbnail: item.thumbnail,
+              };
+              return (
+                <SearchItem
+                  key={index}
+                  searchText={value}
+                  type="group"
+                  item={newItem}
+                />
+              );
+            })}
+            {searchedAgencies.map((item, index) => {
+              const newItem = {
+                id: item.id,
+                name: item.name,
+                thumbnail: item.thumbnail,
+              };
+              return (
+                <SearchItem
+                  key={index}
+                  searchText={value}
+                  type="agency"
+                  item={newItem}
+                />
+              );
+            })}
+          </Box>
+        )}
+      </Box>
+      {value !== "" &&
+        [...searchedArtists, ...searchedGroups, ...searchedAgencies].length >
+          0 && (
+          <Paper
+            onClick={() => {
+              if (value !== "") {
+                router.push(`/explore/search?searchText=${value}`);
+              }
+              onClose();
+            }}
+            sx={{
+              position: "absolute",
+              top: 56 + 16,
+              left: "50%",
+              transform: "translateX(-50%)",
+              zIndex: 9,
+              height: 32,
+              p: theme.spacing(0, 2),
+              display: "flex",
+              alignItems: "center",
+              borderRadius: 2,
+              backgroundColor: youhaGrey[900],
+              border: `1px solid ${youhaGrey[600]}`,
+              "@media(min-width: 961px)": {
+                top: "initial",
+                bottom: 16,
+              },
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: 12,
+                lineHeight: "16px",
+              }}
+            >
+              View all results
+            </Typography>
+          </Paper>
+        )}
     </Dialog>
   );
 }
