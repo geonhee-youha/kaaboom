@@ -19,7 +19,7 @@ export const sideDrawerRecoilState = atom({
 
 export const loginRecoilState = atom({
   key: "login",
-  default: true,
+  default: false,
 });
 
 export type OrderProps = {
@@ -102,7 +102,7 @@ export const tempOrders = [
 
 export const ordersState = atom<OrderProps[]>({
   key: "ordersState",
-  default: tempOrders,
+  default: [],
 });
 
 export const messagesState = atom<MessageProps[]>({
