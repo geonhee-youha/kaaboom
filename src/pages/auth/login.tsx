@@ -111,9 +111,9 @@ export default function Index() {
           }}
         >
           By continuing you agree to KAABOOM's{" "}
-          <a target="_blank">Terms of Service</a>, including{" "}
-          <a target="_blank">Additional Terms</a>, and{" "}
-          <a target="_blank">Privacy Policy</a>.
+          <a target="_blank" tabIndex={0}>Terms of Service</a>, including{" "}
+          <a target="_blank" tabIndex={0}>Additional Terms</a>, and{" "}
+          <a target="_blank" tabIndex={0}>Privacy Policy</a>.
         </Typography>
       </Box>
     </Page>

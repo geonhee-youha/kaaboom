@@ -4,9 +4,7 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
-  Stack,
   Typography,
-  alpha,
 } from "@mui/material";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
@@ -14,9 +12,14 @@ import Button from "../../components/atoms/Button";
 import { loginRecoilState } from "../../constants/recoils";
 import youhaGrey from "../../constants/youhaGrey";
 import { theme } from "../../themes/theme";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import Input, { InputLabel } from "../../components/atoms/Input";
-import { genders } from "../../constants";
+import {
+  InputProps,
+  SelectProps,
+  genders,
+  inputDefaultProps,
+} from "../../constants";
 import { nations } from "../../constants/nations";
 import _ from "lodash";
 import { tempUserState } from "../../data/temp";
@@ -24,40 +27,91 @@ import { isBirthday, isName } from "../../utils";
 import Page from "../../components/atoms/Page";
 
 export default function Index() {
+  //#region [router] 이동 및 쿼리
   const router = useRouter();
   const { url } = router.query;
+  //#endregion [router] 이동 및 쿼리
+  //#region [recoil state] 유저데이터 및 로그인여부 (임시)
   const [login, setLogin] = useRecoilState(loginRecoilState);
   const [tempUser, setTempUser] = useRecoilState(tempUserState);
-  const [name, setName] = useState<string>(tempUser.name);
-  const [nation, setNation] = useState<string>("US");
-  const [gender, setGender] = useState<string>("M");
-  const [birthDate, setBirthDate] = useState<string>("");
+  //#endregion [recoil state] 유저데이터 및 로그인여부 (임시)
+  //#region [state] 이름/국적/젠더/생년월일
+  const [name, setName] = useState<InputProps>({
+    ...inputDefaultProps,
+    value: tempUser.name,
+  });
+  const [nation, setNation] = useState<SelectProps>(
+    nations[_.findIndex(nations, (el) => el.value === "US")]
+  );
+  const [gender, setGender] = useState<SelectProps>(
+    genders[_.findIndex(genders, (el) => el.value === "M")]
+  );
+  const [birthDate, setBirthDate] = useState<InputProps>({
+    ...inputDefaultProps,
+    value: tempUser.birthDate,
+  });
+  //#endregion [state] 이름/국적/젠더/생년월일
+  //#region [state] 메인 액션 검증
+  const buttonDisabled =
+    name.error || nation.value === "" || gender.value === "" || birthDate.error;
+  //#endregion [state]메인 액션 검증
+  //#region [function] 이름/국적/젠더/생년월일
   const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    setName(value);
+    const error = !isName(value);
+    const helperText = error
+      ? value === ""
+        ? "Required"
+        : "2 to 16 characters, composed of English or numbers"
+      : "";
+    const input = {
+      value: value,
+      error: error,
+      helperText: helperText,
+    };
+    setName(input);
   };
   const onChangeNation = (event: SelectChangeEvent) => {
-    setNation(event.target.value as string);
+    const value = event.target.value as string;
+    const array = nations;
+    const select = array[_.findIndex(array, (el) => el.value === value)];
+    setNation(select);
   };
   const onChangeGender = (event: SelectChangeEvent) => {
-    setGender(event.target.value as string);
+    const value = event.target.value as string;
+    const array = genders;
+    const select = array[_.findIndex(array, (el) => el.value === value)];
+    setGender(select);
   };
   const onChangeBirthDate = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    const text = value
+    const replacedValue = event.target.value
       .replace(/[^0-9]/g, "")
       .replace(/^(\d{0,2})(\d{0,2})(\d{0,4})$/g, "$1/$2/$3")
       .replace(/(\/{1,2})$/g, "");
-    setBirthDate(text);
+    const error = !isBirthday(value);
+    const helperText = error
+      ? value === ""
+        ? "Required"
+        : "Your date of birth is incorrect"
+      : "";
+    const input = {
+      value: replacedValue,
+      error: error,
+      helperText: helperText,
+    };
+    setBirthDate(input);
   };
+  //#endregion [function] 이름/국적/젠더/생년월일
+  //#region [function] 메인 액션
   const onClickSignup = () => {
     setLogin(true),
       setTempUser({
         ...tempUser,
-        name: name,
-        nation: nation,
-        gender: gender,
-        birthDate: birthDate,
+        name: name.value,
+        nation: nation.value,
+        gender: gender.value,
+        birthDate: birthDate.value,
       });
     if (typeof url === "string" && url !== "") {
       router.replace(`${url.replaceAll("^", "/")}`);
@@ -65,6 +119,7 @@ export default function Index() {
       router.replace("/");
     }
   };
+  //#endregion [function] 메인 액션
   return (
     <Page narrow>
       <Box
@@ -105,14 +160,10 @@ export default function Index() {
         />
         <Input
           label="Your name"
-          value={name}
+          value={name.value}
           onChange={onChangeName}
-          error={!isName(name)}
-          helperText={
-            !isName(name)
-              ? "2 to 16 characters, composed of English or numbers"
-              : ""
-          }
+          error={name.error}
+          helperText={name.helperText}
           essential
           sx={{
             m: theme.spacing(3, 0, 0, 0),
@@ -148,14 +199,14 @@ export default function Index() {
               }}
             >
               <img
-                src={`https://img.mobiscroll.com/demos/flags/${nation}.png`}
+                src={`https://img.mobiscroll.com/demos/flags/${nation.value}.png`}
               />
-              {nations[_.findIndex(nations, (el) => el.value === nation)].text}
+              {nation.value}
             </Typography>
             <Select
               labelId="demo-simple-select-label"
               id="demo-simple-select"
-              value={nation}
+              value={nation.value}
               onChange={onChangeNation}
               sx={{
                 fontSize: 16,
@@ -195,7 +246,7 @@ export default function Index() {
               {nations.map((item, index) => {
                 return (
                   <MenuItem key={index} value={item.value}>
-                    {item.text}
+                    {item.label}
                   </MenuItem>
                 );
               })}
@@ -214,7 +265,7 @@ export default function Index() {
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={gender}
+            value={gender.value}
             onChange={onChangeGender}
             sx={{
               fontSize: 16,
@@ -256,7 +307,7 @@ export default function Index() {
             {genders.map((item, index) => {
               return (
                 <MenuItem key={index} value={item.value}>
-                  {item.text}
+                  {item.label}
                 </MenuItem>
               );
             })}
@@ -264,18 +315,14 @@ export default function Index() {
         </FormControl>
         <Input
           label={"Date of Birth"}
-          value={birthDate}
+          value={birthDate.value}
           onChange={onChangeBirthDate}
           maxLength={10}
           showMaxLength={false}
           placeholder="02/28/1994"
           essential
-          error={birthDate.length === 10 && !isBirthday(birthDate)}
-          helperText={
-            birthDate.length === 10 && !isBirthday(birthDate)
-              ? "Your date of birth is incorrect"
-              : ""
-          }
+          error={birthDate.error}
+          helperText={birthDate.helperText}
           sx={{
             m: theme.spacing(3, 0, 0, 0),
           }}
@@ -294,14 +341,23 @@ export default function Index() {
           }}
         >
           By continuing you agree to KAABOOM's{" "}
-          <a target="_blank">Terms of Service</a>, including{" "}
-          <a target="_blank">Additional Terms</a>, and{" "}
-          <a target="_blank">Privacy Policy</a>.
+          <a target="_blank" tabIndex={0}>
+            Terms of Service
+          </a>
+          , including{" "}
+          <a target="_blank" tabIndex={0}>
+            Additional Terms
+          </a>
+          , and{" "}
+          <a target="_blank" tabIndex={0}>
+            Privacy Policy
+          </a>
+          .
         </Typography>
         <Button
           fullWidth
           size="lg"
-          disabled={!isName(name) || nation === "" || !isBirthday(birthDate)}
+          disabled={buttonDisabled}
           onClick={onClickSignup}
           sx={{
             m: theme.spacing(6, 0, 0, 0),

@@ -838,7 +838,7 @@ function Inner() {
                                 color: youhaGrey[200],
                               }}
                             >
-                              Max video length
+                              Min video length
                             </Typography>
                             <Typography
                               sx={{

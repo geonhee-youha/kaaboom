@@ -50,6 +50,9 @@ export default function Button({
         boxShadow: `${borderColor ?? backgroundColor} 0px 0px 0px ${
           type === "outlined" || borderColor ? 1 : 0
         }px inset`,
+        "&:focus-visible": {
+          boxShadow: `rgb(242, 241, 243) 0px 0px 0px 0.2rem`,
+        },
         "&:hover .ripple": {
           opacity: type === "outlined" ? 0 : 1,
         },

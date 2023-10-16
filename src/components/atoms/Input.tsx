@@ -12,6 +12,7 @@ export default function Input({
   helperText,
   type,
   maxLength,
+  minLength,
   multiline,
   essential,
   searchIcon,
@@ -30,12 +31,13 @@ export default function Input({
   uneditable,
   maxRows = 3,
   minRows,
-  canOverMaxLength,
+  allowtMaxLength = false,
 }: {
   error?: boolean;
   helperText?: React.ReactNode;
   type?: string;
   maxLength?: number;
+  minLength?: number;
   multiline?: boolean;
   essential?: boolean;
   searchIcon?: boolean;
@@ -45,8 +47,8 @@ export default function Input({
   onChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onKeyPress?: React.KeyboardEventHandler<HTMLDivElement> | undefined;
   onKeyDown?:
-  | KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>
-  | undefined;
+    | KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>
+    | undefined;
   onClickSearch?: (e: any) => void;
   label?: React.ReactNode;
   sx?: SxProps;
@@ -56,12 +58,12 @@ export default function Input({
   uneditable?: boolean;
   maxRows?: number;
   minRows?: number;
-  canOverMaxLength?: boolean
+  allowtMaxLength?: boolean;
 }) {
   const [inputType, setInputType] = useState<string | undefined>(undefined);
   const onChangeValue = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    if (canOverMaxLength === false && maxLength && value.length > maxLength) return;
+    if (!allowtMaxLength && maxLength && value.length > maxLength) return;
     onChange(event);
   };
   const onClickEye = () => {
@@ -103,11 +105,11 @@ export default function Input({
             width: "100%",
             height: multiline
               ? minRows
-                ? minRows * 24 + (size === "small" ? 12 : 16) * 2
+                ? minRows * 24 + (size === "small" ? 12 : 16) * 2 + 16
                 : "auto"
               : size === "sm"
-                ? 40
-                : 48,
+              ? 40
+              : 48,
             minHeight: multiline
               ? size === "sm"
                 ? 40 * 2
@@ -115,24 +117,27 @@ export default function Input({
               : "initial",
             p: multiline
               ? theme.spacing(
-                size === "small" ? 1.5 : 2,
-                8,
-                size === "small" ? 1.5 : 2,
-                2
-              )
+                  size === "small" ? 1.5 : 2,
+                  2,
+                  size === "small" ? 1.5 : 4,
+                  2
+                )
               : theme.spacing(0, 5, 0, 2),
             borderRadius: 1,
             display: "flex",
             alignItems: multiline ? "flex-start" : "center",
-            boxShadow: `${error ? red[500] : youhaGrey[600]
-              } 0px 0px 0px 1px inset`,
+            boxShadow: `${
+              error ? red[500] : youhaGrey[600]
+            } 0px 0px 0px 1px inset`,
             "&:hover": {
-              boxShadow: `${error ? red[500] : youhaGrey[400]
-                } 0px 0px 0px 1px inset`,
+              boxShadow: `${
+                error ? red[500] : youhaGrey[400]
+              } 0px 0px 0px 1px inset`,
             },
             "&.Mui-focused": {
-              boxShadow: `${error ? red[500] : "#ffffff"
-                } 0px 0px 0px 2px inset`,
+              boxShadow: `${
+                error ? red[500] : "#ffffff"
+              } 0px 0px 0px 2px inset`,
               "& input": {
                 "&::placeholder": {
                   color: youhaGrey[400],
@@ -209,7 +214,7 @@ export default function Input({
                 : youhaGrey[200],
               "& span": {
                 color: error ? red[500] : youhaGrey[100],
-                fontWeight: error ? '700' : 'initial'
+                fontWeight: error ? "700" : "initial",
               },
             }}
           >

@@ -46,6 +46,9 @@ export default function GlobalFooter() {
       sx={{
         backgroundColor: youhaGrey[800],
         borderTop: `1px solid ${youhaGrey[700]}`,
+        "@media(min-width: 961px)": {
+          display: pathnames[2] === "messages" ? "none" : "block",
+        },
       }}
     >
       <Stack

@@ -53,15 +53,48 @@ export const sorts = [
 
 export const genders = [
   {
-    value: 'M',
-    text: 'Male'
+    value: "M",
+    label: "Male",
   },
   {
-    value: 'F',
-    text: 'Female'
+    value: "F",
+    label: "Female",
   },
   {
-    value: 'O',
-    text: 'Other'
+    value: "O",
+    label: "Other",
   },
-]
+];
+
+export type InputProps = {
+  value: string;
+  error?: boolean;
+  helperText?: string;
+};
+
+export const inputDefaultProps: InputProps = {
+  value: "",
+};
+
+export type FileProps = {
+  value: string;
+  file: File | null;
+  error?: boolean;
+  helperText?: string;
+};
+
+export const fileDefaultProps: FileProps = {
+  value: "",
+  file: null,
+};
+
+export type SelectProps = {
+  value: string;
+  label: string;
+  group?: string;
+};
+
+export const selectDefaultProps: SelectProps = {
+  value: "",
+  label: "",
+};

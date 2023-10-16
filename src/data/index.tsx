@@ -1,3 +1,4 @@
+import { IconName } from "@fortawesome/fontawesome-svg-core";
 import _ from "lodash";
 
 export type NationProps = {
@@ -11,19 +12,27 @@ export type LinkProps = {
   label?: string;
 };
 
-export const videoTypes = [
+export type VideoTypeProps = {
+  value: string;
+  label: string;
+  maxVideoLength: number;
+  maxLetters: number;
+  price: number;
+};
+
+export const videoTypes: VideoTypeProps[] = [
   {
     value: "mini",
     label: "Mini",
-    maxVideoLength: "15",
-    maxLetters: "45",
+    maxVideoLength: 15,
+    maxLetters: 45,
     price: 20,
   },
   {
     value: "long",
     label: "Long",
-    maxVideoLength: "45",
-    maxLetters: "200",
+    maxVideoLength: 45,
+    maxLetters: 200,
     price: 90,
   },
 ];
@@ -78,22 +87,26 @@ export const paymentMethods = [
   },
 ];
 
-export const howKaboomWorks = [
+export const howKaboomWorks : {icon: IconName, title: string, description: string} []= [
   {
+    icon: 'search',
     title: "Find a artist",
     description: "Browse thousands of stars offering personalized videos.",
   },
   {
+    icon: 'pen',
     title: "Tell them what to say",
     description:
       "During checkout, you’ll provide the details the celeb will need to make the perfect personalized video.",
   },
   {
+    icon: 'envelope-open',
     title: "Get your video",
     description:
       "Celebs have up to 7 days to complete your request. When it’s ready, we’ll send it directly to you.",
   },
   {
+    icon: 'share-alt',
     title: "Share with loved ones",
     description:
       "Send the video to friends and family and don’t forget to capture their priceless reactions.",

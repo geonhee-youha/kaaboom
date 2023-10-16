@@ -3,24 +3,9 @@ import { videoTypes } from "../data";
 import _ from "lodash";
 import { MessageProps, messages } from "../data/message";
 
-export const searchDialogRecoilState = atom({
-  key: "searchDialog",
-  default: {
-    open: false,
-  },
-});
-
 export const sortDialogRecoilState = atom({
   key: "sortDialog",
   default: {
-    open: false,
-  },
-});
-
-export const rateDialogRecoilState = atom({
-  key: "rateDialog",
-  default: {
-    id: '',
     open: false,
   },
 });
@@ -34,7 +19,7 @@ export const sideDrawerRecoilState = atom({
 
 export const loginRecoilState = atom({
   key: "login",
-  default: false,
+  default: true,
 });
 
 export type OrderProps = {
@@ -117,7 +102,7 @@ export const tempOrders = [
 
 export const ordersState = atom<OrderProps[]>({
   key: "ordersState",
-  default: [],
+  default: tempOrders,
 });
 
 export const messagesState = atom<MessageProps[]>({

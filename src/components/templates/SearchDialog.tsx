@@ -13,8 +13,6 @@ import IconButton from "../atoms/IconButton";
 import TextButton from "../atoms/TextButton";
 import youhaGrey from "../../constants/youhaGrey";
 import youhaBlue from "../../constants/youhaBlue";
-import { useRecoilState } from "recoil";
-import { searchDialogRecoilState } from "../../constants/recoils";
 import { useRouter } from "next/router";
 import _ from "lodash";
 import { artists } from "../../data/artist";
@@ -22,31 +20,19 @@ import { groups } from "../../data/group";
 import { agencies } from "../../data/agency";
 import SearchItem from "../molecules/SearchItem";
 import Empty from "../atoms/Empty";
+import { InputProps, inputDefaultProps } from "../../constants";
 
 export default function SearchDialog({}: {}) {
+  //#region [router] 이동 및 쿼리
   const router = useRouter();
-  const [searchDialog, setSearchDialog] = useRecoilState(
-    searchDialogRecoilState
-  );
-  const { open } = searchDialog;
-  const [value, setValue] = useState<string>("");
-  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setValue(value);
-  };
-  const onClose = () => {
-    setSearchDialog({ open: false });
-    setValue("");
-  };
-  const onKeyPress = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === "Enter") {
-      if (value !== "") {
-        router.push(`/explore/search?searchText=${value}`);
-      }
-      onClose();
-    }
-  };
-  const searchText = value;
+  const { searching, id } = router.query;
+  const open = searching === "true";
+  //#endregion [router] 이동 및 쿼리
+  //#region [state] 본문
+  const [input, setInput] = useState<InputProps>(inputDefaultProps);
+  //#endregion [state] 본문
+  //#region [임시] 검색결과
+  const searchText = input.value;
   const searchedArtists = _.filter(artists, (el) => {
     return el.name.toLowerCase().includes(`${searchText}`.toLowerCase());
   });
@@ -56,6 +42,49 @@ export default function SearchDialog({}: {}) {
   const searchedAgencies = _.filter(agencies, (el) => {
     return el.name.toLowerCase().includes(`${searchText}`.toLowerCase());
   });
+  //#endregion [임시] 검색결과
+  //#region [function] 본문
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    const input = {
+      ...inputDefaultProps,
+      value: value,
+    };
+    setInput(input);
+  };
+  const onKeyPress = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter") {
+      if (input.value !== "") {
+        router.push(`/explore/search?searchText=${input.value}`);
+      }
+      onClose();
+    }
+  };
+  //#endregion [function] 본문
+  //#region [function] 닫기
+  const onClose = () => {
+    const firstOnly = "?searching=true";
+    const first = "?searching=true&";
+    const second = "&searching=true";
+    const firstOnlyQuery = router.asPath.includes(firstOnly);
+    const firstQuery = router.asPath.includes(first);
+    const secondQuery = router.asPath.includes(second);
+    router.push(
+      secondQuery
+        ? `${router.asPath.replace(second, "")}`
+        : firstOnlyQuery
+        ? `${router.asPath.replace(firstOnly, "")}`
+        : firstQuery
+        ? `${router.asPath.replace(first, "?")}`
+        : router.asPath,
+      undefined,
+      {
+        shallow: true,
+      }
+    );
+    setInput(inputDefaultProps);
+  };
+  //#endregion [function] 닫기
   return (
     <Dialog
       open={open}
@@ -120,7 +149,7 @@ export default function SearchDialog({}: {}) {
             color={youhaBlue[500]}
           />
           <InputBase
-            value={value}
+            value={input.value}
             onChange={onChange}
             onKeyPress={onKeyPress}
             placeholder="Search for Kpop idols"
@@ -169,7 +198,7 @@ export default function SearchDialog({}: {}) {
           position: "relative",
         }}
       >
-        {value === "" ? (
+        {input.value === "" ? (
           <></>
         ) : [...searchedArtists, ...searchedGroups, ...searchedAgencies]
             .length <= 0 ? (
@@ -181,7 +210,7 @@ export default function SearchDialog({}: {}) {
                 color: youhaGrey[200],
               }}
             >
-              No results for "{value}"
+              No results for "{input.value}"
             </Typography>
           </Empty>
         ) : (
@@ -203,7 +232,7 @@ export default function SearchDialog({}: {}) {
               return (
                 <SearchItem
                   key={index}
-                  searchText={value}
+                  searchText={input.value}
                   type="artist"
                   item={newItem}
                 />
@@ -219,7 +248,7 @@ export default function SearchDialog({}: {}) {
               return (
                 <SearchItem
                   key={index}
-                  searchText={value}
+                  searchText={input.value}
                   type="group"
                   item={newItem}
                 />
@@ -234,7 +263,7 @@ export default function SearchDialog({}: {}) {
               return (
                 <SearchItem
                   key={index}
-                  searchText={value}
+                  searchText={input.value}
                   type="agency"
                   item={newItem}
                 />
@@ -243,13 +272,13 @@ export default function SearchDialog({}: {}) {
           </Box>
         )}
       </Box>
-      {value !== "" &&
+      {input.value !== "" &&
         [...searchedArtists, ...searchedGroups, ...searchedAgencies].length >
           0 && (
           <Paper
             onClick={() => {
-              if (value !== "") {
-                router.push(`/explore/search?searchText=${value}`);
+              if (input.value !== "") {
+                router.push(`/explore/search?searchText=${input.value}`);
               }
               onClose();
             }}

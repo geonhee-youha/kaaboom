@@ -10,7 +10,6 @@ export default function Video({
   onProgress,
   onEnded,
   config,
-  playsinline = true,
 }: {
   videoRef: any;
   playing: boolean;
@@ -20,7 +19,6 @@ export default function Video({
   onProgress?: ((state: OnProgressProps) => void) | undefined;
   onEnded?: (() => void) | undefined;
   config?: Config | undefined;
-  playsinline?: boolean
 }) {
   return (
     <ReactPlayer
@@ -33,7 +31,7 @@ export default function Video({
       onEnded={onEnded}
       config={config}
       progressInterval={500}
-      playsinline={playsinline}
+      playsinline
     />
   );
 }

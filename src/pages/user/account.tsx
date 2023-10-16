@@ -4,19 +4,23 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
-  Stack,
   Typography,
-  alpha,
 } from "@mui/material";
-import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import Button from "../../components/atoms/Button";
-import { loginRecoilState } from "../../constants/recoils";
 import youhaGrey from "../../constants/youhaGrey";
 import { theme } from "../../themes/theme";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import Input, { InputLabel } from "../../components/atoms/Input";
-import { genders } from "../../constants";
+import {
+  FileProps,
+  InputProps,
+  inputDefaultProps,
+  fileDefaultProps,
+  genders,
+  SelectProps,
+  selectDefaultProps,
+} from "../../constants";
 import { nations } from "../../constants/nations";
 import _ from "lodash";
 import { tempUserState } from "../../data/temp";
@@ -24,41 +28,65 @@ import { isBirthday, isName } from "../../utils";
 import Visual from "../../components/atoms/Visual";
 import Icon from "../../components/atoms/Icon";
 import { deepPurple, indigo, pink } from "@mui/material/colors";
-import IconButton from "../../components/atoms/IconButton";
 import Page from "../../components/atoms/Page";
 
 export default function Index() {
-  const router = useRouter();
-  const { url } = router.query;
-  const [login, setLogin] = useRecoilState(loginRecoilState);
-  const [file, setFile] = useState<any>(null);
+  //#region [recoil state] 유저데이터(임시)
   const [tempUser, setTempUser] = useRecoilState(tempUserState);
-  const [thumbnail, setThumbnail] = useState<string | undefined>(
-    tempUser.thumbnail
+  //#endregion [recoil state] 유저데이터(임시)
+  //#region [state] 썸네일
+  const [thumbnail, setThumbnail] = useState<FileProps>({
+    ...fileDefaultProps,
+    value: tempUser.thumbnail,
+  });
+  //#endregion [state] 썸네일
+  //#region [state] 이름/바이오/국적/젠더/생년월일
+  const [name, setName] = useState<InputProps>({
+    ...inputDefaultProps,
+    value: tempUser.name,
+  });
+  const [bio, setBio] = useState<InputProps>({
+    ...inputDefaultProps,
+    value: tempUser.bio,
+  });
+  const [nation, setNation] = useState<SelectProps>(
+    nations[_.findIndex(nations, (el) => el.value === tempUser.nation)] ??
+      selectDefaultProps
   );
-  const [name, setName] = useState<string>(tempUser.name);
-  const [bio, setBio] = useState<string>(tempUser.bio);
-  const [nation, setNation] = useState<string>(tempUser.nation);
-  const [gender, setGender] = useState<string>(tempUser.gender);
-  const [birthDate, setBirthDate] = useState<string>(tempUser.birthDate);
+  const [gender, setGender] = useState<SelectProps>(
+    genders[_.findIndex(genders, (el) => el.value === tempUser.gender)] ??
+      selectDefaultProps
+  );
+  const [birthDate, setBirthDate] = useState<InputProps>({
+    ...inputDefaultProps,
+    value: tempUser.birthDate,
+  });
+  //#endregion [state] 이름/바이오/국적/젠더/생년월일
+  //#region [state] 메인 액션 검증
   const [prevData, setPrevData] = useState<any>(tempUser);
   const newData = {
     ...tempUser,
-    name: name,
-    bio: bio,
-    nation: nation,
-    gender: gender,
-    birthDate: birthDate,
+    name: name.value,
+    bio: bio.value,
+    nation: nation.value,
+    gender: gender.value,
+    birthDate: birthDate.value,
   };
-  useEffect(() => {
-    setPrevData(prevData);
-  }, [tempUser]);
   const changable =
     newData.name !== prevData.name ||
     newData.bio !== prevData.bio ||
     newData.nation !== prevData.nation ||
     newData.gender !== prevData.gender ||
     newData.birthDate !== prevData.birthDate;
+  const buttonDisabled =
+    !changable ||
+    name.error ||
+    bio.error ||
+    nation.value === "" ||
+    gender.value === "" ||
+    birthDate.error;
+  //#endregion [state] 메인 액션 검증
+  //#region [function] 썸네일
   const onChangeThumbnail = async (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
     const file = event.target.files[0];
@@ -75,47 +103,93 @@ export default function Index() {
     }
     event.target.value = "";
     const timestamp = +new Date();
-    const url = URL.createObjectURL(file);
+    const value = URL.createObjectURL(file);
     // Preview
     const isImg = file.type.split("/")[0] === "image"; //Img or clip
     // POST
     const data = new FormData();
     data.append("file", file);
-    //로딩 끝내야함
-    setFile(file);
-    setThumbnail(url);
+    setThumbnail({
+      value: value,
+      file: file,
+    });
   };
+  //#endregion [function] 썸네일
+  //#region [function] 이름/바이오/국적/젠더/생년월일
   const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    setName(value);
+    const error = !isName(value);
+    const helperText = error
+      ? value === ""
+        ? "Required"
+        : "2 to 16 characters, composed of English or numbers"
+      : "";
+    const input = {
+      value: value,
+      error: error,
+      helperText: helperText,
+    };
+    setName(input);
   };
   const onChangeBio = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    setBio(value);
+    const error = value.length > 200;
+    const helperText = error ? "Must be no less than 200 characters" : "";
+    const input = {
+      value: value,
+      error: error,
+      helperText: helperText,
+    };
+    setBio(input);
   };
   const onChangeNation = (event: SelectChangeEvent) => {
-    setNation(event.target.value as string);
+    const value = event.target.value as string;
+    const array = nations;
+    const select = array[_.findIndex(array, (el) => el.value === value)];
+    setNation(select);
   };
   const onChangeGender = (event: SelectChangeEvent) => {
-    setGender(event.target.value as string);
+    const value = event.target.value as string;
+    const array = genders;
+    const select = array[_.findIndex(array, (el) => el.value === value)];
+    setGender(select);
   };
   const onChangeBirthDate = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    const text = value
+    const replacedValue = event.target.value
       .replace(/[^0-9]/g, "")
       .replace(/^(\d{0,2})(\d{0,2})(\d{0,4})$/g, "$1/$2/$3")
       .replace(/(\/{1,2})$/g, "");
-    setBirthDate(text);
+    const error = !isBirthday(value);
+    const helperText = error
+      ? value === ""
+        ? "Required"
+        : "Your date of birth is incorrect"
+      : "";
+    const input = {
+      value: replacedValue,
+      error: error,
+      helperText: helperText,
+    };
+    setBirthDate(input);
   };
+  //#endregion [function] 이름/바이오/국적/젠더/생년월일
+  //#region [function] 메인 액션
   const onClickSave = () => {
     setTempUser({
       ...tempUser,
-      name: name,
-      nation: nation,
-      gender: gender,
-      birthDate: birthDate,
+      name: name.value,
+      nation: nation.value,
+      gender: gender.value,
+      birthDate: birthDate.value,
     });
   };
+  //#endregion [function] 메인 액션
+  //#region [side effect] 유저값 변할때마다 변경 검증용 값 저장
+  useEffect(() => {
+    setPrevData(prevData);
+  }, [tempUser]);
+  //#endregion [side effect] 유저값 변할때마다 변경 검증용 값 저장
   return (
     <Page narrow>
       <Box
@@ -151,7 +225,7 @@ export default function Index() {
             //   });
             // }}
           >
-            {thumbnail ? (
+            {thumbnail.value ? (
               <Box
                 sx={{
                   width: "100%",
@@ -159,7 +233,7 @@ export default function Index() {
                 }}
               >
                 <Visual
-                  src={thumbnail}
+                  src={thumbnail.value}
                   sx={{
                     width: "100%",
                     height: "100%",
@@ -253,21 +327,17 @@ export default function Index() {
       />
       <Input
         label="Your name"
-        value={name}
+        value={name.value}
         onChange={onChangeName}
-        error={!isName(name)}
-        helperText={
-          !isName(name)
-            ? "2 to 16 characters, composed of English or numbers"
-            : ""
-        }
+        error={name.error}
+        helperText={name.helperText}
         sx={{
           m: theme.spacing(3, 0, 0, 0),
         }}
       />
       <Input
         label="Your bio"
-        value={bio}
+        value={bio.value}
         onChange={onChangeBio}
         multiline
         maxLength={200}
@@ -276,6 +346,9 @@ export default function Index() {
         sx={{
           m: theme.spacing(3, 0, 0, 0),
         }}
+        error={bio.error}
+        helperText={bio.helperText}
+        allowtMaxLength={true}
       />
       <FormControl
         fullWidth
@@ -307,10 +380,9 @@ export default function Index() {
             {nation ? (
               <>
                 <img
-                  src={`https://img.mobiscroll.com/demos/flags/${nation}.png`}
+                  src={`https://img.mobiscroll.com/demos/flags/${nation.value}.png`}
                 />
-                {nations[_.findIndex(nations, (el) => el.value === nation)]
-                  .text ?? ""}
+                {nation.value}
               </>
             ) : (
               ""
@@ -319,7 +391,7 @@ export default function Index() {
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={nation}
+            value={nation.value}
             onChange={onChangeNation}
             sx={{
               fontSize: 16,
@@ -359,7 +431,7 @@ export default function Index() {
             {nations.map((item, index) => {
               return (
                 <MenuItem key={index} value={item.value}>
-                  {item.text}
+                  {item.label}
                 </MenuItem>
               );
             })}
@@ -376,7 +448,7 @@ export default function Index() {
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={gender}
+          value={gender.value}
           onChange={onChangeGender}
           sx={{
             fontSize: 16,
@@ -418,7 +490,7 @@ export default function Index() {
           {genders.map((item, index) => {
             return (
               <MenuItem key={index} value={item.value}>
-                {item.text}
+                {item.label}
               </MenuItem>
             );
           })}
@@ -426,17 +498,13 @@ export default function Index() {
       </FormControl>
       <Input
         label={"Date of Birth"}
-        value={birthDate}
+        value={birthDate.value}
         onChange={onChangeBirthDate}
         maxLength={10}
         showMaxLength={false}
         placeholder="02/28/1994"
-        error={birthDate.length === 10 && !isBirthday(birthDate)}
-        helperText={
-          birthDate.length === 10 && !isBirthday(birthDate)
-            ? "Your date of birth is incorrect"
-            : ""
-        }
+        error={birthDate.error}
+        helperText={birthDate.helperText}
         sx={{
           m: theme.spacing(3, 0, 0, 0),
         }}
@@ -455,16 +523,23 @@ export default function Index() {
         }}
       >
         By continuing you agree to KAABOOM's{" "}
-        <a target="_blank">Terms of Service</a>, including{" "}
-        <a target="_blank">Additional Terms</a>, and{" "}
-        <a target="_blank">Privacy Policy</a>.
+        <a target="_blank" tabIndex={0}>
+          Terms of Service
+        </a>
+        , including{" "}
+        <a target="_blank" tabIndex={0}>
+          Additional Terms
+        </a>
+        , and{" "}
+        <a target="_blank" tabIndex={0}>
+          Privacy Policy
+        </a>
+        .
       </Typography>
       <Button
         fullWidth
         size="lg"
-        disabled={
-          !changable || !isName(name) || nation === "" || !isBirthday(birthDate)
-        }
+        disabled={buttonDisabled}
         onClick={onClickSave}
         sx={{
           m: theme.spacing(6, 0, 0, 0),

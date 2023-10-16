@@ -9,120 +9,30 @@ import {
   paymentMethods,
   toOrFromTypes,
   whomTypes,
+  VideoTypeProps,
 } from "../../data";
 import youhaBlue from "../../constants/youhaBlue";
 import youhaGrey from "../../constants/youhaGrey";
 import { theme } from "../../themes/theme";
 import Icon from "../../components/atoms/Icon";
 import { comma } from "../../utils";
-import Input, { InputLabel } from "../../components/atoms/Input";
+import Input from "../../components/atoms/Input";
 import Button from "../../components/atoms/Button";
 import Checkbox from "../../components/atoms/Checkbox";
 import Chip from "../../components/atoms/Chip";
-import _, { random } from "lodash";
-import { ArtistProps, artists } from "../../data/artist";
+import _ from "lodash";
+import { artists } from "../../data/artist";
 import Typo from "../../components/atoms/Typo";
-import { GroupProps, groups } from "../../data/group";
 import Visual from "../../components/atoms/Visual";
-import IconButton from "../../components/atoms/IconButton";
-import { yellow } from "@mui/material/colors";
 import { useRecoilState } from "recoil";
 import { ordersState, tempOrders } from "../../constants/recoils";
-
-function Header({
-  artist,
-  paymentMode,
-}: {
-  artist: ArtistProps;
-  paymentMode?: boolean;
-}) {
-  const router = useRouter();
-  const { id, videoType } = router.query;
-  const onClickBack = () => {
-    if (paymentMode) {
-      router.replace(`${router.pathname}?id=${id}&videoType=${videoType}`);
-    } else {
-      router.back();
-    }
-  };
-  return (
-    <>
-      <Box
-        sx={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          borderBottom: `1px solid ${youhaGrey[700]}`,
-          backgroundColor: alpha(youhaGrey[900], 0.8),
-          backdropFilter: `blur(8px)`,
-          zIndex: 999,
-          "@media(min-width: 961px)": {
-            display: "flex",
-          },
-        }}
-        className="Header"
-      >
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            height: 56,
-            width: "100%",
-            maxWidth: "1280px",
-            m: theme.spacing(0, "auto"),
-            p: theme.spacing(0, 2, 0, 1),
-          }}
-        >
-          <IconButton name="chevron-left" onClick={onClickBack} size={20} />
-          <Stack
-            direction={"row"}
-            alignItems={"center"}
-            spacing={2}
-            sx={{
-              p: theme.spacing(0, 2),
-            }}
-          >
-            <Box
-              sx={{
-                position: "relative",
-                width: 40,
-                height: 40,
-                "@media(min-width: 961px)": {
-                  display: "none",
-                },
-              }}
-            >
-              <Box
-                sx={{
-                  position: "relative",
-                  width: "100%",
-                  height: "100%",
-                  border: `1px solid ${youhaGrey[700]}`,
-                  borderRadius: "50%",
-                  overflow: "hidden",
-                  aspectRatio: `1`,
-                }}
-              >
-                <Visual src={artist.thumbnail} absolute noScale={false} />
-              </Box>
-            </Box>
-            <Typo
-              lines={1}
-              sx={{
-                fontSize: 16,
-                lineHeight: "24px",
-                fontWeight: "700",
-              }}
-            >
-              {artist.name && `New request for ${artist.name}`}
-            </Typo>
-          </Stack>
-        </Box>
-      </Box>
-    </>
-  );
-}
+import OrderHeader from "../../components/organisms/OrderHeader";
+import {
+  InputProps,
+  SelectProps,
+  inputDefaultProps,
+  selectDefaultProps,
+} from "../../constants";
 
 export default function Index() {
   return (
@@ -133,84 +43,163 @@ export default function Index() {
 }
 
 function Inner() {
+  //#region [router] 이동 및 쿼리
   const router = useRouter();
   const { id, videoType: type, state } = router.query;
+  //#endregion [router] 이동 및 쿼리
+  //#region [state] 주문 및 아티스트
   const artist = artists[_.findIndex(artists, (el) => el.id === id)];
   const [orders, setOrders] = useRecoilState(ordersState);
-  const [videoType, setVideoType] = useState<string>(`${type}`);
-  const [whomType, setWhomType] = useState<string>(whomTypes[0].value);
-  const [toFirstName, setToFirstName] = useState<string>("");
-  const [toType, setToType] = useState<string>("");
-  const [fromFirstName, setFromFirstName] = useState<string>("");
-  const [fromType, setFromType] = useState<string>("");
-  const [instructions, setInstructions] = useState<string>("");
+  //#endregion [state] 주문 및 아티스트
+  //#region [state] 비디오타입/받는이타입/주는이/주는이타입/받는이/받는이타입/설명/비디오숨기기여부/배송기간/지불방법
+  const [videoType, setVideoType] = useState<VideoTypeProps | null>(
+    videoTypes[_.findIndex(videoTypes, (el) => el.value === type)] ?? null
+  );
+  const [whomType, setWhomType] = useState<SelectProps>(whomTypes[0]);
+  const [toFirstName, setToFirstName] = useState<InputProps>(inputDefaultProps);
+  const [toType, setToType] = useState<SelectProps>(selectDefaultProps);
+  const [fromFirstName, setFromFirstName] =
+    useState<InputProps>(inputDefaultProps);
+  const [fromType, setFromType] = useState<SelectProps>(selectDefaultProps);
+  const [instructions, setInstructions] =
+    useState<InputProps>(inputDefaultProps);
   const [hideVideo, setHideVideo] = useState<boolean>(false);
-  const [toFirstNameError, setToFirstNameError] = useState<boolean>(false);
-  const [fromFirstNameError, setFromFirstNameError] = useState<boolean>(false);
-  const [instructionsError, setInstructionsError] = useState<boolean>(false);
   const [deliverySpeed, setDeliverySpeed] = useState<string>(
     deliverySpeeds[0].value
   ); // 추후 추가기능
   const [paymentMethod, setPaymentMethod] = useState<string>(
     paymentMethods[0].value
   );
-  const instructionsMaxLength = videoType === "mini" ? 45 : 200;
-  const videoTypeUnavailable = videoType === "";
-  const toFirstNameUnavailable = toFirstName === "" || toFirstName.length > 40;
+  //#endregion [state] 비디오타입/받는이타입/주는이/주는이타입/받는이/받는이타입/설명/비디오숨기기여부/배송기간/지불방법
+  //#region [state] 검증
+  const videoTypeUnavailable = videoType === null || videoType === undefined;
+  const instructionsMaxLength =
+    videoTypeUnavailable || videoType?.value === "mini" ? 45 : 200;
+  const toFirstNameUnavailable =
+    toFirstName.value === "" || toFirstName.value.length > 40;
   const fromFirstNameUnavailable =
-    fromFirstName === "" || fromFirstName.length > 40;
+    fromFirstName.value === "" || fromFirstName.value.length > 40;
   const instructionsUnavailable =
-    instructions === "" || instructions.length > instructionsMaxLength;
+    instructions.value === "" ||
+    instructions.value.length > instructionsMaxLength;
   const orderUnavailable =
     videoTypeUnavailable ||
     toFirstNameUnavailable ||
-    (whomType === "myself" ? false : fromFirstNameUnavailable) ||
+    (whomType.value === "myself" ? false : fromFirstNameUnavailable) ||
     instructionsUnavailable;
-
   const paymentMode = orderUnavailable && state === "purchase";
-  const onChangevideoType = (value: string) => {
-    setVideoType(value);
+  //#endregion [state] 검증
+  //#region [function] 비디오타입/받는이타입/주는이/주는이타입/받는이/받는이타입/설명/비디오숨기기여부/배송기간/지불방법
+  const onChangeVideoType = (value: string) => {
+    const array = videoTypes;
+    const select = array[_.findIndex(array, (el) => el.value === value)];
+    setVideoType(select);
   };
   const onChangeWhomType = (value: string) => {
-    setWhomType(value);
+    const array = whomTypes;
+    const select = array[_.findIndex(array, (el) => el.value === value)];
+    setWhomType(select);
   };
   const onChangeToFirstName = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     const error = value === "" || value.length > 40;
-    setToFirstName(value);
-    setToFirstNameError(error);
+    const helperText = error
+      ? value === ""
+        ? "Required"
+        : "Must be no more than 40 characters"
+      : "";
+    const input = {
+      value: value,
+      error: error,
+      helperText: helperText,
+    };
+    setToFirstName(input);
+  };
+  const onChangeToType = (value: string) => {
+    const array = toOrFromTypes;
+    const select = array[_.findIndex(array, (el) => el.value === value)];
+    setToType(select);
   };
   const onChangeFromFirstName = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     const error = value === "" || value.length > 40;
-    setFromFirstName(value);
-    setFromFirstNameError(error);
+    const helperText = error
+      ? value === ""
+        ? "Required"
+        : "Must be no more than 40 characters"
+      : "";
+    const input = {
+      value: value,
+      error: error,
+      helperText: helperText,
+    };
+    setFromFirstName(input);
+  };
+  const onChangeFromType = (value: string) => {
+    const array = toOrFromTypes;
+    const select = array[_.findIndex(array, (el) => el.value === value)];
+    setFromType(select);
   };
   const onChangeInstructions = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     const error = value === "" || value.length > instructionsMaxLength;
-    setInstructions(value);
-    setInstructionsError(error);
+    const helperText = error
+      ? value === ""
+        ? "Required"
+        : `Total character count cannot exceed ${instructionsMaxLength}`
+      : "";
+    const input = {
+      value: value,
+      error: error,
+      helperText: helperText,
+    };
+    setInstructions(input);
   };
   const onClickHideVideo = () => {
     setHideVideo(!hideVideo);
-  };
-  const onClickContinue = () => {
-    if (orderUnavailable) {
-      setToFirstNameError(toFirstNameUnavailable);
-      setFromFirstNameError(fromFirstNameUnavailable);
-      setInstructionsError(instructionsUnavailable);
-    } else {
-      router.replace(
-        `${router.pathname}?id=${id}&videoType=${videoType}&state=purchase`
-      );
-    }
   };
   const onChangeDeliverySpeed = (value: string) => {
     setDeliverySpeed(value);
   }; // 추후 추가기능
   const onChangePaymentMethod = (value: string) => {
     setPaymentMethod(value);
+  };
+  //#endregion [function] 비디오타입/받는이타입/주는이/주는이타입/받는이/받는이타입/설명/비디오숨기기여부/배송기간/지불방법
+  //#region [function] 메인 액션 2가지
+  const onClickContinue = () => {
+    if (orderUnavailable) {
+      setToFirstName({
+        ...toFirstName,
+        error: toFirstNameUnavailable,
+        helperText: toFirstNameUnavailable
+          ? toFirstName.value === ""
+            ? "Required"
+            : "Must be no more than 40 characters"
+          : "",
+      });
+      setFromFirstName({
+        ...fromFirstName,
+        error: fromFirstNameUnavailable,
+        helperText: fromFirstNameUnavailable
+          ? fromFirstName.value === ""
+            ? "Required"
+            : "Must be no more than 40 characters"
+          : "",
+      });
+      setInstructions({
+        ...instructions,
+        error: instructionsUnavailable,
+        helperText: instructionsUnavailable
+          ? instructions.value === ""
+            ? "Required"
+            : `Total character count cannot exceed ${instructionsMaxLength}`
+          : "",
+      });
+    } else {
+      router.replace(
+        `${router.pathname}?id=${id}&videoType=${videoType}&state=purchase`
+      );
+    }
   };
   const onClickPurchase = () => {
     if (confirm("테스트를 위해 주문내역 3개 추가함")) {
@@ -223,21 +212,20 @@ function Inner() {
         },
         date: new Date(),
         state: "In progress",
-        price:
-          videoTypes[_.findIndex(videoTypes, (el) => el.value === videoType)]
-            .price,
-        videoType: videoType,
-        whomType: whomType,
-        toFirstName: toFirstName,
-        toType: toType,
-        fromFirstName: fromFirstName,
-        fromType: fromType,
-        instructions: instructions,
+        price: videoType?.price ?? 0,
+        videoType: videoType?.value ?? "",
+        whomType: whomType.value,
+        toFirstName: toFirstName.value,
+        toType: toType?.value,
+        fromFirstName: fromFirstName.value,
+        fromType: fromType?.value,
+        instructions: instructions.value,
         hideVideo: hideVideo,
       };
       setOrders([currentOrder, ...tempOrders]);
     }
   };
+  //#endregion [function] 메인 액션 2가지
   return (
     <>
       <Box
@@ -493,9 +481,9 @@ function Inner() {
                 }}
               >
                 {videoTypes.map((item, index) => {
-                  const focused = videoType === item.value;
+                  const focused = videoType && videoType?.value === item.value;
                   const onClick = () => {
-                    onChangevideoType(focused ? "" : item.value);
+                    onChangeVideoType(focused ? "" : item.value);
                     router.push(
                       `${router.pathname}?id=${id}&videoType=${item.value}`,
                       undefined,
@@ -568,7 +556,7 @@ function Inner() {
                                 color: youhaGrey[200],
                               }}
                             >
-                              Max video length
+                              Min video length
                             </Typography>
                             <Typography
                               sx={{
@@ -682,9 +670,10 @@ function Inner() {
                 }}
               >
                 {whomTypes.map((item, index) => {
-                  const focused = item.value === whomType;
+                  const focused = item.value === whomType.value;
                   const onClick = () => {
-                    onChangeWhomType(focused ? "" : item.value);
+                    const value = item.value;
+                    onChangeWhomType(value);
                   };
                   return (
                     <Chip
@@ -703,18 +692,13 @@ function Inner() {
               <Input
                 label="To (first name)"
                 placeholder="Lee"
-                value={toFirstName}
+                value={toFirstName.value}
                 onChange={onChangeToFirstName}
                 sx={{
                   m: theme.spacing(3, 0, 0, 0),
                 }}
-                error={toFirstNameError}
-                helperText={
-                  toFirstNameError &&
-                  (toFirstName === ""
-                    ? "Required"
-                    : "Must be no more than 40 characters")
-                }
+                error={toFirstName.error}
+                helperText={toFirstName.helperText}
               />
               <Stack
                 direction="row"
@@ -724,9 +708,10 @@ function Inner() {
                 }}
               >
                 {toOrFromTypes.map((item, index) => {
-                  const focused = item.value === toType;
+                  const focused = item.value === toType?.value;
                   const onClick = () => {
-                    setToType(focused ? "" : item.value);
+                    const value = focused ? "" : item.value;
+                    onChangeToType(value);
                   };
                   return (
                     <Chip
@@ -740,25 +725,20 @@ function Inner() {
               </Stack>
               <Box
                 sx={{
-                  display: whomType === "myself" ? "none" : "block",
+                  display: whomType.value === "myself" ? "none" : "block",
                   m: theme.spacing(6, 0, 0, 0),
                 }}
               >
                 <Input
                   label="From (first name)"
                   placeholder="Kim"
-                  value={fromFirstName}
+                  value={fromFirstName.value}
                   onChange={onChangeFromFirstName}
                   sx={{
                     m: theme.spacing(3, 0, 0, 0),
                   }}
-                  error={fromFirstNameError}
-                  helperText={
-                    fromFirstNameError &&
-                    (fromFirstName === ""
-                      ? "Required"
-                      : "Must be no more than 40 characters")
-                  }
+                  error={fromFirstName.error}
+                  helperText={fromFirstName.helperText}
                 />
                 <Stack
                   direction="row"
@@ -768,9 +748,10 @@ function Inner() {
                   }}
                 >
                   {toOrFromTypes.map((item, index) => {
-                    const focused = item.value === fromType;
+                    const focused = item.value === fromType?.value;
                     const onClick = () => {
-                      setFromType(focused ? "" : item.value);
+                      const value = focused ? "" : item.value;
+                      onChangeFromType(value);
                     };
                     return (
                       <Chip
@@ -821,25 +802,22 @@ function Inner() {
               <Input
                 label={`Instructions for ${artist.name}`}
                 placeholder={
-                  videoType === "mini"
+                  videoTypeUnavailable || videoType?.value === "mini"
                     ? `I had a very bad day today please cheer me up-[O]\nHappy birthday [star’s name]~, I'm your biggest fan -[O]\nPlease send me a dancing video -[X]`
                     : "Hi [star’s name]! How do you dance like that on the stage!!\ni hope this album hits million sales and i hope everyone in the world knows about this team!! "
                 }
-                value={instructions}
+                value={instructions.value}
                 onChange={onChangeInstructions}
                 sx={{
                   m: theme.spacing(3, 0, 0, 0),
                 }}
                 multiline
-                minRows={videoType === "mini" ? 6 : 10}
-                error={instructionsError}
-                maxLength={instructionsMaxLength}
-                helperText={
-                  instructionsError &&
-                  (instructions === ""
-                    ? "Required"
-                    : `Total character count cannot exceed ${instructionsMaxLength}`)
+                minRows={
+                  videoTypeUnavailable || videoType?.value === "mini" ? 6 : 10
                 }
+                error={instructions.error}
+                maxLength={instructionsMaxLength}
+                helperText={instructions.helperText}
                 showMaxLength
               />
             </Box>
@@ -870,7 +848,7 @@ function Inner() {
                 >{`Hide this video from ${artist.name}'s profile`}</Typography>
               </Stack>
             </Box>
-            {videoType === "" && (
+            {videoTypeUnavailable && (
               <Box
                 sx={{
                   position: "absolute",
@@ -1138,12 +1116,7 @@ function Inner() {
               >
                 <span>Personalized video</span>
                 <span>
-                  $
-                  {comma(
-                    videoTypes[
-                      _.findIndex(videoTypes, (el) => el.value === videoType)
-                    ].price
-                  )}
+                  ${videoType?.value}
                   .00
                 </span>
               </Typography>
@@ -1200,12 +1173,7 @@ function Inner() {
               >
                 <span>Total</span>
                 <span>
-                  $
-                  {comma(
-                    videoTypes[
-                      _.findIndex(videoTypes, (el) => el.value === videoType)
-                    ].price
-                  )}
+                  ${videoType?.price}
                   .00
                 </span>
               </Typography>
@@ -1234,14 +1202,19 @@ function Inner() {
               }}
             >
               By ordering, you agree to KAABOOM's{" "}
-              <a target="_blank">Terms of Service</a>, including{" "}
-              <a target="_blank">Privacy Policy</a>. This video is for personal
-              use only.
+              <a target="_blank" tabIndex={0}>
+                Terms of Service
+              </a>
+              , including{" "}
+              <a target="_blank" tabIndex={0}>
+                Privacy Policy
+              </a>
+              . This video is for personal use only.
             </Typography>
           </Box>
         </Box>
       )}
-      <Header artist={artist} paymentMode={paymentMode} />
+      <OrderHeader artist={artist} paymentMode={paymentMode} />
     </>
   );
 }

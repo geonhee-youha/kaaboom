@@ -80,12 +80,7 @@ export default function Page({
                 minHeight: "60vh",
                 p: theme.spacing(0, 0, 12, 0),
                 "@media(min-width: 960px)": {
-                  position: "fixed",
-                  top: 56,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  zIndex: 9,
+                  height: `calc(100vh - 56px)`,
                   maxWidth: `initial`,
                   minHeight: "initial",
                   backgroundColor: youhaGrey[900],

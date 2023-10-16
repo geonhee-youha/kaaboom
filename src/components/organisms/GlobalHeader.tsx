@@ -15,7 +15,6 @@ import TextButton from "../atoms/TextButton";
 import { useRecoilState } from "recoil";
 import {
   loginRecoilState,
-  searchDialogRecoilState,
   sideDrawerRecoilState,
 } from "../../constants/recoils";
 import { artistsMenus, globalMenus } from "../../constants";
@@ -267,15 +266,21 @@ export default function GlobalHeader() {
   const inOrderPage = router.pathname.split("/")[1] === "order";
   const { name } = router.query;
   const [login, setLogin] = useRecoilState(loginRecoilState);
-  const [searchDialog, setSearchDialog] = useRecoilState(
-    searchDialogRecoilState
-  );
   const [sideDrawer, setSideDrawer] = useRecoilState(sideDrawerRecoilState);
   const onClickBars = () => {
     setSideDrawer({ open: true });
   };
   const onClickSearch = () => {
-    setSearchDialog({ open: true });
+    const firstQuery = !router.asPath.includes("?");
+    router.push(
+      firstQuery
+        ? `${router.asPath}?searching=true`
+        : `${router.asPath}&searching=true`,
+      undefined,
+      {
+        shallow: true,
+      }
+    );
   };
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
@@ -284,19 +289,16 @@ export default function GlobalHeader() {
   const checkLogin = () => {
     const pathname1 = router.pathname.split("/")[1];
     const pathname2 = router.pathname.split("/")[2];
-    const userPages = pathname1 === "user" || pathname2 === "video";
+    const userPages = pathname1 === "user";
     if (userPages && !login) {
       setLogin(false);
       router.replace("/");
-      alert("잘못된 접근입니다.")
+      alert("잘못된 접근입니다.");
     }
   };
   useEffect(() => {
     checkLogin();
   }, []);
-  useEffect(() => {
-    checkLogin();
-  }, [login]);
   return mounted ? (
     <>
       <Box

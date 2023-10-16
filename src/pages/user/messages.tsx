@@ -39,6 +39,7 @@ export default function Index() {
         });
       }
     }, 20);
+    handleResize()
     window.addEventListener("orientationchange", handleResize);
     window.addEventListener("resize", handleResize);
     return () => {

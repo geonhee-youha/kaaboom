@@ -1,4 +1,11 @@
-import { Box, ButtonBase, Slider, Typography, alpha } from "@mui/material";
+import {
+  Box,
+  ButtonBase,
+  Slider,
+  Stack,
+  Typography,
+  alpha,
+} from "@mui/material";
 import { MessageProps } from "../../data/message";
 import dynamic from "next/dynamic";
 import {
@@ -20,6 +27,7 @@ import Typo from "../atoms/Typo";
 import IconButton from "../atoms/IconButton";
 import { useRouter } from "next/router";
 import { formatTimer } from "../../utils";
+import youhaBlue from "../../constants/youhaBlue";
 
 const Video = dynamic(() => import("../atoms/Video"), { ssr: false });
 
@@ -29,16 +37,16 @@ export default function MessageItem({
   index,
   selectedIndex,
   setSelectedIndex,
-  playsinline = true
 }: {
   type?: string;
   item: MessageProps;
   index: number;
   selectedIndex: number;
   setSelectedIndex: Dispatch<SetStateAction<number>>;
-  playsinline?: boolean
 }) {
   const router = useRouter();
+  const { fullscreen } = router.query;
+  const open = fullscreen === "true";
   const { ref, inView } = useInView();
   const [isWindow, setIsWindow] = useState<boolean>(false);
   const [playing, setPlaying] = useState<boolean>(false);
@@ -114,10 +122,49 @@ export default function MessageItem({
   const playedTime = playedMin + ":" + playedSec;
   const artist =
     artists[
-    _.findIndex(artists, (el) => {
-      return el.name === item.artist.name;
-    })
+      _.findIndex(artists, (el) => {
+        return el.name === item.artist.name;
+      })
     ];
+  const onClickDownload = () => {
+    alert("다운로드 기능");
+  };
+  const onClickShare = () => {
+    alert("공유 기능");
+  };
+  const onClickFullscreen = () => {
+    router.push(`${router.pathname}?id=${item.id}&fullscreen=true`, undefined, {
+      shallow: true,
+    });
+  };
+  const onClickRate = () => {
+    if (item.rated) return;
+    router.push(`${router.pathname}?id=${item.id}&rating=true`, undefined, {
+      shallow: true,
+    });
+    setSelectedIndex(-1);
+  };
+  const onClose = () => {
+    const firstOnly = "?fullscreen=true";
+    const first = "?fullscreen=true&";
+    const second = "&fullscreen=true";
+    const firstOnlyQuery = router.asPath.includes(firstOnly);
+    const firstQuery = router.asPath.includes(first);
+    const secondQuery = router.asPath.includes(second);
+    router.push(
+      secondQuery
+        ? `${router.asPath.replace(second, "")}`
+        : firstOnlyQuery
+        ? `${router.asPath.replace(firstOnly, "")}`
+        : firstQuery
+        ? `${router.asPath.replace(first, "?")}`
+        : router.asPath,
+      undefined,
+      {
+        shallow: true,
+      }
+    );
+  };
   useEffect(() => {
     const focused = selectedIndex === index;
     setPlaying(focused);
@@ -129,267 +176,490 @@ export default function MessageItem({
     }
   }, [inView]);
   return (
-    <ButtonBase
-      ref={ref}
-      sx={{
-        position: "relative",
-        width: "100%",
-        height: "100%",
-        aspectRatio: `9 / 16`,
-        borderRadius: 1,
-        overflow: "hidden",
-        "& > div:nth-of-type(1)": {
-          width: "100% !important",
-          height: "100% !important",
-        },
-        "& video": {
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          objectFit: "cover",
-        },
-        "&:hover .time": {
-          opacity: 0,
-        },
-      }}
-      disableRipple
-      onMouseOver={onMouseOver}
-      onMouseOut={onMouseOut}
-      onClick={onClickPlay}
-    >
-      <Video
-        videoRef={videoRef}
-        playing={playing}
-        playsinline={playsinline}
-        muted={muted}
-        url={`${item.src}`}
-        onDuration={onDuration}
-        onProgress={onProgress}
-        onEnded={onEnded}
-        config={{
-          file: {
-            attributes: {
-              poster: item.thumbnail,
-            },
-          },
-        }}
-      />
+    <>
       <Box
-        sx={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 98,
-          background: "linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0))",
-          p: theme.spacing(2),
-        }}
+        sx={
+          open
+            ? {
+                position: "fixed",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                zIndex: 999,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }
+            : {
+                width: "100%",
+                height: "100%",
+              }
+        }
       >
-        <Typography
-          sx={{
-            fontSize: 12,
-            lineHeight: "16px",
-            transition: `all 0.35s ease`,
-          }}
-          className="time"
-        >
-          {time}
-        </Typography>
-      </Box>
-      <Box
-        sx={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          zIndex: 98,
-          background: "linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8))",
-          p: theme.spacing(4, 0.5, 0.5, 0.5),
-          transition: `all 0.35s ease`,
-        }}
-      >
-        <Box
-          sx={{
-            p: theme.spacing(1.5),
-          }}
-        >
-          <ButtonBase
-            disableRipple
+        {open && (
+          <Box
             sx={{
-              display: "flex",
-              alignItems: "center",
-              transform:
-                controlls || type === "chat"
-                  ? "translateY(0)"
-                  : "translateY(40px)",
-              transition: `all 0.35s ease`,
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backdropFilter: `blur(4px)`,
+              backgroundColor: alpha(youhaGrey[900], 0.7),
             }}
-            onClick={onClickArtist}
-          >
-            <Visual
+            onClick={onClose}
+          />
+        )}
+        <Box
+          sx={
+            open
+              ? {
+                  position: `relative`,
+                  overflowY: `auto`,
+                  maxHeight: `calc(100% - 64px)`,
+                  maxWidth: `600px`,
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  "@media(min-width: 960px)": {
+                    m: theme.spacing(3),
+                  },
+                }
+              : {
+                  width: "100%",
+                  height: "100%",
+                }
+          }
+        >
+          {open && (
+            <Box
               sx={{
-                width: 36,
-                height: 36,
-                borderRadius: "50%",
-                overflow: "hidden",
-                border: `1px solid ${youhaGrey[200]}`,
+                display: "flex",
+                p: theme.spacing(1, 1, 1, 1),
+                justifyContent: "flex-end",
               }}
-              src={artist.thumbnail}
+            >
+              <IconButton name="xmark" onClick={onClose} />
+            </Box>
+          )}
+          <ButtonBase
+            ref={ref}
+            sx={{
+              flex: open ? 1 : "initial",
+              position: "relative",
+              width: "100%",
+              height: "100%",
+              aspectRatio: `9 / 16`,
+              overflow: "hidden",
+              borderRadius: open ? 0 : 1,
+              "@media(min-width: 960px)": {
+                borderRadius: 1,
+              },
+              "& > div:nth-of-type(1)": {
+                width: "100% !important",
+                height: "100% !important",
+              },
+              "& video": {
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                objectFit: "cover",
+              },
+              "&:hover .time": {
+                opacity: 0,
+              },
+            }}
+            disableRipple
+            onMouseOver={onMouseOver}
+            onMouseOut={onMouseOut}
+            onClick={onClickPlay}
+          >
+            <Video
+              videoRef={videoRef}
+              playing={playing}
+              muted={open || muted}
+              url={`${item.src}`}
+              onDuration={onDuration}
+              onProgress={onProgress}
+              onEnded={onEnded}
+              config={{
+                file: {
+                  attributes: {
+                    poster: item.thumbnail,
+                  },
+                },
+              }}
             />
             <Box
               sx={{
-                flex: 1,
-                ml: 1,
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                zIndex: 98,
+                background:
+                  "linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0))",
+                p: theme.spacing(2),
               }}
             >
-              <Typo
-                lines={1}
-                sx={{
-                  fontSize: 14,
-                  lineHeight: "20px",
-                  fontWeight: "700",
-                  wordBreak: "break-all",
-                }}
-              >
-                {artist.name}
-              </Typo>
-              <Typo
-                lines={1}
+              <Typography
                 sx={{
                   fontSize: 12,
                   lineHeight: "16px",
-                  wordBreak: "break-all",
-                  color: youhaGrey[200],
+                  transition: `all 0.35s ease`,
+                }}
+                className="time"
+              >
+                {time}
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                position: "absolute",
+                bottom: 0,
+                left: 0,
+                right: 0,
+                zIndex: 98,
+                background:
+                  "linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8))",
+                p: theme.spacing(4, 0.5, 0.5, 0.5),
+                transition: `all 0.35s ease`,
+              }}
+            >
+              <Box
+                sx={{
+                  p: theme.spacing(1.5),
                 }}
               >
-                {artist.group?.name ?? "SOLO"}
-              </Typo>
+                <ButtonBase
+                  disableRipple
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    transform:
+                      controlls || type === "chat"
+                        ? "translateY(0)"
+                        : "translateY(40px)",
+                    transition: `all 0.35s ease`,
+                  }}
+                  onClick={onClickArtist}
+                >
+                  <Visual
+                    sx={{
+                      width: 36,
+                      height: 36,
+                      borderRadius: "50%",
+                      overflow: "hidden",
+                      border: `1px solid ${youhaGrey[200]}`,
+                    }}
+                    src={artist.thumbnail}
+                  />
+                  <Box
+                    sx={{
+                      flex: 1,
+                      ml: 1,
+                    }}
+                  >
+                    <Typo
+                      lines={1}
+                      sx={{
+                        fontSize: 14,
+                        lineHeight: "20px",
+                        fontWeight: "700",
+                        wordBreak: "break-all",
+                      }}
+                    >
+                      {artist.name}
+                    </Typo>
+                    <Typo
+                      lines={1}
+                      sx={{
+                        fontSize: 12,
+                        lineHeight: "16px",
+                        wordBreak: "break-all",
+                        color: youhaGrey[200],
+                      }}
+                    >
+                      {artist.group?.name ?? "SOLO"}
+                    </Typo>
+                  </Box>
+                </ButtonBase>
+              </Box>
+              <Box
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  transform:
+                    controlls || type === "chat"
+                      ? "translateY(0)"
+                      : "translateY(40px)",
+                  transition: `all 0.35s ease`,
+                  overflow: "visible",
+                }}
+              >
+                <IconButton
+                  name={playing ? "pause" : "play"}
+                  prefix="fas"
+                  size={20}
+                  onClick={onClickPlay}
+                  sx={{
+                    width: 40,
+                    height: 40,
+                  }}
+                />
+                <Box
+                  sx={{
+                    flex: 1,
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: 12,
+                      lineHeight: "16px",
+                      transition: `all 0.35s ease`,
+                      wordBreak: "break-all",
+                      display: type === "chat" ? "none" : "flex",
+                    }}
+                  >
+                    {playedTime} / {time}
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: 12,
+                      lineHeight: "16px",
+                      transition: `all 0.35s ease`,
+                      wordBreak: "break-all",
+                      display: type === "chat" ? "flex" : "none",
+                    }}
+                  >
+                    {playedTime}
+                  </Typography>
+                  <Box
+                    sx={{
+                      position: "relative",
+                      p: theme.spacing(0, 3),
+                      flex: 1,
+                      display: type === "chat" ? "flex" : "none",
+                    }}
+                  >
+                    <Slider
+                      key={`Slider-${seconds.playedSeconds}`}
+                      defaultValue={seconds.playedSeconds}
+                      max={duration}
+                      aria-label="Default"
+                      valueLabelDisplay="auto"
+                      getAriaValueText={formatTimer}
+                      valueLabelFormat={formatTimer}
+                      onChange={onSliderChange}
+                      onChangeCommitted={onSliderChangeCommitted}
+                      // size="small"
+                      sx={{
+                        "&.MuiSlider-root": {
+                          padding: "18px 0",
+                        },
+                        "& .MuiSlider-rail": {
+                          opacity: "1 !important",
+                          backgroundColor: alpha(youhaGrey[900], 0.2),
+                          overflow: "hidden",
+                          left: "-8px",
+                          right: "-8px",
+                          width: "auto",
+                        },
+                        "& .MuiSlider-track": {
+                          left: "-8px !important",
+                        },
+                        "& .MuiSlider-rail::after": {
+                          position: "absolute",
+                          content: '""',
+                          top: 0,
+                          left: 0,
+                          bottom: 0,
+                          transition: "all 1s ease",
+                          width: `calc(${
+                            (seconds.loadedSeconds / duration) * 100
+                          }% + 8px)`,
+                          backgroundColor: "rgba(255,255,255,0.6)",
+                        },
+                      }}
+                    />
+                  </Box>
+                  <Typography
+                    sx={{
+                      fontSize: 12,
+                      lineHeight: "16px",
+                      transition: `all 0.35s ease`,
+                      wordBreak: "break-all",
+                      display: type === "chat" ? "flex" : "none",
+                    }}
+                  >
+                    {time}
+                  </Typography>
+                </Box>
+                <IconButton
+                  name={!muted ? "volume" : "volume-xmark"}
+                  prefix="far"
+                  size={20}
+                  onClick={onClickMute}
+                  sx={{
+                    width: 40,
+                    height: 40,
+                  }}
+                />
+              </Box>
             </Box>
           </ButtonBase>
         </Box>
-        <Box
+      </Box>
+      {type === "chat" && (
+        <Stack
+          spacing={2}
+          alignItems={"center"}
           sx={{
-            width: "100%",
-            display: "flex",
-            alignItems: "center",
-            transform: controlls || type === "chat" ? "translateY(0)" : "translateY(40px)",
-            transition: `all 0.35s ease`,
-            overflow: "visible",
+            m: theme.spacing(0, 0, 0, 2),
           }}
         >
-          <IconButton
-            name={playing ? "pause" : "play"}
-            prefix="fas"
-            size={20}
-            onClick={onClickPlay}
-            sx={{
-              width: 40,
-              height: 40,
-            }}
-          />
           <Box
             sx={{
-              flex: 1,
               display: "flex",
+              flexDirection: "column",
               alignItems: "center",
+              cursor: "pointer",
             }}
+            onClick={onClickFullscreen}
           >
+            <IconButton
+              name="expand"
+              backgroundColor={youhaGrey[700]}
+              //   borderColor={youhaGrey[600]}
+              sx={{
+                width: 48,
+                height: 48,
+                borderRadius: "50%",
+              }}
+              prefix="fal"
+            />
             <Typography
               sx={{
-                fontSize: 12,
-                lineHeight: "16px",
-                transition: `all 0.35s ease`,
-                wordBreak: "break-all",
-                display: type === "chat" ? "none" : "flex",
+                m: theme.spacing(0.5, 0, 0, 0),
+                fontSize: 10,
+                lineHeight: "14px",
+                textAlign: "center",
               }}
             >
-              {playedTime} / {time}
-            </Typography>
-            <Typography
-              sx={{
-                fontSize: 12,
-                lineHeight: "16px",
-                transition: `all 0.35s ease`,
-                wordBreak: "break-all",
-                display: type === "chat" ? "flex" : "none",
-              }}
-            >
-              {playedTime}
-            </Typography>
-            <Box
-              sx={{
-                position: "relative",
-                p: theme.spacing(0, 3),
-                flex: 1,
-                display: type === "chat" ? "flex" : "none",
-              }}
-            >
-              <Slider
-                key={`Slider-${seconds.playedSeconds}`}
-                defaultValue={seconds.playedSeconds}
-                max={duration}
-                aria-label="Default"
-                valueLabelDisplay="auto"
-                getAriaValueText={formatTimer}
-                valueLabelFormat={formatTimer}
-                onChange={onSliderChange}
-                onChangeCommitted={onSliderChangeCommitted}
-                // size="small"
-                sx={{
-                  "&.MuiSlider-root": {
-                    padding: "18px 0",
-                  },
-                  "& .MuiSlider-rail": {
-                    opacity: "1 !important",
-                    backgroundColor: alpha(youhaGrey[900], 0.2),
-                    overflow: "hidden",
-                    left: "-8px",
-                    right: "-8px",
-                    width: "auto",
-                  },
-                  "& .MuiSlider-track": {
-                    left: "-8px !important",
-                  },
-                  "& .MuiSlider-rail::after": {
-                    position: "absolute",
-                    content: '""',
-                    top: 0,
-                    left: 0,
-                    bottom: 0,
-                    transition: "all 1s ease",
-                    width: `calc(${(seconds.loadedSeconds / duration) * 100
-                      }% + 8px)`,
-                    backgroundColor: "rgba(255,255,255,0.6)",
-                  },
-                }}
-              />
-            </Box>
-            <Typography
-              sx={{
-                fontSize: 12,
-                lineHeight: "16px",
-                transition: `all 0.35s ease`,
-                wordBreak: "break-all",
-                display: type === "chat" ? "flex" : "none",
-              }}
-            >
-              {time}
+              Full screen
             </Typography>
           </Box>
-          <IconButton
-            name={!muted ? "volume" : "volume-xmark"}
-            prefix="far"
-            size={20}
-            onClick={onClickMute}
+          <Box
             sx={{
-              width: 40,
-              height: 40,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              cursor: "pointer",
             }}
-          />
-        </Box>
-      </Box>
-    </ButtonBase>
+            onClick={onClickDownload}
+          >
+            <IconButton
+              name="download"
+              backgroundColor={youhaGrey[700]}
+              //   borderColor={youhaGrey[600]}
+              sx={{
+                width: 48,
+                height: 48,
+                borderRadius: "50%",
+              }}
+              prefix="fal"
+            />
+            <Typography
+              sx={{
+                m: theme.spacing(0.5, 0, 0, 0),
+                fontSize: 10,
+                lineHeight: "14px",
+                textAlign: "center",
+              }}
+            >
+              Download
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              cursor: "pointer",
+            }}
+            onClick={onClickShare}
+          >
+            <IconButton
+              name="share-alt"
+              backgroundColor={youhaGrey[700]}
+              //   borderColor={youhaGrey[600]}
+              sx={{
+                width: 48,
+                height: 48,
+                borderRadius: "50%",
+              }}
+              prefix="fal"
+            />
+            <Typography
+              sx={{
+                m: theme.spacing(0.5, 0, 0, 0),
+                fontSize: 10,
+                lineHeight: "14px",
+                textAlign: "center",
+              }}
+            >
+              Share
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              cursor: item.rated ? "initial" : "pointer",
+            }}
+            onClick={onClickRate}
+          >
+            <IconButton
+              name="thumbs-up"
+              backgroundColor={
+                item.rated ? alpha(youhaGrey[700], 0.4) : youhaGrey[700]
+              }
+              //   borderColor={youhaGrey[600]}
+              sx={{
+                width: 48,
+                height: 48,
+                borderRadius: "50%",
+                cursor: item.rated ? "default !important" : "initial",
+                "& *": {
+                  cursor: item.rated ? "default !important" : "initial",
+                },
+              }}
+              prefix={item.rated ? "fas" : "fal"}
+              color={item.rated ? youhaBlue[500] : "#ffffff"}
+              disableRipple={item.rated}
+            />
+            <Typography
+              sx={{
+                m: theme.spacing(0.5, 0, 0, 0),
+                fontSize: 10,
+                lineHeight: "14px",
+                textAlign: "center",
+                opacity: item.rated ? 0.4 : 1,
+              }}
+            >
+              Say thank
+            </Typography>
+          </Box>
+        </Stack>
+      )}
+    </>
   );
 }
