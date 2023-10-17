@@ -34,12 +34,13 @@ export default function Index() {
     const handleResize = throttle(() => {
       let bodyEl = document.querySelector("body");
       if (bodyEl && bodyEl?.clientWidth > 960) {
-        router.push(`/user/messages?id=${data[0].id}`, undefined, {
-          shallow: false,
-        });
+        if (data.length > 0)
+          router.push(`/user/messages?id=${data[0].id}`, undefined, {
+            shallow: false,
+          });
       }
     }, 20);
-    handleResize()
+    handleResize();
     window.addEventListener("orientationchange", handleResize);
     window.addEventListener("resize", handleResize);
     return () => {

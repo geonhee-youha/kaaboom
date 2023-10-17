@@ -212,35 +212,35 @@ export function OrderItem({ item }: { item: OrderProps }) {
               </Box>
             );
           })}
-          {item.state === "Canceled" ||
+          {(item.state === "Canceled" ||
             item.state === "Declined" ||
-            (item.state === "Expired" && (
-              <Box
+            item.state === "Expired") && (
+            <Box
+              sx={{
+                m: theme.spacing(2, 4, 0, 0),
+              }}
+            >
+              <Typography
                 sx={{
-                  m: theme.spacing(2, 4, 0, 0),
+                  fontSize: 12,
+                  lineHeight: "16px",
+                  fontWeight: "500",
+                  color: red[700],
                 }}
               >
-                <Typography
-                  sx={{
-                    fontSize: 12,
-                    lineHeight: "16px",
-                    fontWeight: "500",
-                    color: red[700],
-                  }}
-                >
-                  Canceled date
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: 14,
-                    lineHeight: "20px",
-                    color: red[700],
-                  }}
-                >
-                  10/12/2023
-                </Typography>
-              </Box>
-            ))}
+                {item.state} date
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: 14,
+                  lineHeight: "20px",
+                  color: red[700],
+                }}
+              >
+                10/12/2023
+              </Typography>
+            </Box>
+          )}
         </Box>
         {!(
           item.state === "Canceled" ||
