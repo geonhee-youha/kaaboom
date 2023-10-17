@@ -211,7 +211,7 @@ function Inner() {
           id: `${id}`,
         },
         date: new Date(),
-        state: "In progress",
+        state: "requested",
         price: videoType?.price ?? 0,
         videoType: videoType?.value ?? "",
         whomType: whomType.value,

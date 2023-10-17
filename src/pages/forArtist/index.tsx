@@ -9,10 +9,10 @@ type FilterItemProps = {
 
 const filterItems = [
   { value: "requested", label: "Requested" },
-  { value: "completed", label: "Completed" },
-  { value: "expired", label: "Expired" },
-  { value: "declined", label: "Declined" },
-  { value: "canceled", label: "Canceled" },
+  { value: "completed", label: "completed" },
+  { value: "expired", label: "expired" },
+  { value: "declined", label: "declined" },
+  { value: "canceled", label: "canceled" },
 ];
 
 function FilterItem() {

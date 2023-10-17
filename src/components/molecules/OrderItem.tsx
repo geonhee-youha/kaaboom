@@ -13,6 +13,7 @@ import Icon from "../atoms/Icon";
 import { comma } from "../../utils";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { orderStates } from "../../constants";
 
 export function OrderItem({ item }: { item: OrderProps }) {
   const router = useRouter();
@@ -145,11 +146,11 @@ export function OrderItem({ item }: { item: OrderProps }) {
                   alignItems: "center",
                   p: theme.spacing(0, 1.25),
                   backgroundColor:
-                    item.state === "In progress"
+                    item.state === "requested"
                       ? cyan[700]
-                      : item.state === "Canceled" ||
-                        item.state === "Declined" ||
-                        item.state === "Expired"
+                      : item.state === "canceled" ||
+                        item.state === "declined" ||
+                        item.state === "expired"
                       ? red[700]
                       : youhaBlue[700],
                   borderRadius: 0.5,
@@ -162,7 +163,11 @@ export function OrderItem({ item }: { item: OrderProps }) {
                     fontWeight: "700",
                   }}
                 >
-                  {item.state}
+                  {
+                    orderStates[
+                      _.findIndex(orderStates, (el) => el.value === item.state)
+                    ].label
+                  }
                 </Typography>
               </Box>
             </Box>
@@ -212,9 +217,9 @@ export function OrderItem({ item }: { item: OrderProps }) {
               </Box>
             );
           })}
-          {(item.state === "Canceled" ||
-            item.state === "Declined" ||
-            item.state === "Expired") && (
+          {(item.state === "canceled" ||
+            item.state === "declined" ||
+            item.state === "expired") && (
             <Box
               sx={{
                 m: theme.spacing(2, 4, 0, 0),
@@ -228,7 +233,12 @@ export function OrderItem({ item }: { item: OrderProps }) {
                   color: red[700],
                 }}
               >
-                {item.state} date
+                {
+                  orderStates[
+                    _.findIndex(orderStates, (el) => el.value === item.state)
+                  ].label
+                }{" "}
+                date
               </Typography>
               <Typography
                 sx={{
@@ -243,9 +253,9 @@ export function OrderItem({ item }: { item: OrderProps }) {
           )}
         </Box>
         {!(
-          item.state === "Canceled" ||
-          item.state === "Declined" ||
-          item.state === "Expired"
+          item.state === "canceled" ||
+          item.state === "declined" ||
+          item.state === "expired"
         ) && (
           <Stack
             direction={"row"}
@@ -262,7 +272,7 @@ export function OrderItem({ item }: { item: OrderProps }) {
               },
             }}
           >
-            {item.state === "Completed" ? (
+            {item.state === "completed" ? (
               <Button fullWidth onClick={onClickView}>
                 <Icon
                   name="play"

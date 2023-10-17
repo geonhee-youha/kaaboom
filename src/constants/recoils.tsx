@@ -47,7 +47,7 @@ export const tempOrders = [
       id: "2",
     },
     date: new Date("2023-10-10"),
-    state: "In progress",
+    state: "requested",
     price:
       videoTypes[_.findIndex(videoTypes, (el) => el.value === "mini")].price,
     videoType: "mini",
@@ -66,7 +66,7 @@ export const tempOrders = [
       id: "6",
     },
     date: new Date("2023-10-11"),
-    state: "Canceled",
+    state: "canceled",
     price:
       videoTypes[_.findIndex(videoTypes, (el) => el.value === "long")].price,
     videoType: "long",
@@ -85,7 +85,7 @@ export const tempOrders = [
       id: "6",
     },
     date: new Date("2023-10-09"),
-    state: "Completed",
+    state: "completed",
     price:
       videoTypes[_.findIndex(videoTypes, (el) => el.value === "long")].price,
     videoType: "long",
@@ -104,7 +104,7 @@ export const tempOrders = [
       id: "6",
     },
     date: new Date("2023-10-09"),
-    state: "Declined",
+    state: "declined",
     price:
       videoTypes[_.findIndex(videoTypes, (el) => el.value === "long")].price,
     videoType: "long",
@@ -123,7 +123,7 @@ export const tempOrders = [
       id: "6",
     },
     date: new Date("2023-10-09"),
-    state: "Expired",
+    state: "expired",
     price:
       videoTypes[_.findIndex(videoTypes, (el) => el.value === "long")].price,
     videoType: "long",

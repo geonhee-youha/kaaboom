@@ -98,3 +98,11 @@ export const selectDefaultProps: SelectProps = {
   value: "",
   label: "",
 };
+
+export const orderStates = [
+  { value: "requested", label: "Requested" },
+  { value: "completed", label: "Completed" },
+  { value: "expired", label: "Expired" },
+  { value: "declined", label: "Declined" },
+  { value: "canceled", label: "Canceled" },
+];
