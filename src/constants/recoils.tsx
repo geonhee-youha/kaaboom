@@ -38,6 +38,10 @@ export type OrderProps = {
   fromType?: string;
   instructions: string;
   hideVideo: boolean;
+  //추가
+  completedDate?: Date;
+  canceledDate?: Date;
+  declinedDate?: Date;
 };
 
 export const tempOrders = [
@@ -78,6 +82,7 @@ export const tempOrders = [
     instructions:
       "t is a long established fact that a reader will be distracted.",
     hideVideo: true,
+    canceledDate:  new Date("2023-10-12"),
   },
   {
     id: `3`,
@@ -97,6 +102,7 @@ export const tempOrders = [
     instructions:
       "t is a long established fact that a reader will be distracted.",
     hideVideo: true,
+    completedDate:  new Date("2023-10-10"),
   },
   {
     id: `4`,
@@ -116,6 +122,7 @@ export const tempOrders = [
     instructions:
       "t is a long established fact that a reader will be distracted.",
     hideVideo: true,
+    declinedDate:  new Date("2023-10-09"),
   },
   {
     id: `5`,
@@ -135,6 +142,44 @@ export const tempOrders = [
     instructions:
       "t is a long established fact that a reader will be distracted.",
     hideVideo: true,
+  },
+  {
+    id: `5`,
+    artist: {
+      id: "2",
+    },
+    date: new Date("2023-10-10"),
+    state: "requested",
+    price:
+      videoTypes[_.findIndex(videoTypes, (el) => el.value === "mini")].price,
+    videoType: "mini",
+    whomType: "myself",
+    toFirstName: "lee",
+    toType: "he",
+    fromFirstName: "",
+    fromType: "",
+    instructions:
+      "t is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters.",
+    hideVideo: false,
+  },
+  {
+    id: `6`,
+    artist: {
+      id: "2",
+    },
+    date: new Date("2023-10-10"),
+    state: "requested",
+    price:
+      videoTypes[_.findIndex(videoTypes, (el) => el.value === "mini")].price,
+    videoType: "mini",
+    whomType: "myself",
+    toFirstName: "lee",
+    toType: "he",
+    fromFirstName: "",
+    fromType: "",
+    instructions:
+      "t is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters.",
+    hideVideo: false,
   },
 ];
 

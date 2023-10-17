@@ -6,6 +6,8 @@ import youhaBlue from "../../../constants/youhaBlue";
 import youhaGrey from "../../../constants/youhaGrey";
 import { useEffect, useState } from "react";
 import { theme } from "../../../themes/theme";
+import Visual from "../../atoms/Visual";
+import { tempArtist } from "../../../data/temp";
 
 export type NavItemProps = {
   url: string;
@@ -43,7 +45,8 @@ function NavItem({ item }: { item: NavItemProps }) {
   const focused =
     pathname === item.url.replace("/", "") ||
     (pathname === undefined && item.url === "/");
-  const color = focused ? youhaBlue[500] : youhaGrey[400];
+  const color = focused ? youhaBlue[500] : youhaGrey[100];
+  const opacity = focused ? 1 : 0.3;
   const onClick = () => {
     router.push(`/forArtist${item.url}`);
   };
@@ -56,20 +59,34 @@ function NavItem({ item }: { item: NavItemProps }) {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
+        opacity: opacity,
       }}
       onClick={onClick}
     >
       {item.icon !== "user" ? (
-        <Icon name={item.icon} prefix={focused ? "fas" : "far"} color={color} />
+        <Icon
+          name={item.icon}
+          prefix={focused ? "fas" : "far"}
+          color={color}
+          size={28}
+        />
       ) : (
         <Box
           sx={{
             borderRadius: "50%",
-            width: 24,
-            height: 24,
+            width: 28,
+            height: 28,
             border: `2px solid ${color}`,
+            position: "relative",
+            overflow: "hidden",
+            "& img": {
+              width: "auto",
+              height: "100% !important",
+            },
           }}
-        ></Box>
+        >
+          <Visual src={tempArtist.thumbnail} />
+        </Box>
       )}
       <Typography
         sx={{
@@ -103,6 +120,7 @@ export default function BottomNavigation() {
         bottom: 0,
         backgroundColor: youhaGrey[800],
         borderTop: `1px solid ${youhaGrey[700]}`,
+        zIndex: 999
       }}
     >
       <Box
@@ -111,7 +129,7 @@ export default function BottomNavigation() {
           maxWidth: "480px",
           minWidth: "320px",
           m: theme.spacing(0, "auto"),
-          height: 56,
+          height: 64,
           display: "flex",
         }}
       >

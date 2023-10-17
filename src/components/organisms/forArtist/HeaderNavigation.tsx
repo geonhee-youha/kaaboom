@@ -5,6 +5,7 @@ import { theme } from "../../../themes/theme";
 import youhaGrey from "../../../constants/youhaGrey";
 import { navItems } from "./BottomNavigation";
 import _ from "lodash";
+import IconButton from "../../atoms/IconButton";
 
 export default function HeaderNavigation() {
   const router = useRouter();
@@ -25,29 +26,45 @@ export default function HeaderNavigation() {
     setMounted(true);
   }, [setMounted]);
   return mounted && forArtist ? (
-    <Box sx={{ position: "fixed", left: 0, right: 0, top: 0 }}>
+    <Box sx={{ position: "fixed", left: 0, right: 0, top: 0, zIndex: 999 }}>
       <Box
         sx={{
           width: "100%",
           maxWidth: "480px",
           minWidth: "320px",
           m: theme.spacing(0, "auto"),
-          p: theme.spacing(0, 2),
+          p: theme.spacing(0, 1),
           height: 56,
           display: "flex",
           alignItems: "center",
           backgroundColor: youhaGrey[900],
         }}
       >
-        <Typography
+        <IconButton
+          name="bars"
+          prefix="far"
+          size={24}
           sx={{
-            fontSize: 20,
-            lineHeight: "32px",
-            fontWeight: "700",
+            "@media(min-width: 1280px)": {
+              display: "none",
+            },
+          }}
+        />
+        <Box
+          sx={{
+            p: theme.spacing(0, 0.5),
           }}
         >
-          {currentNavigation.label}
-        </Typography>
+          <Typography
+            sx={{
+              fontSize: 20,
+              lineHeight: "32px",
+              fontWeight: "700",
+            }}
+          >
+            {currentNavigation.label}
+          </Typography>
+        </Box>
       </Box>
     </Box>
   ) : (

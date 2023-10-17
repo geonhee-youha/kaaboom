@@ -19,6 +19,7 @@ export default function Button({
   sx,
   mobile,
   web,
+  style,
 }: {
   disabled?: boolean;
   type?: string;
@@ -33,6 +34,7 @@ export default function Button({
   sx?: SxProps;
   mobile?: boolean;
   web?: boolean;
+  style?: string;
 }) {
   const backgroundColor = disabled
     ? alpha(backgroundColorOrigin, 0.4)
@@ -42,7 +44,7 @@ export default function Button({
       disabled={disabled}
       sx={{
         width: fullWidth ? "100%" : "auto",
-        borderRadius: 0.5,
+        borderRadius: style === "round" ? 20 : 1,
         justifyContent: "center",
         alignItems: "center",
         overflow: "hidden",
