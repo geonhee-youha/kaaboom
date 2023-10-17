@@ -41,6 +41,8 @@ import SideDrawer from "../components/templates/SideDrawer";
 import GlobalFooter from "../components/organisms/GlobalFooter";
 import SortDialog from "../components/templates/SortDialog";
 import RateDialog from "../components/templates/RateDialog";
+import BottomNavigation from "../components/organisms/forArtist/BottomNavigation";
+import HeaderNavigation from "../components/organisms/forArtist/HeaderNavigation";
 
 ChartJS.register(
   LineController,
@@ -222,12 +224,14 @@ function MyApp(props: MyAppProps) {
           <CssBaseline />
           <Global styles={reset} />
           <GlobalHeader />
+          <HeaderNavigation />
           <Component {...pageProps} key={router.route} />
           <GlobalFooter />
           <RateDialog />
           <SearchDialog />
           <SortDialog />
           <SideDrawer />
+          <BottomNavigation />
         </ThemeProvider>
       </RecoilRoot>
     </CacheProvider>

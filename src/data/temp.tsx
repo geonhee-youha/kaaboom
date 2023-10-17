@@ -10,5 +10,6 @@ export const tempUserState = atom({
     nation: "",
     gender: "",
     birthDate: "",
+    type: "user",
   },
 });

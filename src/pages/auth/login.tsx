@@ -38,9 +38,7 @@ export default function Index() {
     }
   };
   return (
-    <Page
-      narrow
-    >
+    <Page narrow>
       <Box
         className="SectionTitle"
         sx={{
@@ -111,9 +109,18 @@ export default function Index() {
           }}
         >
           By continuing you agree to KAABOOM's{" "}
-          <a target="_blank" tabIndex={0}>Terms of Service</a>, including{" "}
-          <a target="_blank" tabIndex={0}>Additional Terms</a>, and{" "}
-          <a target="_blank" tabIndex={0}>Privacy Policy</a>.
+          <a target="_blank" tabIndex={0}>
+            Terms of Service
+          </a>
+          , including{" "}
+          <a target="_blank" tabIndex={0}>
+            Additional Terms
+          </a>
+          , and{" "}
+          <a target="_blank" tabIndex={0}>
+            Privacy Policy
+          </a>
+          .
         </Typography>
       </Box>
     </Page>

@@ -105,14 +105,14 @@ export default function Index() {
   //#endregion [function] 이름/국적/젠더/생년월일
   //#region [function] 메인 액션
   const onClickSignup = () => {
-    setLogin(true),
-      setTempUser({
-        ...tempUser,
-        name: name.value,
-        nation: nation.value,
-        gender: gender.value,
-        birthDate: birthDate.value,
-      });
+    setLogin(true);
+    setTempUser({
+      ...tempUser,
+      name: name.value,
+      nation: nation.value,
+      gender: gender.value,
+      birthDate: birthDate.value,
+    });
     if (typeof url === "string" && url !== "") {
       router.replace(`${url.replaceAll("^", "/")}`);
     } else {

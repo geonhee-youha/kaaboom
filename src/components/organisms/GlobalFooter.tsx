@@ -35,13 +35,14 @@ const navs = [
 export default function GlobalFooter() {
   const router = useRouter();
   const pathnames = router.pathname.split("/");
+  const forArtist = pathnames[1] === "forArtist";
   const focused = `/${pathnames[1]}` !== "/auth";
   const [value, setValue] = useState<string>("");
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setValue(value);
   };
-  return (
+  return !forArtist ? (
     <Box
       sx={{
         backgroundColor: youhaGrey[800],
@@ -150,5 +151,7 @@ export default function GlobalFooter() {
         </Typography>
       </Stack>
     </Box>
+  ) : (
+    <></>
   );
 }

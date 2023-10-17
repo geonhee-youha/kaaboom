@@ -147,7 +147,9 @@ export function OrderItem({ item }: { item: OrderProps }) {
                   backgroundColor:
                     item.state === "In progress"
                       ? cyan[700]
-                      : item.state === "Canceled"
+                      : item.state === "Canceled" ||
+                        item.state === "Declined" ||
+                        item.state === "Expired"
                       ? red[700]
                       : youhaBlue[700],
                   borderRadius: 0.5,
@@ -210,35 +212,41 @@ export function OrderItem({ item }: { item: OrderProps }) {
               </Box>
             );
           })}
-          {item.state === "Canceled" && (
-            <Box
-              sx={{
-                m: theme.spacing(2, 4, 0, 0),
-              }}
-            >
-              <Typography
+          {item.state === "Canceled" ||
+            item.state === "Declined" ||
+            (item.state === "Expired" && (
+              <Box
                 sx={{
-                  fontSize: 12,
-                  lineHeight: "16px",
-                  fontWeight: "500",
-                  color: red[700],
+                  m: theme.spacing(2, 4, 0, 0),
                 }}
               >
-                Canceled date
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: 14,
-                  lineHeight: "20px",
-                  color: red[700],
-                }}
-              >
-                10/12/2023
-              </Typography>
-            </Box>
-          )}
+                <Typography
+                  sx={{
+                    fontSize: 12,
+                    lineHeight: "16px",
+                    fontWeight: "500",
+                    color: red[700],
+                  }}
+                >
+                  Canceled date
+                </Typography>
+                <Typography
+                  sx={{
+                    fontSize: 14,
+                    lineHeight: "20px",
+                    color: red[700],
+                  }}
+                >
+                  10/12/2023
+                </Typography>
+              </Box>
+            ))}
         </Box>
-        {item.state !== "Canceled" && (
+        {!(
+          item.state === "Canceled" ||
+          item.state === "Declined" ||
+          item.state === "Expired"
+        ) && (
           <Stack
             direction={"row"}
             spacing={1.5}

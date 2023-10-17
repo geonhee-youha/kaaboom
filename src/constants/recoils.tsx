@@ -98,6 +98,44 @@ export const tempOrders = [
       "t is a long established fact that a reader will be distracted.",
     hideVideo: true,
   },
+  {
+    id: `4`,
+    artist: {
+      id: "6",
+    },
+    date: new Date("2023-10-09"),
+    state: "Declined",
+    price:
+      videoTypes[_.findIndex(videoTypes, (el) => el.value === "long")].price,
+    videoType: "long",
+    whomType: "someone else",
+    toFirstName: "lee",
+    toType: "he",
+    fromFirstName: "kim",
+    fromType: "she",
+    instructions:
+      "t is a long established fact that a reader will be distracted.",
+    hideVideo: true,
+  },
+  {
+    id: `5`,
+    artist: {
+      id: "6",
+    },
+    date: new Date("2023-10-09"),
+    state: "Expired",
+    price:
+      videoTypes[_.findIndex(videoTypes, (el) => el.value === "long")].price,
+    videoType: "long",
+    whomType: "someone else",
+    toFirstName: "lee",
+    toType: "he",
+    fromFirstName: "kim",
+    fromType: "she",
+    instructions:
+      "t is a long established fact that a reader will be distracted.",
+    hideVideo: true,
+  },
 ];
 
 export const ordersState = atom<OrderProps[]>({

@@ -137,6 +137,17 @@ const userMenus = [
   },
 ];
 
+const forArtistMenus = [
+  {
+    url: "/user/orders",
+    label: "Orders",
+  },
+  {
+    url: "/user/messages",
+    label: "Messages",
+  },
+];
+
 function User() {
   const router = useRouter();
   const ref = useRef<any>(null);
@@ -264,6 +275,7 @@ function User() {
 export default function GlobalHeader() {
   const router = useRouter();
   const inOrderPage = router.pathname.split("/")[1] === "order";
+  const inForArtistPage = router.pathname.split("/")[1] === "forArtist";
   const { name } = router.query;
   const [login, setLogin] = useRecoilState(loginRecoilState);
   const [sideDrawer, setSideDrawer] = useRecoilState(sideDrawerRecoilState);
@@ -300,219 +312,223 @@ export default function GlobalHeader() {
     checkLogin();
   }, []);
   return mounted ? (
-    <>
-      <Box
-        sx={{
-          height: inOrderPage ? 56 : 120,
-          "@media(min-width: 961px)": {
-            height: 56,
-          },
-        }}
-      />
-      <Box
-        sx={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          borderBottom: `1px solid ${youhaGrey[700]}`,
-          backgroundColor: alpha(youhaGrey[900], 0.8),
-          backdropFilter: `blur(8px)`,
-          zIndex: 999,
-          "@media(min-width: 961px)": {
-            display: "flex",
-          },
-          display: inOrderPage ? "none !important" : "initial",
-        }}
-      >
-        <Stack
-          direction={"row"}
-          alignItems={"center"}
-          spacing={1}
+    inForArtistPage ? (
+      <></>
+    ) : (
+      <>
+        <Box
           sx={{
-            display: "flex",
-            height: 56,
-            p: theme.spacing(0, 2),
+            height: inOrderPage ? 56 : 120,
             "@media(min-width: 961px)": {
-              display: "flex",
-              flex: 1,
+              height: 56,
             },
           }}
-        >
-          <IconButton
-            name="bars"
-            borderColor={youhaGrey[700]}
-            color={youhaBlue[500]}
-            onClick={onClickBars}
-            size={20}
-            sx={{
-              "@media(min-width: 1280px)": {
-                display: "none",
-              },
-            }}
-          />
-          <Box
-            sx={{
-              flex: 1,
-              display: "flex",
-              justifyContent: "center",
-              p: theme.spacing(0, 1),
-              "@media(min-width: 961px)": {
-                flex: "initial",
-                justifyContent: "flex-start",
-              },
-            }}
-          >
-            <Link href={"/"} passHref>
-              <ButtonBase
-                disableRipple
-                sx={{
-                  height: 20,
-                  "& img": {
-                    width: "auto",
-                    height: `20px !important`,
-                  },
-                }}
-              >
-                <img src="/logos/logo-colored.png" />
-              </ButtonBase>
-            </Link>
-          </Box>
-          <Stack
-            direction={"row"}
-            spacing={0}
-            sx={{
-              display: "none",
-              "@media(min-width: 1280px)": {
-                display: "flex",
-              },
-            }}
-          >
-            {globalMenus.map((item, index) => {
-              return <NavItem key={index} item={item} />;
-            })}
-          </Stack>
-          <Box
-            sx={{
-              "@media(min-width: 961px)": {
-                display: "none",
-              },
-            }}
-          >
-            {login ? (
-              <User />
-            ) : (
-              <Link
-                href={`/auth/login?url=${router.asPath
-                  .split("?")[0]
-                  .replaceAll("/", "^")}`}
-                passHref
-              >
-                <IconButton
-                  name="user"
-                  borderColor={youhaGrey[700]}
-                  color={youhaBlue[500]}
-                  onClick={() => {}}
-                  size={20}
-                />
-              </Link>
-            )}
-          </Box>
-        </Stack>
-        <Stack
-          direction={"row"}
-          spacing={2}
+        />
+        <Box
           sx={{
-            p: theme.spacing(1, 2, 2, 2),
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            borderBottom: `1px solid ${youhaGrey[700]}`,
+            backgroundColor: alpha(youhaGrey[900], 0.8),
+            backdropFilter: `blur(8px)`,
+            zIndex: 999,
             "@media(min-width: 961px)": {
-              p: theme.spacing(1, 2, 1, 2),
+              display: "flex",
             },
+            display: inOrderPage ? "none !important" : "initial",
           }}
         >
           <Stack
             direction={"row"}
             alignItems={"center"}
-            spacing={2}
+            spacing={1}
             sx={{
-              flex: 1,
-            }}
-          >
-            <Box
-              sx={{
-                flex: 1,
-                position: "relative",
-              }}
-            >
-              <IconButton
-                sx={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: 40,
-                  height: 40,
-                  zIndex: 99,
-                }}
-                disableRipple
-                name="search"
-                size={20}
-                color={youhaBlue[500]}
-              />
-              <ButtonBase
-                onClick={onClickSearch}
-                sx={{
-                  borderRadius: 1,
-                  border: `1px solid ${youhaGrey[700]}`,
-                  backgroundColor: alpha(youhaGrey[800], 1),
-                  width: "100%",
-                  height: 40,
-                  p: theme.spacing(0, 5, 0, 5),
-                  alignItems: "center",
-                  "@media(min-width: 961px)": {
-                    minWidth: 280,
-                  },
-                }}
-              >
-                <Typography
-                  sx={{
-                    fontSize: 16,
-                    lineHeight: "24px !important",
-                    color: youhaGrey[400],
-                  }}
-                >
-                  Search for Kpop idols
-                </Typography>
-              </ButtonBase>
-            </Box>
-          </Stack>
-          <Box
-            sx={{
-              display: "none",
+              display: "flex",
+              height: 56,
+              p: theme.spacing(0, 2),
               "@media(min-width: 961px)": {
                 display: "flex",
+                flex: 1,
               },
             }}
           >
-            {login ? (
-              <User />
-            ) : (
-              <Link
-                href={`/auth/login?url=${router.asPath
-                  .split("?")[0]
-                  .replaceAll("/", "^")}`}
-                passHref
+            <IconButton
+              name="bars"
+              borderColor={youhaGrey[700]}
+              color={youhaBlue[500]}
+              onClick={onClickBars}
+              size={20}
+              sx={{
+                "@media(min-width: 1280px)": {
+                  display: "none",
+                },
+              }}
+            />
+            <Box
+              sx={{
+                flex: 1,
+                display: "flex",
+                justifyContent: "center",
+                p: theme.spacing(0, 1),
+                "@media(min-width: 961px)": {
+                  flex: "initial",
+                  justifyContent: "flex-start",
+                },
+              }}
+            >
+              <Link href={"/"} passHref>
+                <ButtonBase
+                  disableRipple
+                  sx={{
+                    height: 20,
+                    "& img": {
+                      width: "auto",
+                      height: `20px !important`,
+                    },
+                  }}
+                >
+                  <img src="/logos/logo-colored.png" />
+                </ButtonBase>
+              </Link>
+            </Box>
+            <Stack
+              direction={"row"}
+              spacing={0}
+              sx={{
+                display: "none",
+                "@media(min-width: 1280px)": {
+                  display: "flex",
+                },
+              }}
+            >
+              {globalMenus.map((item, index) => {
+                return <NavItem key={index} item={item} />;
+              })}
+            </Stack>
+            <Box
+              sx={{
+                "@media(min-width: 961px)": {
+                  display: "none",
+                },
+              }}
+            >
+              {login ? (
+                <User />
+              ) : (
+                <Link
+                  href={`/auth/login?url=${router.asPath
+                    .split("?")[0]
+                    .replaceAll("/", "^")}`}
+                  passHref
+                >
+                  <IconButton
+                    name="user"
+                    borderColor={youhaGrey[700]}
+                    color={youhaBlue[500]}
+                    onClick={() => {}}
+                    size={20}
+                  />
+                </Link>
+              )}
+            </Box>
+          </Stack>
+          <Stack
+            direction={"row"}
+            spacing={2}
+            sx={{
+              p: theme.spacing(1, 2, 2, 2),
+              "@media(min-width: 961px)": {
+                p: theme.spacing(1, 2, 1, 2),
+              },
+            }}
+          >
+            <Stack
+              direction={"row"}
+              alignItems={"center"}
+              spacing={2}
+              sx={{
+                flex: 1,
+              }}
+            >
+              <Box
+                sx={{
+                  flex: 1,
+                  position: "relative",
+                }}
               >
-                <TextButton
-                  size="md"
-                  label="Log in"
-                  borderColor={youhaGrey[700]}
-                  // backgroundColor={alpha(youhaGrey[800], 1)}
+                <IconButton
+                  sx={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: 40,
+                    height: 40,
+                    zIndex: 99,
+                  }}
+                  disableRipple
+                  name="search"
+                  size={20}
                   color={youhaBlue[500]}
                 />
-              </Link>
-            )}
-          </Box>
-        </Stack>
-      </Box>
-    </>
+                <ButtonBase
+                  onClick={onClickSearch}
+                  sx={{
+                    borderRadius: 1,
+                    border: `1px solid ${youhaGrey[700]}`,
+                    backgroundColor: alpha(youhaGrey[800], 1),
+                    width: "100%",
+                    height: 40,
+                    p: theme.spacing(0, 5, 0, 5),
+                    alignItems: "center",
+                    "@media(min-width: 961px)": {
+                      minWidth: 280,
+                    },
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontSize: 16,
+                      lineHeight: "24px !important",
+                      color: youhaGrey[400],
+                    }}
+                  >
+                    Search for Kpop idols
+                  </Typography>
+                </ButtonBase>
+              </Box>
+            </Stack>
+            <Box
+              sx={{
+                display: "none",
+                "@media(min-width: 961px)": {
+                  display: "flex",
+                },
+              }}
+            >
+              {login ? (
+                <User />
+              ) : (
+                <Link
+                  href={`/auth/login?url=${router.asPath
+                    .split("?")[0]
+                    .replaceAll("/", "^")}`}
+                  passHref
+                >
+                  <TextButton
+                    size="md"
+                    label="Log in"
+                    borderColor={youhaGrey[700]}
+                    // backgroundColor={alpha(youhaGrey[800], 1)}
+                    color={youhaBlue[500]}
+                  />
+                </Link>
+              )}
+            </Box>
+          </Stack>
+        </Box>
+      </>
+    )
   ) : null;
 }
