@@ -310,7 +310,7 @@ function OrderItem({ shown, item }: { shown?: boolean; item: OrderProps }) {
                 backgroundColor={youhaGrey[600]}
                 color={youhaGrey[300]}
               >
-                Decline request
+                Decline
               </Button>
             </Stack>
           ) : state === "completed" ? (
@@ -349,7 +349,7 @@ export default function Index() {
     setFilter(undefined);
   };
   return (
-    <Screen>
+    <Screen bottom>
       <Box
         sx={{
           width: "100%",

@@ -75,12 +75,7 @@ export default function Screen({
                 maxWidth: "480px",
                 minWidth: "320px",
                 m: theme.spacing(0, "auto"),
-                p: theme.spacing(
-                  `calc(var(-sait) + 56px)`,
-                  0,
-                  `calc(var(-saib) + 56px)`,
-                  0
-                ),
+                overflowX: 'hidden',
                 overflowY: "scroll",
               }}
             >
