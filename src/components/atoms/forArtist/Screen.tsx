@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import { theme } from "../../../themes/theme";
 import { Global } from "@emotion/react";
 import { forArtistCss } from "../../../styles/styles";
@@ -21,7 +21,7 @@ export default function Screen({
   useEffect(() => {
     setMounted(true);
   }, [setMounted]);
-  return mounted ? (
+  return (
     <>
       <Global styles={forArtistCss} />
       <Box
@@ -84,7 +84,24 @@ export default function Screen({
                 overflowY: "scroll",
               }}
             >
-              {children}
+              {mounted ? (
+                <>{children} </>
+              ) : (
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <CircularProgress />
+                </Box>
+              )}
             </Box>
           </Box>
         </Box>
@@ -107,7 +124,5 @@ export default function Screen({
         {children}
       </Box> */}
     </>
-  ) : (
-    <></>
   );
 }
