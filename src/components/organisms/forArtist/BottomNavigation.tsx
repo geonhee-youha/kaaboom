@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { theme } from "../../../themes/theme";
 import Visual from "../../atoms/Visual";
 import { tempArtist } from "../../../data/temp";
+import { isIOS } from "react-device-detect";
 
 export type NavItemProps = {
   url: string;
@@ -114,7 +115,7 @@ export default function BottomNavigation() {
   return mounted && forArtist ? (
     <Box
       sx={{
-        position: "fixed",
+        position: isIOS ? 'absolute' : 'fixed',
         left: 0,
         right: 0,
         bottom: 0,

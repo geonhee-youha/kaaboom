@@ -6,6 +6,7 @@ import youhaGrey from "../../../constants/youhaGrey";
 import { navItems } from "./BottomNavigation";
 import _ from "lodash";
 import IconButton from "../../atoms/IconButton";
+import { isIOS } from "react-device-detect";
 
 export default function HeaderNavigation() {
   const router = useRouter();
@@ -28,7 +29,7 @@ export default function HeaderNavigation() {
   return mounted && forArtist ? (
     <Box
       sx={{
-        position: "fixed",
+        position: isIOS ? 'absolute' : 'fixed',
         left: 0,
         right: 0,
         top: 0,
