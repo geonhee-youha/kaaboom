@@ -6,6 +6,7 @@ import { useViewportSize } from "../../../hooks/useViewportSize";
 import { isIOS } from "react-device-detect";
 import youhaGrey from "../../../constants/youhaGrey";
 import { useWindowDimensions } from "../../../hooks/useWindowDimensions";
+import { useEffect, useState } from "react";
 
 export default function Screen({
   bottom,
@@ -16,7 +17,11 @@ export default function Screen({
 }) {
   const { windowHeight } = useWindowDimensions();
   const { viewportHeight, offsetTop } = useViewportSize();
-  return (
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, [setMounted]);
+  return mounted ? (
     <>
       <Global styles={forArtistCss} />
       <Box
@@ -69,13 +74,13 @@ export default function Screen({
           >
             <Box
               sx={{
-                position: 'relative',
-                width: '100%',
-                height: '100%',
+                position: "relative",
+                width: "100%",
+                height: "100%",
                 maxWidth: "480px",
                 minWidth: "320px",
                 m: theme.spacing(0, "auto"),
-                overflowX: 'hidden',
+                overflowX: "hidden",
                 overflowY: "scroll",
               }}
             >
@@ -102,5 +107,7 @@ export default function Screen({
         {children}
       </Box> */}
     </>
+  ) : (
+    <></>
   );
 }
