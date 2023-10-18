@@ -118,7 +118,7 @@ export default function BottomNavigation() {
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: youhaGrey[800],
+        backgroundColor: youhaGrey[900],
         borderTop: `1px solid ${youhaGrey[700]}`,
         zIndex: 999,
         p: theme.spacing("var(-sait)", 0, 0, 0),
