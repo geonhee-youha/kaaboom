@@ -26,7 +26,17 @@ export default function HeaderNavigation() {
     setMounted(true);
   }, [setMounted]);
   return mounted && forArtist ? (
-    <Box sx={{ position: "fixed", left: 0, right: 0, top: 0, zIndex: 999 }}>
+    <Box
+      sx={{
+        position: "fixed",
+        left: 0,
+        right: 0,
+        top: 0,
+        zIndex: 999,
+        p: theme.spacing("var(-sait)", 0, 0, 0),
+        backgroundColor: youhaGrey[900],
+      }}
+    >
       <Box
         sx={{
           width: "100%",
@@ -37,19 +47,9 @@ export default function HeaderNavigation() {
           height: 56,
           display: "flex",
           alignItems: "center",
-          backgroundColor: youhaGrey[900],
         }}
       >
-        <IconButton
-          name="bars"
-          prefix="far"
-          size={24}
-          sx={{
-            "@media(min-width: 1280px)": {
-              display: "none",
-            },
-          }}
-        />
+        <IconButton name="bars" prefix="far" size={24} />
         <Box
           sx={{
             p: theme.spacing(0, 0.5),

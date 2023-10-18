@@ -120,7 +120,8 @@ export default function BottomNavigation() {
         bottom: 0,
         backgroundColor: youhaGrey[800],
         borderTop: `1px solid ${youhaGrey[700]}`,
-        zIndex: 999
+        zIndex: 999,
+        p: theme.spacing("var(-sait)", 0, 0, 0),
       }}
     >
       <Box
