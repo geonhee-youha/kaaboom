@@ -249,7 +249,7 @@ const reset = css`
     font-weight: bold;
   }
   html {
-    background-color: #141A1F !important;
+    background-color: #101418 !important;
     /* background-color: #ffffff !important; */
     -webkit-font-smoothing: antialiased;
     box-sizing: border-box;
@@ -262,7 +262,7 @@ const reset = css`
     font-weight: 400;
     line-height: 1.5;
     color: #ffffff;
-    background-color: #111418 !important;
+    background-color: #101418 !important;
     scroll-behavior: smooth;
     letter-spacing: 0.15px !important;
     width: 100%;

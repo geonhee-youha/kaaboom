@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import { theme } from "../../themes/theme";
 import { useRouter } from "next/router";
 import youhaGrey from "../../constants/youhaGrey";
+import { forFanCss } from "../../styles/styles";
+import { Global } from "@emotion/react";
 
 export default function Page({
   fixed,
@@ -28,6 +30,7 @@ export default function Page({
   return mounted &&
     (needId ? id !== "" && id !== undefined && id !== null : true) ? (
     <>
+      <Global styles={forFanCss} />
       <Box
         sx={
           narrow

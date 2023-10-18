@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import { theme } from "../../../themes/theme";
 import { Global } from "@emotion/react";
-import { forArtistCss } from "../../../styles/forArtist";
+import { forArtistCss } from "../../../styles/styles";
 import { useViewportSize } from "../../../hooks/useViewportSize";
 import { isIOS } from "react-device-detect";
 import youhaGrey from "../../../constants/youhaGrey";
