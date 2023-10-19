@@ -6,6 +6,7 @@ import IconButton from "../../atoms/IconButton";
 import {
   OrderProps,
   dialogState,
+  messagesState,
   recordedVideoState,
   requestsState,
   tempOrders,
@@ -33,6 +34,7 @@ import { comma } from "../../../utils";
 import Button from "../../atoms/Button";
 import Icon from "../../atoms/Icon";
 import VideoPlayer from "../../atoms/forArtist/VideoPlayer";
+import { MessageProps } from "../../../data/message";
 
 const mimeType = 'video/webm; codecs="opus,vp8"';
 
@@ -100,8 +102,69 @@ export default function SendVideoSlide() {
 
 function Inner({ open }: { open: boolean }) {
   const router = useRouter();
+  const { sendVideoId } = router.query;
   const [recordedVideo, setRecordedVideo] = useRecoilState(recordedVideoState);
-  const onClickSend = () => {};
+  const [dialog, setDialog] = useRecoilState(dialogState);
+  const [requests, setRequests] = useRecoilState(requestsState);
+  const [messages, setMessages] = useRecoilState(messagesState);
+  const onClickSend = () => {
+    setDialog((prev) => {
+      return {
+        ...prev,
+        open: true,
+        title: "Are you sure you want to send?",
+        description:
+          "If you send now, there is no going back, your fan will be notified of your video.",
+        cancel: {
+          ...prev.cancel,
+        },
+        confirm: {
+          ...prev.confirm,
+          color: cyan[500],
+          onClick: () => {
+            setRequests((prev) => {
+              let next = _.cloneDeep(prev);
+              let target =
+                next[_.findIndex(next, (el) => el.id === sendVideoId)];
+              target.state = "completed";
+              target.completedDate = new Date();
+              return next;
+            });
+            setMessages((prev) => {
+              let next = _.cloneDeep(prev);
+              const newData: MessageProps = {
+                id: `${sendVideoId}`,
+                date: new Date("2023-10-11 16:42"),
+                src: recordedVideo ?? "/temp/messages/1.mp4",
+                thumbnail: "/temp/messages/test.png",
+                artist: {
+                  name: "GABI",
+                },
+                text: "",
+                rated: false,
+              };
+              let target =
+                next[_.findIndex(next, (el) => el.id === sendVideoId)];
+              if (
+                _.findIndex(next, (el) => el.id === `${sendVideoId}`) === -1
+              ) {
+                next = [...next, newData];
+              } else {
+                target.date = new Date("2023-10-11 16:42");
+                target.src = recordedVideo ?? "/temp/messages/1.mp4";
+              }
+              return next;
+            });
+            router.replace(
+              `${router.pathname}`,
+              undefined,
+              { shallow: true }
+            );
+          },
+        },
+      };
+    });
+  };
   const onClickCancel = () => {
     router.back();
   };

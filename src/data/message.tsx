@@ -78,7 +78,7 @@ export const messages: MessageProps[] = [
     rated: true,
   },
   {
-    id: "7",
+    id: "16",
     date: new Date("2023-10-11 16:42"),
     src: "/temp/messages/7.mp4",
     thumbnail: "/temp/messages/test.png",
@@ -89,7 +89,7 @@ export const messages: MessageProps[] = [
     rated: true,
   },
   {
-    id: "8",
+    id: "17",
     date: new Date("2023-10-11 16:42"),
     src: "/temp/messages/8.mp4",
     thumbnail: "/temp/messages/test.png",

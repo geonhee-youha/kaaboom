@@ -4,7 +4,11 @@ import { tempArtistUser } from "../../../data/temp";
 import { theme } from "../../../themes/theme";
 import moment from "moment";
 import youhaGrey from "../../../constants/youhaGrey";
-import { OrderProps, tempUsers } from "../../../constants/recoils";
+import {
+  OrderProps,
+  messagesState,
+  tempUsers,
+} from "../../../constants/recoils";
 import { videoTypes } from "../../../data";
 import _ from "lodash";
 import Typo from "../../atoms/Typo";
@@ -14,8 +18,10 @@ import VideoPlayer from "../../atoms/forArtist/VideoPlayer";
 import { reviews } from "../../../data/review";
 import Icon from "../../atoms/Icon";
 import youhaBlue from "../../../constants/youhaBlue";
+import { useRecoilState } from "recoil";
 
 export default function ChatItem({ item }: { item: OrderProps }) {
+  const [messages, setMessages] = useRecoilState(messagesState);
   const id = item.id;
   const state = item.state;
   const date = moment(item.date).format("hh:mm A MM/DD/YYYY");
@@ -178,7 +184,7 @@ export default function ChatItem({ item }: { item: OrderProps }) {
           }}
         >
           <Box sx={{ width: "100%" }}>
-            <VideoPlayer item={video} />
+            <VideoPlayer item={video && video} />
             <Typography
               sx={{
                 fontSize: 12,
@@ -192,7 +198,7 @@ export default function ChatItem({ item }: { item: OrderProps }) {
           </Box>
         </Box>
       </Box>
-      {video.rated && (
+      {video && video.rated && (
         <Box
           sx={{
             width: "100%",

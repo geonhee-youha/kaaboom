@@ -48,6 +48,8 @@ export default function RecordVideoSlide() {
   const open = typeof recordVideoId === "string";
   const [item, setItem] = useState<OrderProps | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
+  const request =
+    requests[_.findIndex(requests, (el) => el.id === recordVideoId)];
   function getZIndex(query: string) {
     let queryArr = Object.entries(query);
     const index = _.findIndex(queryArr, (el) => el[0] === query);
@@ -96,7 +98,11 @@ export default function RecordVideoSlide() {
       zIndex={getZIndex("recordVideoId")}
       pb={20}
     >
-      {item ? <Inner open={open} id={recordVideoId} /> : <></>}
+      {item && request ? (
+        <Inner open={open} id={recordVideoId} request={request} />
+      ) : (
+        <></>
+      )}
     </Slider>
   );
 }
@@ -110,10 +116,13 @@ function timer(seconds: number) {
 function Inner({
   open,
   id,
+  request,
 }: {
   open: boolean;
   id: string | string[] | undefined;
+  request: OrderProps;
 }) {
+  const item = request;
   const timerRef = useRef<any>();
   const [count, setCount] = useState<number>(1);
   const handleCount = () => {
@@ -147,13 +156,6 @@ function Inner({
   //   const [stream, setStream] = useState<any>(null);
   //   const [recordedVideo, setRecordedVideo] = useState<any>(null);
   //   const [videoChunks, setVideoChunks] = useState<any>([]);
-  const onClickRecord = () => {
-    if (recording === "inactive" && permission === true) {
-      startRecording();
-    } else if (recording === "recording") {
-      stopRecording();
-    }
-  };
   const getCameraPermission = async () => {
     setRecordedVideo(null);
     //get video and audio permissions and then stream the result media stream to the videoSrc variable
@@ -181,10 +183,10 @@ function Inner({
         //set videostream to live feed player
         if (videoStream) liveVideoFeed.current.srcObject = videoStream;
       } catch (err: any) {
-        alert(err.message);
+        console.log(err.message);
       }
     } else {
-      alert("The MediaRecorder API is not supported in your browser.");
+      console.log("The MediaRecorder API is not supported in your browser.");
     }
   };
 
@@ -197,8 +199,8 @@ function Inner({
     mediaRecorder.current.ondataavailable = (event: any) => {
       if (typeof event.data === "undefined") return;
       if (event.data.size === 0) return;
-      console.log(event.data);
-      localVideoChunks.push(event.data);
+      let newPrev = localVideoChunks;
+      newPrev = [...newPrev, event.push];
     };
     setVideoChunks(localVideoChunks);
   };
@@ -210,7 +212,7 @@ function Inner({
     mediaRecorder.current.onstop = () => {
       const videoBlob = new Blob(videoChunks, { type: mimeType });
       const videoUrl = URL.createObjectURL(videoBlob);
-      console.log(videoUrl);
+      console.log("videoUrl: ", videoUrl);
       setRecordedVideo(videoUrl);
       setVideoChunks([]);
     };
@@ -249,6 +251,41 @@ function Inner({
       setRecording("inactive");
     }
   }, [recordedVideo]);
+  const onClickRecord = () => {
+    if (recording !== "recording" && permission === true) {
+      startRecording();
+      handleRestart();
+    } else if (recording === "recording") {
+      stopRecording();
+      handleStop();
+    }
+  };
+  const onClickRecorded = () => {
+    if (
+      recordedVideo !== null &&
+      recordedVideo !== undefined &&
+      recordedVideo !== ""
+    ) {
+      router.push(
+        {
+          query: { ...router.query, sendVideoId: id },
+        },
+        undefined,
+        { shallow: true }
+      );
+      setRecording("inactive");
+    }
+  };
+  const videoType =
+    videoTypes[_.findIndex(videoTypes, (el) => el.value === item.videoType)]
+      .label;
+  const price = item.price;
+  const user =
+    tempUsers[_.findIndex(tempUsers, (el) => el.id === item.user.id)];
+  const whomType = item.whomType;
+  const toWhom = item.toFirstName;
+  const fromWhom = item.fromFirstName;
+  const instructions = item.instructions;
   return (
     <>
       <Box
@@ -271,6 +308,64 @@ function Inner({
           label={recording === "recording" ? timer(count) : "Record Video"}
         />
         <video ref={liveVideoFeed} autoPlay />
+        <Box
+          sx={{
+            position: "absolute",
+            top: 56,
+            left: 0,
+            zIndex: 99999,
+          }}
+        >
+          <Box
+            sx={{
+              p: theme.spacing(2),
+              "& > *:not(:nth-of-type(1))": {
+                m: theme.spacing(1, 0, 0, 0),
+              },
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: 14,
+                lineHeight: "20px",
+                fontWeight: "700",
+              }}
+            >
+              {videoType}
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: 14,
+                lineHeight: "20px",
+                fontWeight: "700",
+              }}
+            >
+              {`$${comma(price)}.00`}
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: 14,
+                lineHeight: "20px",
+              }}
+            >
+              {`For ${toWhom}`}
+              {whomType !== "myself" && (
+                <>
+                  <span>{` / `}</span>
+                  {`From ${fromWhom}`}
+                </>
+              )}
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: 14,
+                lineHeight: "20px",
+              }}
+            >
+              {instructions}
+            </Typography>
+          </Box>
+        </Box>
         <Box
           sx={{
             position: "fixed",
@@ -342,7 +437,7 @@ function Inner({
                     overflow: "hidden",
                     border: `1px solid ${alpha("#ffffff", 0.6)}`,
                   }}
-                  onClick={onClickRecord}
+                  onClick={onClickRecorded}
                 >
                   <video className="recorded" src={recordedVideo} autoPlay />
                 </ButtonBase>
