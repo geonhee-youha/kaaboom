@@ -12,20 +12,15 @@ import { theme } from "../../themes/theme";
 import youhaGrey from "../../constants/youhaGrey";
 import youhaBlue from "../../constants/youhaBlue";
 import Icon from "../../components/atoms/Icon";
-import { OrderProps, tempOrders } from "../../constants/recoils";
+import {
+  OrderProps,
+  requestsState,
+  tempLoadedRequestsState,
+  tempOrders,
+} from "../../constants/recoils";
 import _ from "lodash";
 import { atom, useRecoilState } from "recoil";
 import RequestItem from "../../components/molecules/forArtist/RequestItem";
-
-const tempLoadedState = atom({
-  key: "tempLoaded/requests",
-  default: false,
-});
-
-export const requestsState = atom<OrderProps[]>({
-  key: "requestsState",
-  default: [],
-});
 
 type FilterItemProps = {
   value: string;
@@ -79,7 +74,7 @@ function FilterItem({
 }
 
 export default function Index() {
-  const [tempLoaded, setTempLoaded] = useRecoilState(tempLoadedState);
+  const [tempLoaded, setTempLoaded] = useRecoilState(tempLoadedRequestsState);
   const [filter, setFilter] = useState<FilterItemProps | undefined>(undefined);
   const [data, setData] = useRecoilState(requestsState);
   const [loading, setLoading] = useState<boolean>(false);

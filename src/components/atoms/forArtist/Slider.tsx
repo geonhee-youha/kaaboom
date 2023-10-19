@@ -54,7 +54,7 @@ export default function Slider({
             p: theme.spacing(
               `calc(var(--sait) + 56px)`,
               0,
-              `calc(var(--saib) + ${pb ?? 0 * 8}px)`,
+              `calc(var(--saib) + ${(pb ?? 0) * 8}px)`,
               0
             ),
             height: loading ? "100%" : "auto",

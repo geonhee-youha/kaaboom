@@ -6,6 +6,8 @@ import IconButton from "../../atoms/IconButton";
 import {
   OrderProps,
   TempUserProps,
+  requestsState,
+  tempMessageIdsState,
   tempOrders,
   tempUsers,
 } from "../../../constants/recoils";
@@ -20,13 +22,7 @@ import { DataRow } from "./RequestSlide";
 import { nations } from "../../../constants/nations";
 import Typo from "../../atoms/Typo";
 import Icon from "../../atoms/Icon";
-import { requestsState } from "../../../pages/forArtist/requests";
 import ChatItem from "../../molecules/forArtist/ChatItem";
-
-const tempMessageIdsState = atom<string[]>({
-  key: "tempMessageIdsState",
-  default: [],
-});
 
 export default function MessageSlide() {
   const [requests, setRequests] = useRecoilState(requestsState);

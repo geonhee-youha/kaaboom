@@ -39,7 +39,11 @@ export const fullscreenState = atom({
   },
 });
 
-export default function VideoPlayer({ item }: { item: MessageProps }) {
+export default function VideoPlayer({
+  item,
+}: {
+  item: { src: string; thumbnail?: string };
+}) {
   const router = useRouter();
   const [fullscreen, setFullscreen] = useRecoilState(fullscreenState);
   const open = fullscreen.open;
@@ -89,13 +93,6 @@ export default function VideoPlayer({ item }: { item: MessageProps }) {
       loadedSeconds: state.loadedSeconds,
     });
   };
-  const onClickArtist = (
-    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
-  ) => {
-    e.stopPropagation();
-    e.preventDefault();
-    router.push(`/detail/artist/${artist.id}`);
-  };
   const onClickPlay = () => {
     setPlaying(!playing);
   };
@@ -116,12 +113,6 @@ export default function VideoPlayer({ item }: { item: MessageProps }) {
     Number(seconds.playedSeconds.toFixed(0)) % 60
   ).padStart(2, "0");
   const playedTime = playedMin + ":" + playedSec;
-  const artist =
-    artists[
-      _.findIndex(artists, (el) => {
-        return el.name === item.artist.name;
-      })
-    ];
   const onClickFullscreen = () => {
     setFullscreen({ open: !open });
   };
@@ -233,13 +224,17 @@ export default function VideoPlayer({ item }: { item: MessageProps }) {
               onDuration={onDuration}
               onProgress={onProgress}
               onEnded={onEnded}
-              config={{
-                file: {
-                  attributes: {
-                    poster: item.thumbnail,
-                  },
-                },
-              }}
+              config={
+                item.thumbnail
+                  ? {
+                      file: {
+                        attributes: {
+                          poster: item.thumbnail,
+                        },
+                      },
+                    }
+                  : undefined
+              }
             />
             <Box
               sx={{

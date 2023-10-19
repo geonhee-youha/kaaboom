@@ -6,6 +6,9 @@ import IconButton from "../../atoms/IconButton";
 import {
   OrderProps,
   dialogState,
+  requestsState,
+  selectDrawerState,
+  tempOrderIdsState,
   tempOrders,
   tempUsers,
 } from "../../../constants/recoils";
@@ -23,12 +26,6 @@ import User from "../../atoms/forArtist/User";
 import { comma } from "../../../utils";
 import Button from "../../atoms/Button";
 import Icon from "../../atoms/Icon";
-import { requestsState } from "../../../pages/forArtist/requests";
-
-const tempOrderIdsState = atom<string[]>({
-  key: "tempOrderIdsState",
-  default: [],
-});
 
 export default function RequestSlide() {
   const [requests, setRequests] = useRecoilState(requestsState);
@@ -92,6 +89,7 @@ export default function RequestSlide() {
 
 function Inner({ item }: { item: OrderProps }) {
   const [dialog, setDialog] = useRecoilState(dialogState);
+  const [selectDrawer, setSelectDrawer] = useRecoilState(selectDrawerState);
   const [requests, setRequests] = useRecoilState(requestsState);
   const router = useRouter();
   const id = item.id;
@@ -188,13 +186,14 @@ function Inner({ item }: { item: OrderProps }) {
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
   ) => {
     e.stopPropagation();
-    router.push(
-      {
-        query: { ...router.query, sendVideoId: item.id },
-      },
-      undefined,
-      { shallow: true }
-    );
+    // router.push(
+    //   {
+    //     query: { ...router.query, recordVideoId: item.id },
+    //   },
+    //   undefined,
+    //   { shallow: true }
+    // );
+    setSelectDrawer({ open: true , id: id});
   };
   const onClickDecline = (
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>

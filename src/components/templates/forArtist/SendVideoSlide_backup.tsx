@@ -8,7 +8,6 @@ import {
   dialogState,
   requestsState,
   tempOrders,
-  tempSendVideoIdState,
   tempUsers,
 } from "../../../constants/recoils";
 import _ from "lodash";
@@ -32,7 +31,10 @@ import { comma } from "../../../utils";
 import Button from "../../atoms/Button";
 import Icon from "../../atoms/Icon";
 
-const mimeType = 'video/webm; codecs="opus,vp8"';
+const tempSendVideoIdState = atom<string[]>({
+  key: "tempSendVideoIdState_backup",
+  default: [],
+});
 
 export default function SendVideoSlide() {
   const [requests, setRequests] = useRecoilState(requestsState);
@@ -95,127 +97,71 @@ export default function SendVideoSlide() {
     </Slider>
   );
 }
-function timer(seconds: number) {
-  var hour = String(parseInt(`${seconds / 3600}`)).padStart(2, "0");;
-  var min = String(parseInt(`${(seconds % 3600) / 60}`)).padStart(2, "0");;
-  var sec = String(seconds % 60).padStart(2, "0");;
-  return `${hour}:${min}:${sec}`;
-}
 
 function Inner({ open }: { open: boolean }) {
-  const timerRef = useRef<any>();
-  const [count, setCount] = useState<number>(1);
-  const handleCount = () => {
-    setCount(count + 1);
-  };
-  const handleRestart = () => {
-    setCount(1)
-    if (!timerRef.current) {
-      timerRef.current = setInterval(handleCount, 1000);
-    }
-  };
-  const handleStop = () => {
-    if (timerRef.current) {
-      clearInterval(timerRef.current);
-      timerRef.current = null;
-    }
-  };
-  useEffect(() => {
-    timerRef.current = setInterval(handleCount, 1000);
-    return () => {
-      clearInterval(timerRef.current);
-    };
-  });
-  const mediaRecorder = useRef<any>(null);
-  const liveVideoFeed = useRef<any>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const mediaRecorder = useRef<MediaRecorder | null>(null);
+  const videoChunks = useRef<Blob[]>([]);
   const [recording, setRecording] = useState<boolean>(false);
-  const [stream, setStream] = useState<MediaStream | null>(null);
-  const [recordedVideo, setRecordedVideo] = useState<string | null>(null);
-  const [videoChunks, setVideoChunks] = useState<any[]>([]);
-  const getCameraPermission = async () => {
-    setRecordedVideo(null);
-    //get video and audio permissions and then stream the result media stream to the videoSrc variable
-    if ("MediaRecorder" in window) {
-      try {
-        const videoConstraints = {
-          audio: false,
-          video: true,
-        };
-        const audioConstraints = { audio: true };
-        // create audio and video streams separately
-        const audioStream = await navigator.mediaDevices.getUserMedia(
-          audioConstraints
-        );
-        const videoStream = await navigator.mediaDevices.getUserMedia(
-          videoConstraints
-        );
-        // setPermission(true);
-        //combine both audio and video streams
-        const combinedStream = new MediaStream([
-          ...videoStream.getVideoTracks(),
-          ...audioStream.getAudioTracks(),
-        ]);
-
-        setStream(combinedStream);
-        //set videostream to live feed player
-        liveVideoFeed.current.srcObject = videoStream;
-      } catch (err: any) {
-        alert(err.message);
-      }
-    } else {
-      alert("The MediaRecorder API is not supported in your browser.");
-    }
-  };
-  const onClickRecord = () => {
-    if (recording === false) {
-      startRecording();
-    } else {
-      stopRecording();
-    }
-  };
-  const startRecording = async () => {
-    setRecording(true);
-    handleRestart()
-    const media = stream ? new MediaRecorder(stream, { mimeType }) : null;
-    mediaRecorder.current = media;
-    mediaRecorder.current.start();
-    let localVideoChunks: any[] = [];
-    mediaRecorder.current.ondataavailable = (event: any) => {
-      if (typeof event.data === "undefined") return;
-      if (event.data.size === 0) return;
-      localVideoChunks.push(event.data);
-    };
-    setVideoChunks(localVideoChunks);
-  };
-  const stopRecording = () => {
-    if (mediaRecorder) {
-      setRecording(false);
-      handleStop()
-      mediaRecorder.current.stop();
-      mediaRecorder.current.onstop = () => {
-        const videoBlob = new Blob(videoChunks, { type: mimeType });
-        const videoUrl = URL.createObjectURL(videoBlob);
-        setRecordedVideo(videoUrl);
-        setVideoChunks([]);
+  const getMediaPermission = useCallback(async () => {
+    try {
+      const audioConstraints = { audio: true };
+      const videoConstraints = {
+        audio: false,
+        video: true,
       };
-    }
-  };
-  useEffect(() => {
-    getCameraPermission();
-  }, []);
-  useEffect(() => {
-    if (open) {
-      getCameraPermission();
-    } else {
-      setRecordedVideo(null);
-      setRecordedVideo(null);
-      setVideoChunks([]);
+
+      const audioStream = await navigator.mediaDevices.getUserMedia(
+        audioConstraints
+      );
+      const videoStream = await navigator.mediaDevices.getUserMedia(
+        videoConstraints
+      );
+
+      if (videoRef.current) {
+        videoRef.current.srcObject = videoStream;
+      }
+
+      // MediaRecorder 추가
+      const combinedStream = new MediaStream([
+        ...videoStream.getVideoTracks(),
+        ...audioStream.getAudioTracks(),
+      ]);
+
+      const recorder = new MediaRecorder(combinedStream, {
+        mimeType: "video/webm",
+      });
+
+      recorder.ondataavailable = (e) => {
+        if (typeof e.data === "undefined") return;
+        if (e.data.size === 0) return;
+        videoChunks.current.push(e.data);
+      };
+
+      mediaRecorder.current = recorder;
+    } catch (err) {
+      alert(err);
     }
   }, [open]);
+
+  useEffect(() => {
+    getMediaPermission();
+  }, []);
+  useEffect(() => {
+    if (open) getMediaPermission();
+  }, [open]);
+  const onClickRecord = () => {
+    setRecording(!recording);
+    if (recording) {
+      mediaRecorder.current?.stop();
+    } else {
+      mediaRecorder.current?.start();
+    }
+  };
   return (
     <Box
       sx={{
-        position: "absolute",
+        position: "fixed",
         top: 0,
         left: 0,
         right: 0,
@@ -228,16 +174,15 @@ function Inner({ open }: { open: boolean }) {
         },
       }}
     >
-      <Header label={recording ? timer(count) : "Record Video"} />
-      <video ref={liveVideoFeed} autoPlay />
+      <Header />
+      <video ref={videoRef} autoPlay />
       <Box
         sx={{
-          position: "fixed",
+          position: "absolute",
           left: 0,
           right: 0,
           bottom: 0,
           p: theme.spacing(0, 0, "calc(var(--saib) + 32px)", 0),
-          zIndex: 9999,
         }}
       >
         <Box
@@ -281,7 +226,7 @@ function Inner({ open }: { open: boolean }) {
   );
 }
 
-function Header({ label }: { label: string }) {
+function Header() {
   const router = useRouter();
   const onClickBack = () => {
     router.back();
@@ -342,7 +287,7 @@ function Header({ label }: { label: string }) {
               fontWeight: "700",
             }}
           >
-            {label}
+            Send video
           </Typography>
         </Box>
       </Box>

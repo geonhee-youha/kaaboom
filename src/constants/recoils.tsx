@@ -452,7 +452,7 @@ export const dialogDefaultProps: DialogProps = {
 };
 
 export const dialogState = atom<DialogProps>({
-  key: "dialogState",
+  key: "dialogState/forArtist",
   default: dialogDefaultProps,
 });
 
@@ -461,4 +461,67 @@ export const sideNavigationState = atom({
   default: {
     open: false,
   },
+});
+
+
+export const selectDrawerState = atom({
+  key: "selectDrawerState",
+  default: {
+    open: false,
+    id: ''
+  },
+});
+
+
+export const tempLoadedRequestsState = atom({
+  key: "tempLoaded/requests",
+  default: false,
+});
+
+export const requestsState = atom<OrderProps[]>({
+  key: "requestsState",
+  default: [],
+});
+
+export const tempLoadedMessagesState = atom({
+  key: "tempLoaded/messages",
+  default: false,
+});
+
+
+export const tempLoadedProfileState = atom({
+  key: "tempLoaded/profile",
+  default: false,
+});
+
+
+export const tempMessageIdsState = atom<string[]>({
+  key: "tempMessageIdsState",
+  default: [],
+});
+
+
+export const tempOrderIdsState = atom<string[]>({
+  key: "tempOrderIdsState",
+  default: [],
+});
+
+
+export const tempSendVideoIdState = atom<string[]>({
+  key: "tempSendVideoIdState",
+  default: [],
+});
+
+export const streamState = atom<MediaStream | null>({
+  key: `streamState`,
+  default: null,
+});
+
+export const recordedVideoState = atom<string | null>({
+  key: `recordedVideoState`,
+  default: null,
+});
+export const videoChunksState = atom<any[]>({
+  key: "videoChunksState",
+  default: [],
 });

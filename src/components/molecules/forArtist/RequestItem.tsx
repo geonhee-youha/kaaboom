@@ -2,7 +2,13 @@ import { Box, ButtonBase, Stack, Typography, alpha } from "@mui/material";
 import { theme } from "../../../themes/theme";
 import youhaGrey from "../../../constants/youhaGrey";
 import youhaBlue from "../../../constants/youhaBlue";
-import { OrderProps, dialogState, tempUsers } from "../../../constants/recoils";
+import {
+  OrderProps,
+  dialogState,
+  requestsState,
+  selectDrawerState,
+  tempUsers,
+} from "../../../constants/recoils";
 import _ from "lodash";
 import moment from "moment";
 import { videoTypes } from "../../../data";
@@ -14,7 +20,6 @@ import { useRouter } from "next/router";
 import User from "../../atoms/forArtist/User";
 import { MouseEvent } from "react";
 import { useRecoilState } from "recoil";
-import { requestsState } from "../../../pages/forArtist/requests";
 
 export default function RequestItem({
   shown,
@@ -24,6 +29,7 @@ export default function RequestItem({
   item: OrderProps;
 }) {
   const [dialog, setDialog] = useRecoilState(dialogState);
+  const [selectDrawer, setSelectDrawer] = useRecoilState(selectDrawerState);
   const [requests, setRequests] = useRecoilState(requestsState);
   const router = useRouter();
   const id = item.id;
@@ -58,13 +64,14 @@ export default function RequestItem({
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
   ) => {
     e.stopPropagation();
-    router.push(
-      {
-        query: { ...router.query, sendVideoId: item.id },
-      },
-      undefined,
-      { shallow: true }
-    );
+    setSelectDrawer({ open: true , id: id});
+    // router.push(
+    //   {
+    //     query: { ...router.query, recordVideoId: item.id },
+    //   },
+    //   undefined,
+    //   { shallow: true }
+    // );
   };
   const onClickDecline = (
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
@@ -101,7 +108,7 @@ export default function RequestItem({
         maxHeight: shown ? 400 : 0,
         opacity: shown ? 1 : 0,
         transition: "all 0.35s ease",
-        overflow: "visible",
+        overflow: "hidden",
       }}
     >
       <Box

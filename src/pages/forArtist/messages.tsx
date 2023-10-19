@@ -2,18 +2,13 @@ import { Box } from "@mui/material";
 import Screen from "../../components/atoms/forArtist/Screen";
 import { useEffect, useState } from "react";
 import { theme } from "../../themes/theme";
-import { OrderProps, tempOrders } from "../../constants/recoils";
+import { OrderProps, tempLoadedMessagesState, tempOrders } from "../../constants/recoils";
 import _ from "lodash";
 import { atom, useRecoilState } from "recoil";
 import MessageItem from "../../components/molecules/forArtist/MessageItem";
 
-const tempLoadedState = atom({
-  key: "tempLoaded/messages",
-  default: false,
-});
-
 export default function Index() {
-  const [tempLoaded, setTempLoaded] = useRecoilState(tempLoadedState);
+  const [tempLoaded, setTempLoaded] = useRecoilState(tempLoadedMessagesState);
   const [data, setData] = useState<{ id: string; requests: OrderProps[] }[]>(
     []
   );

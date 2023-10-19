@@ -5,7 +5,11 @@ import { forArtistCss } from "../../../styles/styles";
 import { Global } from "@emotion/react";
 import youhaGrey from "../../../constants/youhaGrey";
 import { useRecoilState } from "recoil";
-import { dialogState, sideNavigationState } from "../../../constants/recoils";
+import {
+  dialogState,
+  selectDrawerState,
+  sideNavigationState,
+} from "../../../constants/recoils";
 import { sendMessage } from "../../../utils/sendMessage";
 import { isIOS } from "react-device-detect";
 import { useRouter } from "next/router";
@@ -28,6 +32,7 @@ export default function Screen({
   const [dialog, setDialog] = useRecoilState(dialogState);
   const [sideNavigation, setSideNavigation] =
     useRecoilState(sideNavigationState);
+  const [selectDrawer, setSelectDrawer] = useRecoilState(selectDrawerState);
   const [fullscreen, setFullscreen] = useRecoilState(fullscreenState);
   useEffect(() => {
     if (!isIOS) {
@@ -43,6 +48,10 @@ export default function Screen({
           });
         } else if (sideNavigation.open) {
           setSideNavigation((prev) => {
+            return { ...prev, open: false };
+          });
+        } else if (selectDrawer.open) {
+          setSelectDrawer((prev) => {
             return { ...prev, open: false };
           });
         } else {

@@ -51,6 +51,8 @@ import Dialog from "../components/templates/forArtist/Dialog";
 import SideNavigation from "../components/organisms/forArtist/SideNavigation";
 import MessageSlide from "../components/templates/forArtist/MessageSlide";
 import SendVideoSlide from "../components/templates/forArtist/SendVideoSlide";
+import RecordVideoSlide from "../components/templates/forArtist/RecordVideoSlide";
+import SelectDrawer from "../components/organisms/forArtist/SelectDrawer";
 
 ChartJS.register(
   LineController,
@@ -244,10 +246,12 @@ function MyApp(props: MyAppProps) {
           <HeaderNavigation />
           <Component {...pageProps} key={router.route} />
           <RequestSlide />
+          <RecordVideoSlide />
           <SendVideoSlide />
           <MessageSlide />
           <UserSlide />
           <SideNavigation />
+          <SelectDrawer />
           <Dialog />
           <GlobalFooter />
           <RateDialog />
