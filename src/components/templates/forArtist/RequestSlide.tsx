@@ -1,10 +1,14 @@
 import { useRouter } from "next/router";
-import Screen from "../../atoms/forArtist/Screen";
-import { Box, Stack, Typography, alpha } from "@mui/material";
+import { Box, ButtonBase, Stack, Typography, alpha } from "@mui/material";
 import { theme } from "../../../themes/theme";
 import youhaGrey from "../../../constants/youhaGrey";
 import IconButton from "../../atoms/IconButton";
-import { OrderProps, tempOrders, tempUsers } from "../../../constants/recoils";
+import {
+  OrderProps,
+  dialogState,
+  tempOrders,
+  tempUsers,
+} from "../../../constants/recoils";
 import _ from "lodash";
 import React, { MouseEvent, useEffect, useState } from "react";
 import moment from "moment";
@@ -19,6 +23,7 @@ import User from "../../atoms/forArtist/User";
 import { comma } from "../../../utils";
 import Button from "../../atoms/Button";
 import Icon from "../../atoms/Icon";
+import { requestsState } from "../../../pages/forArtist/requests";
 
 const tempOrderIdsState = atom<string[]>({
   key: "tempOrderIdsState",
@@ -26,12 +31,18 @@ const tempOrderIdsState = atom<string[]>({
 });
 
 export default function RequestSlide() {
+  const [requests, setRequests] = useRecoilState(requestsState);
   const [tempOrderIds, setTempOrderIds] = useRecoilState(tempOrderIdsState);
   const router = useRouter();
   const { orderId } = router.query;
   const open = typeof orderId === "string";
   const [item, setItem] = useState<OrderProps | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
+  function getZIndex(query: string) {
+    let queryArr = Object.entries(query);
+    const index = _.findIndex(queryArr, (el) => el[0] === query);
+    return index;
+  }
   useEffect(() => {
     if (orderId !== undefined && orderId?.length > 0) {
       const newOrderId = orderId.slice(orderId.length - 1, 1);
@@ -50,8 +61,7 @@ export default function RequestSlide() {
       document.body.style.overflowY = "hidden";
       setLoading(true);
       if (orderId !== undefined) {
-        const item =
-          tempOrders[_.findIndex(tempOrders, (el) => el.id === orderId)];
+        const item = requests[_.findIndex(requests, (el) => el.id === orderId)];
         if (_.findIndex(tempOrderIds, (el) => el === orderId) !== -1) {
           setItem(item);
           setLoading(false);
@@ -66,15 +76,23 @@ export default function RequestSlide() {
     } else {
       document.body.style.overflowY = "scroll";
     }
-  }, [open]);
+  }, [open, requests]);
   return (
-    <Slider open={open} header={<Header />} loading={loading}>
+    <Slider
+      open={open}
+      header={<Header />}
+      loading={loading}
+      zIndex={getZIndex("orderId")}
+      pb={20}
+    >
       {item ? <Inner item={item} /> : <></>}
     </Slider>
   );
 }
 
 function Inner({ item }: { item: OrderProps }) {
+  const [dialog, setDialog] = useRecoilState(dialogState);
+  const [requests, setRequests] = useRecoilState(requestsState);
   const router = useRouter();
   const id = item.id;
   const state = item.state;
@@ -157,15 +175,55 @@ function Inner({ item }: { item: OrderProps }) {
       ];
     return histories;
   }
+  const onClickUser = () => {
+    router.push(
+      {
+        query: { ...router.query, userId: user.id },
+      },
+      undefined,
+      { shallow: true }
+    );
+  };
   const onClickSend = (
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
   ) => {
     e.stopPropagation();
+    router.push(
+      {
+        query: { ...router.query, sendVideoId: item.id },
+      },
+      undefined,
+      { shallow: true }
+    );
   };
   const onClickDecline = (
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
   ) => {
     e.stopPropagation();
+    setDialog((prev) => {
+      return {
+        ...prev,
+        open: true,
+        title: "Are you sure you want to decline?",
+        description:
+          "If you decline now, there is no going back, your fan will be notified of your rejection, and a refund will be issued.",
+        cancel: {
+          ...prev.cancel,
+        },
+        confirm: {
+          ...prev.confirm,
+          color: deepOrange[500],
+          onClick: () => {
+            setRequests((prev) => {
+              let next = _.cloneDeep(prev);
+              let target = next[_.findIndex(next, (el) => el.id === id)];
+              target.state = "declined";
+              return next;
+            });
+          },
+        },
+      };
+    });
   };
   return (
     <>
@@ -257,14 +315,16 @@ function Inner({ item }: { item: OrderProps }) {
             </Typography>
           </Box>
         </Box>
-        <Box
+        <ButtonBase
           sx={{
             borderRadius: 1,
             backgroundColor: youhaGrey[700],
           }}
+          onClick={onClickUser}
         >
           <Box
             sx={{
+              width: "100%",
               display: "flex",
               alignItems: "center",
               p: theme.spacing(2),
@@ -274,6 +334,7 @@ function Inner({ item }: { item: OrderProps }) {
             <User item={user} />
             <Box
               sx={{
+                flex: 1,
                 m: theme.spacing(0, 0, 0, 2),
               }}
             >
@@ -298,8 +359,9 @@ function Inner({ item }: { item: OrderProps }) {
                 {date}
               </Typography>
             </Box>
+            <Icon name={"chevron-right"} color={youhaGrey[500]} size={24} />
           </Box>
-        </Box>
+        </ButtonBase>
         <Box
           sx={{
             borderRadius: 1,
@@ -315,23 +377,23 @@ function Inner({ item }: { item: OrderProps }) {
               // borderBottom: `1px solid ${youhaGrey[400]}`,
             }}
           >
-            <RequestRow
+            <DataRow
               label={"Video type"}
               value={videoType}
               flexDirection="column"
             />
-            <RequestRow
+            <DataRow
               label={"Price"}
               value={`$${comma(price)}.00`}
               flexDirection="column"
             />
-            <RequestRow
+            <DataRow
               label={"For"}
               value={`${toWhom}${toType ? ` (${toType.label})` : ``}`}
               flexDirection="column"
             />
             {whomType !== "myself" && (
-              <RequestRow
+              <DataRow
                 label={"From"}
                 value={`${fromWhom}${fromType ? ` (${fromType.label})` : ``}`}
                 flexDirection="column"
@@ -346,7 +408,7 @@ function Inner({ item }: { item: OrderProps }) {
               },
             }}
           >
-            <RequestRow
+            <DataRow
               label={"Instructions"}
               value={instructions}
               flexDirection="column"
@@ -517,6 +579,7 @@ function Header() {
     >
       <Box
         sx={{
+          position: "relative",
           width: "100%",
           maxWidth: "480px",
           minWidth: "320px",
@@ -535,7 +598,16 @@ function Header() {
         />
         <Box
           sx={{
-            p: theme.spacing(0, 0.5),
+            position: "absolute",
+            top: 0,
+            bottom: 0,
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: `calc(100% - 108px)`,
+            maxWidth: `calc(480px - 108px)`,
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
           <Typography
@@ -553,7 +625,7 @@ function Header() {
   );
 }
 
-function RequestRow({
+export function DataRow({
   label,
   value,
   flexDirection = "row",

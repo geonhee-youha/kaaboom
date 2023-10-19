@@ -1,6 +1,12 @@
-import { Box, ButtonBase, Stack, Typography, alpha } from "@mui/material";
+import { Box, ButtonBase, Typography, alpha } from "@mui/material";
 import Screen from "../../components/atoms/forArtist/Screen";
-import { MouseEventHandler, useEffect, useState } from "react";
+import {
+  Dispatch,
+  MouseEventHandler,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { orderStates } from "../../constants";
 import { theme } from "../../themes/theme";
 import youhaGrey from "../../constants/youhaGrey";
@@ -10,11 +16,15 @@ import { OrderProps, tempOrders } from "../../constants/recoils";
 import _ from "lodash";
 import { atom, useRecoilState } from "recoil";
 import RequestItem from "../../components/molecules/forArtist/RequestItem";
-import { useRouter } from "next/router";
 
 const tempLoadedState = atom({
-  key: "tempLoaded",
+  key: "tempLoaded/requests",
   default: false,
+});
+
+export const requestsState = atom<OrderProps[]>({
+  key: "requestsState",
+  default: [],
 });
 
 type FilterItemProps = {
@@ -69,10 +79,9 @@ function FilterItem({
 }
 
 export default function Index() {
-  const router = useRouter()
   const [tempLoaded, setTempLoaded] = useRecoilState(tempLoadedState);
   const [filter, setFilter] = useState<FilterItemProps | undefined>(undefined);
-  const [data, setData] = useState<OrderProps[]>([]);
+  const [data, setData] = useRecoilState(requestsState);
   const [loading, setLoading] = useState<boolean>(false);
   useEffect(() => {
     setLoading(true);
@@ -87,6 +96,22 @@ export default function Index() {
       setLoading(false);
     }
   }, []);
+  return (
+    <Screen loading={loading}>
+      {data && <Page filter={filter} setFilter={setFilter} data={data} />}
+    </Screen>
+  );
+}
+
+function Page({
+  filter,
+  setFilter,
+  data,
+}: {
+  filter: FilterItemProps | undefined;
+  setFilter: Dispatch<SetStateAction<FilterItemProps | undefined>>;
+  data: OrderProps[];
+}) {
   const focused = filter !== undefined;
   const shownLength = _.filter(tempOrders, (el) =>
     focused ? el.state === filter?.value : el.state === "requested"
@@ -95,7 +120,7 @@ export default function Index() {
     setFilter(undefined);
   };
   return (
-    <Screen loading={loading}>
+    <>
       <Box
         sx={{
           width: "100%",
@@ -197,6 +222,6 @@ export default function Index() {
           })}
         </Box>
       </Box>
-    </Screen>
+    </>
   );
 }

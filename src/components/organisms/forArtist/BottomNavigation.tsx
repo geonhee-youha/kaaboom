@@ -7,7 +7,7 @@ import youhaGrey from "../../../constants/youhaGrey";
 import { useEffect, useState } from "react";
 import { theme } from "../../../themes/theme";
 import Visual from "../../atoms/Visual";
-import { tempArtist } from "../../../data/temp";
+import { tempArtistUser } from "../../../data/temp";
 import { isIOS } from "react-device-detect";
 
 export type NavItemProps = {
@@ -27,15 +27,15 @@ export const navItems: NavItemProps[] = [
     icon: "box-heart",
     label: "Messages",
   },
-  {
-    url: "/followers",
-    icon: "users",
-    label: "Followers",
-  },
+  // {
+  //   url: "/followers",
+  //   icon: "users",
+  //   label: "Followers",
+  // },
   {
     url: "/profile",
     icon: "user",
-    label: "Profle",
+    label: "Profile",
   },
 ];
 
@@ -86,7 +86,7 @@ function NavItem({ item }: { item: NavItemProps }) {
             },
           }}
         >
-          <Visual src={tempArtist.thumbnail} />
+          <Visual src={tempArtistUser.thumbnail} />
         </Box>
       )}
       <Typography

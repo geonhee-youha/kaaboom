@@ -14,7 +14,7 @@ import { OrderItem } from "../../components/molecules/OrderItem";
 
 export default function Index() {
   const [orders, setOrders] = useRecoilState(ordersState);
-  const data = _.sortBy(tempOrders, "date");
+  const data = _.sortBy(orders, "date");
   return (
     <Page>
       <Box

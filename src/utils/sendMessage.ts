@@ -1,17 +1,17 @@
 import { isAndroid, isIOS } from 'react-device-detect';
 import { AxiosResponse } from 'axios';
-import useAxios, { API_URL } from '../hooks';
-import { AndroidProps, MessageProps } from '../types/andoid';
+import { AndroidProps, MessageProps } from '../types/android';
+
 //#region iOS/Android Native Common Functions
 
 //#endregion
 //#region Android Native Functions
-export const deviceTokenUpdateToServer = async (deviceToken: any, platform: 'ios' | 'android') => {
-  //string | {token:string}
-  const parsedToken = isIOS ? deviceToken.slice(deviceToken.indexOf('Optional(') + 10, deviceToken.length - 2) : deviceToken.detail.token;
-  useAxios(`${API_URL}/user`, { method: 'POST', data: { _method: 'PATCH', firebase_token: parsedToken, device_type: platform } });
-  setDeviceToken(parsedToken);
-};
+// export const deviceTokenUpdateToServer = async (deviceToken: any, platform: 'ios' | 'android') => {
+//   //string | {token:string}
+//   const parsedToken = isIOS ? deviceToken.slice(deviceToken.indexOf('Optional(') + 10, deviceToken.length - 2) : deviceToken.detail.token;
+//   useAxios(`${API_URL}/user`, { method: 'POST', data: { _method: 'PATCH', firebase_token: parsedToken, device_type: platform } });
+//   setDeviceToken(parsedToken);
+// };
 
 export const AndroidSendMessage = (m: string) => {
   if (typeof window !== 'undefined') {

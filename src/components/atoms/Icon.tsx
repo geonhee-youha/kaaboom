@@ -23,7 +23,7 @@ export type IconProps = {
 
 export default function Icon({
   name = "circle",
-  prefix = "fal",
+  prefix = "fas",
   badgeCount,
   size = 24,
   padding = 2,

@@ -95,7 +95,7 @@ export const tempOrders: OrderProps[] = [
   {
     id: `3`,
     artist: {
-      id: "6",
+      id: "4",
     },
     date: new Date("2023-10-11"),
     state: "canceled",
@@ -118,7 +118,7 @@ export const tempOrders: OrderProps[] = [
   {
     id: `4`,
     artist: {
-      id: "6",
+      id: "3",
     },
     date: new Date("2023-10-09"),
     state: "completed",
@@ -141,7 +141,7 @@ export const tempOrders: OrderProps[] = [
   {
     id: `5`,
     artist: {
-      id: "6",
+      id: "4",
     },
     date: new Date("2023-10-09"),
     state: "declined",
@@ -164,7 +164,7 @@ export const tempOrders: OrderProps[] = [
   {
     id: `6`,
     artist: {
-      id: "6",
+      id: "1",
     },
     date: new Date("2023-10-01"),
     state: "expired",
@@ -208,7 +208,7 @@ export const tempOrders: OrderProps[] = [
   {
     id: `8`,
     artist: {
-      id: "2",
+      id: "3",
     },
     date: new Date("2023-10-10"),
     state: "requested",
@@ -225,6 +225,121 @@ export const tempOrders: OrderProps[] = [
     hideVideo: false,
     user: {
       id: "2",
+    },
+  },
+  {
+    id: `10`,
+    artist: {
+      id: "3",
+    },
+    date: new Date("2023-10-09"),
+    state: "completed",
+    price:
+      videoTypes[_.findIndex(videoTypes, (el) => el.value === "long")].price,
+    videoType: "long",
+    whomType: "someone else",
+    toFirstName: "lee",
+    toType: "he",
+    fromFirstName: "kim",
+    fromType: "she",
+    instructions:
+      "t is a long established fact that a reader will be distracted.",
+    hideVideo: true,
+    completedDate: new Date("2023-10-10"),
+    user: {
+      id: "1",
+    },
+  },
+  {
+    id: `11`,
+    artist: {
+      id: "4",
+    },
+    date: new Date("2023-10-09"),
+    state: "completed",
+    price:
+      videoTypes[_.findIndex(videoTypes, (el) => el.value === "long")].price,
+    videoType: "long",
+    whomType: "someone else",
+    toFirstName: "lee",
+    toType: "he",
+    fromFirstName: "kim",
+    fromType: "she",
+    instructions:
+      "t is a long established fact that a reader will be distracted.",
+    hideVideo: true,
+    completedDate: new Date("2023-10-10"),
+    user: {
+      id: "2",
+    },
+  },
+  {
+    id: `12`,
+    artist: {
+      id: "3",
+    },
+    date: new Date("2023-10-09"),
+    state: "completed",
+    price:
+      videoTypes[_.findIndex(videoTypes, (el) => el.value === "long")].price,
+    videoType: "long",
+    whomType: "someone else",
+    toFirstName: "lee",
+    toType: "he",
+    fromFirstName: "kim",
+    fromType: "she",
+    instructions:
+      "t is a long established fact that a reader will be distracted.",
+    hideVideo: true,
+    completedDate: new Date("2023-10-10"),
+    user: {
+      id: "1",
+    },
+  },
+  {
+    id: `13`,
+    artist: {
+      id: "1",
+    },
+    date: new Date("2023-10-09"),
+    state: "completed",
+    price:
+      videoTypes[_.findIndex(videoTypes, (el) => el.value === "long")].price,
+    videoType: "long",
+    whomType: "someone else",
+    toFirstName: "lee",
+    toType: "he",
+    fromFirstName: "kim",
+    fromType: "she",
+    instructions:
+      "t is a long established fact that a reader will be distracted.",
+    hideVideo: true,
+    completedDate: new Date("2023-10-10"),
+    user: {
+      id: "3",
+    },
+  },
+  {
+    id: `14`,
+    artist: {
+      id: "2",
+    },
+    date: new Date("2023-10-09"),
+    state: "completed",
+    price:
+      videoTypes[_.findIndex(videoTypes, (el) => el.value === "long")].price,
+    videoType: "long",
+    whomType: "someone else",
+    toFirstName: "lee",
+    toType: "he",
+    fromFirstName: "kim",
+    fromType: "she",
+    instructions:
+      "t is a long established fact that a reader will be distracted.",
+    hideVideo: true,
+    completedDate: new Date("2023-10-10"),
+    user: {
+      id: "4",
     },
   },
 ];
@@ -244,8 +359,7 @@ export const favoriteIdsState = atom<string[]>({
   default: [],
 });
 
-
-type TempUserProps = {
+export type TempUserProps = {
   id: string;
   name: string;
   nickname: string;
@@ -254,6 +368,7 @@ type TempUserProps = {
   nation: string;
   gender: string;
   birthDate: Date;
+  email: string;
 };
 
 export const tempUsers: TempUserProps[] = [
@@ -262,30 +377,33 @@ export const tempUsers: TempUserProps[] = [
     name: "Guny Lee",
     nickname: "",
     thumbnail: "",
-    bio: "",
+    bio: "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form",
     nation: "US",
-    gender: "W",
+    gender: "F",
     birthDate: new Date("1988-12-08"),
+    email: "lghjazz@gmail.com",
   },
   {
     id: "2",
     name: "Jinho Kim",
     nickname: "",
     thumbnail: "",
-    bio: "",
+    bio: "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form",
     nation: "BR",
     gender: "M",
     birthDate: new Date("1993-03-17"),
+    email: "lghjazz@gmail.com",
   },
   {
     id: "3",
     name: "Haerin Kang",
     nickname: "",
     thumbnail: "",
-    bio: "",
-    nation: "KO",
+    bio: "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form",
+    nation: "KR",
     gender: "F",
     birthDate: new Date("2004-06-22"),
+    email: "lghjazz@gmail.com",
   },
   {
     id: "4",
@@ -294,7 +412,53 @@ export const tempUsers: TempUserProps[] = [
     thumbnail: "",
     bio: "",
     nation: "IN",
-    gender: "F",
+    gender: "O",
     birthDate: new Date("1999-11-02"),
+    email: "lghjazz@gmail.com",
   },
 ];
+
+export type DialogProps = {
+  open: boolean;
+  title: string;
+  description: string;
+  cancel: {
+    show: boolean;
+    label: React.ReactNode;
+    onClick: () => void;
+  };
+  confirm: {
+    label: React.ReactNode;
+    onClick: () => void;
+    onConfirm: (e?: any) => void;
+    color?: string;
+  };
+};
+
+export const dialogDefaultProps: DialogProps = {
+  open: false,
+  title: "",
+  description: "",
+  cancel: {
+    show: true,
+    label: "cancel",
+    onClick: () => {},
+  },
+  confirm: {
+    label: "confirm",
+    onClick: () => {},
+    onConfirm: () => {},
+  },
+};
+
+export const dialogState = atom<DialogProps>({
+  key: "dialogState",
+  default: dialogDefaultProps,
+});
+
+export const sideNavigationState = atom({
+  key: "sideNavigationState",
+  default: {
+    open: false,
+  },
+});

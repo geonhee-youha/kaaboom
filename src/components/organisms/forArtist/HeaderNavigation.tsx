@@ -7,12 +7,16 @@ import { navItems } from "./BottomNavigation";
 import _ from "lodash";
 import IconButton from "../../atoms/IconButton";
 import { isIOS } from "react-device-detect";
+import { sideNavigationState } from "../../../constants/recoils";
+import { useRecoilState } from "recoil";
 
 export default function HeaderNavigation() {
+  const [sideNavigation, setSideNavigation] =
+    useRecoilState(sideNavigationState);
   const router = useRouter();
   const pathnames = router.pathname.split("/");
   const pathname = pathnames[2];
-  const forArtist = pathnames[1] === "forArtist" && pathnames[2] !== 'detail';
+  const forArtist = pathnames[1] === "forArtist" && pathnames[2] !== "detail";
   const currentNavigation =
     navItems[
       _.findIndex(
@@ -22,6 +26,11 @@ export default function HeaderNavigation() {
           (pathname === undefined && el.url === "/")
       )
     ];
+  const onClickBars = () => {
+    setSideNavigation({
+      open: true,
+    });
+  };
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
@@ -50,7 +59,7 @@ export default function HeaderNavigation() {
           alignItems: "center",
         }}
       >
-        <IconButton name="bars" prefix="fas" size={20} />
+        <IconButton name="bars" prefix="fas" size={20} onClick={onClickBars} />
         <Box
           sx={{
             p: theme.spacing(0, 0.5),
@@ -63,7 +72,7 @@ export default function HeaderNavigation() {
               fontWeight: "700",
             }}
           >
-            {currentNavigation.label}
+            {currentNavigation?.label ?? ''}
           </Typography>
         </Box>
       </Box>

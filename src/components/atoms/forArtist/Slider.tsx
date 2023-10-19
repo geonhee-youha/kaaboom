@@ -8,6 +8,9 @@ type Props = {
   header?: React.ReactNode;
   children?: React.ReactNode;
   direction?: "left" | "right" | "up" | "down" | undefined;
+  zIndex: number;
+  reverse?: boolean;
+  pb?: number;
 };
 export default function Slider({
   open,
@@ -15,6 +18,9 @@ export default function Slider({
   header,
   children,
   direction,
+  zIndex,
+  reverse,
+  pb,
 }: Props) {
   return (
     <Slide
@@ -32,13 +38,14 @@ export default function Slider({
           left: 0,
           right: 0,
           bottom: 0,
-          zIndex: 99999,
-          overflow: 'scroll'
+          zIndex: 99999 + zIndex,
+          overflow: "scroll",
         }}
       >
         {header}
         <Box
           sx={{
+            position: "relative",
             width: `100%`,
             minWidth: "280px",
             maxWidth: `480px`,
@@ -47,7 +54,7 @@ export default function Slider({
             p: theme.spacing(
               `calc(var(--sait) + 56px)`,
               0,
-              `calc(var(--saib) + 96px)`,
+              `calc(var(--saib) + ${pb ?? 0 * 8}px)`,
               0
             ),
             height: loading ? "100%" : "auto",

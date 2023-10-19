@@ -38,7 +38,7 @@ export default function User({
         backgroundColor:
           item.gender === "M"
             ? deepPurple['A400']
-            : item.gender === "W"
+            : item.gender === "F"
             ? red['A400']
             : brown['A400'],
         border: `1px solid ${youhaGrey[600]}`,

@@ -65,12 +65,13 @@ export default function MessageChatItem({
             </Box>
           </ButtonBase>
         </Link>
-        <Box>
+        <Box sx={{ width: "100%" }}>
           <Box
             sx={{
               flex: 1,
               display: "flex",
               alignItems: "flex-end",
+              maxWidth: 420,
             }}
           >
             <MessageItem
@@ -81,7 +82,7 @@ export default function MessageChatItem({
               type="chat"
             />
           </Box>
-          <Box
+          {/* <Box
             sx={{
               maxWidth: 420,
               p: theme.spacing(2),
@@ -101,7 +102,7 @@ export default function MessageChatItem({
             >
               {item.text}
             </Typography>
-          </Box>
+          </Box> */}
         </Box>
       </Box>
       <Box

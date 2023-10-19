@@ -31,55 +31,6 @@ export type GroupProps = {
 
 export const groups: GroupProps[] = [
   {
-    id: "KOL",
-    name: "KISS OF LIFE",
-    thumbnail: "/temp/groups/kol.png",
-    debutDate: new Date("2023-07-05"),
-    debutAlbum: "KISS OF LIFE - 1st Mini Album",
-    genres: ["Dance", "R&B", "Soul"],
-    leader: {
-      name: "JULIE",
-    },
-    agency: {
-      name: "S2 Entertainment",
-    },
-    fandom: {
-      name: "KISSY",
-      thumbnail: "/temp/fandoms/kissy.webp",
-    },
-    links: [
-      {
-        type: "youtube",
-        link: "https://youtube.com/@KISSOFLIFE_official",
-      },
-      {
-        type: "instagram",
-        link: "https://instagram.com/kissoflife_s2",
-      },
-      {
-        type: "x-twitter",
-        link: "https://twitter.com/KISSOFLIFE_S2",
-      },
-      {
-        type: "facebook",
-        link: "https://facebook.com/KISSOFLIFEofficial",
-      },
-      {
-        type: "tiktok",
-        link: "https://www.tiktok.com/@kissoflife_official",
-      },
-      {
-        type: "cafe-daum",
-        link: "https://cafe.daum.net/KISSOFLIFE",
-      },
-    ],
-    colors: {
-      inners: ["#000000"],
-      borders: ["##f3002e"],
-      backgrounds: ["#000000"],
-    },
-  },
-  {
     id: "BSW",
     name: "BLACKSWAN",
     thumbnail: "/temp/groups/bsw.png",
@@ -134,6 +85,55 @@ export const groups: GroupProps[] = [
     colors: {
       inners: ["#AB0033", "#1D1D1B"],
       backgrounds: ["#1D1D1B"],
+    },
+  },
+  {
+    id: "KOL",
+    name: "KISS OF LIFE",
+    thumbnail: "/temp/groups/kol.png",
+    debutDate: new Date("2023-07-05"),
+    debutAlbum: "KISS OF LIFE - 1st Mini Album",
+    genres: ["Dance", "R&B", "Soul"],
+    leader: {
+      name: "JULIE",
+    },
+    agency: {
+      name: "S2 Entertainment",
+    },
+    fandom: {
+      name: "KISSY",
+      thumbnail: "/temp/fandoms/kissy.webp",
+    },
+    links: [
+      {
+        type: "youtube",
+        link: "https://youtube.com/@KISSOFLIFE_official",
+      },
+      {
+        type: "instagram",
+        link: "https://instagram.com/kissoflife_s2",
+      },
+      {
+        type: "x-twitter",
+        link: "https://twitter.com/KISSOFLIFE_S2",
+      },
+      {
+        type: "facebook",
+        link: "https://facebook.com/KISSOFLIFEofficial",
+      },
+      {
+        type: "tiktok",
+        link: "https://www.tiktok.com/@kissoflife_official",
+      },
+      {
+        type: "cafe-daum",
+        link: "https://cafe.daum.net/KISSOFLIFE",
+      },
+    ],
+    colors: {
+      inners: ["#000000"],
+      borders: ["##f3002e"],
+      backgrounds: ["#000000"],
     },
   },
 ];

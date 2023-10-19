@@ -45,7 +45,12 @@ import BottomNavigation from "../components/organisms/forArtist/BottomNavigation
 import HeaderNavigation from "../components/organisms/forArtist/HeaderNavigation";
 import { usePreserveScroll } from "../hooks/usePreserveScroll";
 import { useEffect } from "react";
-import RequestSlide from "../components/organisms/forArtist/RequestSlide";
+import RequestSlide from "../components/templates/forArtist/RequestSlide";
+import UserSlide from "../components/templates/forArtist/UserSlide";
+import Dialog from "../components/templates/forArtist/Dialog";
+import SideNavigation from "../components/organisms/forArtist/SideNavigation";
+import MessageSlide from "../components/templates/forArtist/MessageSlide";
+import SendVideoSlide from "../components/templates/forArtist/SendVideoSlide";
 
 ChartJS.register(
   LineController,
@@ -73,7 +78,16 @@ library.add(fal, far, fas, fad);
 declare global {
   interface Window {
     webkit?: any;
-    ReactNativeWebView?: any;
+    Android: any;
+    loginKakaoIOS: any;
+    loginAppleIOS: any;
+    deviceTokenUpdateToServer: any;
+    getNotiData: any;
+    isWifi: any;
+    Hls: any;
+    ChannelIO: any;
+    onNotiPush: any;
+    success?: boolean;
   }
 }
 function MyApp(props: MyAppProps) {
@@ -230,6 +244,11 @@ function MyApp(props: MyAppProps) {
           <HeaderNavigation />
           <Component {...pageProps} key={router.route} />
           <RequestSlide />
+          <SendVideoSlide />
+          <MessageSlide />
+          <UserSlide />
+          <SideNavigation />
+          <Dialog />
           <GlobalFooter />
           <RateDialog />
           <SearchDialog />

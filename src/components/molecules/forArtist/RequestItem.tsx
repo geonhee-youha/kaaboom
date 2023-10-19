@@ -2,27 +2,19 @@ import { Box, ButtonBase, Stack, Typography, alpha } from "@mui/material";
 import { theme } from "../../../themes/theme";
 import youhaGrey from "../../../constants/youhaGrey";
 import youhaBlue from "../../../constants/youhaBlue";
-import Icon from "../../../components/atoms/Icon";
-import { OrderProps, tempUsers } from "../../../constants/recoils";
+import { OrderProps, dialogState, tempUsers } from "../../../constants/recoils";
 import _ from "lodash";
 import moment from "moment";
 import { videoTypes } from "../../../data";
 import { comma } from "../../../utils";
 import Typo from "../../../components/atoms/Typo";
 import Button from "../../../components/atoms/Button";
-import {
-  cyan,
-  deepOrange,
-  deepPurple,
-  indigo,
-  pink,
-  red,
-} from "@mui/material/colors";
-import { tempUser } from "../../../data/temp";
-import Visual from "../../../components/atoms/Visual";
+import { cyan, deepOrange } from "@mui/material/colors";
 import { useRouter } from "next/router";
 import User from "../../atoms/forArtist/User";
 import { MouseEvent } from "react";
+import { useRecoilState } from "recoil";
+import { requestsState } from "../../../pages/forArtist/requests";
 
 export default function RequestItem({
   shown,
@@ -31,9 +23,10 @@ export default function RequestItem({
   shown?: boolean;
   item: OrderProps;
 }) {
+  const [dialog, setDialog] = useRecoilState(dialogState);
+  const [requests, setRequests] = useRecoilState(requestsState);
   const router = useRouter();
   const id = item.id;
-  const { orderId } = router.query;
   const state = item.state;
   const date = moment(item.date).format("hh:mm A MM/DD/YYYY");
   const videoType =
@@ -54,9 +47,9 @@ export default function RequestItem({
   const completedDate = moment(item.completedDate).format("hh:mm A MM/DD/YYYY");
   const onClick = () => {
     router.push(
-      `${router.asPath}${
-        router.asPath.includes("?") ? "&orderId=" : "?orderId="
-      }${id}`,
+      {
+        query: { ...router.query, orderId: id },
+      },
       undefined,
       { shallow: true }
     );
@@ -65,11 +58,42 @@ export default function RequestItem({
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
   ) => {
     e.stopPropagation();
+    router.push(
+      {
+        query: { ...router.query, sendVideoId: item.id },
+      },
+      undefined,
+      { shallow: true }
+    );
   };
   const onClickDecline = (
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
   ) => {
     e.stopPropagation();
+    setDialog((prev) => {
+      return {
+        ...prev,
+        open: true,
+        title: "Are you sure you want to decline?",
+        description:
+          "If you decline now, there is no going back, your fan will be notified of your rejection, and a refund will be issued.",
+        cancel: {
+          ...prev.cancel,
+        },
+        confirm: {
+          ...prev.confirm,
+          color: deepOrange[500],
+          onClick: () => {
+            setRequests((prev) => {
+              let next = _.cloneDeep(prev);
+              let target = next[_.findIndex(next, (el) => el.id === id)];
+              target.state = "declined";
+              return next;
+            });
+          },
+        },
+      };
+    });
   };
   return (
     <Box

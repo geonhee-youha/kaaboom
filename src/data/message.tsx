@@ -12,7 +12,7 @@ export type MessageProps = {
 
 export const messages: MessageProps[] = [
   {
-    id: "1",
+    id: "4",
     date: new Date("2023-10-11 16:42"),
     src: "/temp/messages/1.mp4",
     thumbnail: "/temp/messages/test.png",
@@ -23,7 +23,7 @@ export const messages: MessageProps[] = [
     rated: true,
   },
   {
-    id: "2",
+    id: "11",
     date: new Date("2023-10-12 16:42"),
     src: "/temp/messages/2.mp4",
     thumbnail: "/temp/messages/test.png",
@@ -34,7 +34,7 @@ export const messages: MessageProps[] = [
     rated: true,
   },
   {
-    id: "3",
+    id: "12",
     date: new Date("2023-10-13 16:42"),
     src: "/temp/messages/3.mp4",
     thumbnail: "/temp/messages/test.png",
@@ -45,7 +45,7 @@ export const messages: MessageProps[] = [
     rated: false,
   },
   {
-    id: "4",
+    id: "13",
     date: new Date("2023-10-11 16:42"),
     src: "/temp/messages/4.mp4",
     thumbnail: "/temp/messages/test.png",
@@ -56,7 +56,7 @@ export const messages: MessageProps[] = [
     rated: true,
   },
   {
-    id: "5",
+    id: "14",
     date: new Date("2023-10-11 16:42"),
     src: "/temp/messages/5.mp4",
     thumbnail: "/temp/messages/test.png",
@@ -67,7 +67,7 @@ export const messages: MessageProps[] = [
     rated: true,
   },
   {
-    id: "6",
+    id: "15",
     date: new Date("2023-10-11 16:42"),
     src: "/temp/messages/6.mp4",
     thumbnail: "/temp/messages/test.png",
