@@ -512,7 +512,7 @@ export const tempSendVideoIdState = atom<string[]>({
   default: [],
 });
 
-export const streamState = atom<MediaStream | null>({
+export const streamState = atom<any | null>({
   key: `streamState`,
   default: null,
 });

@@ -139,13 +139,21 @@ function Inner({
   });
   const mediaRecorder = useRef<any>(null);
   const liveVideoFeed = useRef<any>(null);
+  const [permission, setPermission] = useState<boolean>(false);
   const [recording, setRecording] = useState<string>("inactive");
-  //   const [stream, setStream] = useRecoilState(streamState);
-  //   const [recordedVideo, setRecordedVideo] = useRecoilState(recordedVideoState);
-  //   const [videoChunks, setVideoChunks] = useRecoilState(videoChunksState);
-  const [stream, setStream] = useState<any>(null);
-  const [recordedVideo, setRecordedVideo] = useState<any>(null);
-  const [videoChunks, setVideoChunks] = useState<any>([]);
+  const [stream, setStream] = useRecoilState(streamState);
+  const [recordedVideo, setRecordedVideo] = useRecoilState(recordedVideoState);
+  const [videoChunks, setVideoChunks] = useRecoilState(videoChunksState);
+  //   const [stream, setStream] = useState<any>(null);
+  //   const [recordedVideo, setRecordedVideo] = useState<any>(null);
+  //   const [videoChunks, setVideoChunks] = useState<any>([]);
+  const onClickRecord = () => {
+    if (recording === "inactive") {
+      startRecording();
+    } else if (recording === "recording") {
+      stopRecording();
+    }
+  };
   const getCameraPermission = async () => {
     setRecordedVideo(null);
     //get video and audio permissions and then stream the result media stream to the videoSrc variable
@@ -156,6 +164,7 @@ function Inner({
           video: true,
         };
         const audioConstraints = { audio: true };
+
         // create audio and video streams separately
         const audioStream = await navigator.mediaDevices.getUserMedia(
           audioConstraints
@@ -163,14 +172,18 @@ function Inner({
         const videoStream = await navigator.mediaDevices.getUserMedia(
           videoConstraints
         );
-        // setPermission(true);
+
+        setPermission(true);
+
         //combine both audio and video streams
+
         const combinedStream = new MediaStream([
           ...videoStream.getVideoTracks(),
           ...audioStream.getAudioTracks(),
         ]);
 
         setStream(combinedStream);
+
         //set videostream to live feed player
         liveVideoFeed.current.srcObject = videoStream;
       } catch (err: any) {
@@ -180,31 +193,24 @@ function Inner({
       alert("The MediaRecorder API is not supported in your browser.");
     }
   };
-  const onClickRecord = () => {
-    if (recording === "inactive") {
-      startRecording();
-    } else if (recording === "active") {
-      stopRecording();
-    }
-  };
+
   const startRecording = async () => {
-    setRecording("active");
-    handleRestart();
-    const media = stream ? new MediaRecorder(stream, { mimeType }) : null;
+    setRecording("recording");
+    const media = new MediaRecorder(stream, { mimeType });
     mediaRecorder.current = media;
     mediaRecorder.current.start();
     let localVideoChunks: any[] = [];
     mediaRecorder.current.ondataavailable = (event: any) => {
       if (typeof event.data === "undefined") return;
       if (event.data.size === 0) return;
-      let newChunks = _.cloneDeep(localVideoChunks);
-      newChunks = [...newChunks, event.data];
+      localVideoChunks.push(event.data);
     };
     setVideoChunks(localVideoChunks);
   };
+
   const stopRecording = () => {
+    setPermission(false);
     setRecording("inactive");
-    handleStop();
     mediaRecorder.current.stop();
     mediaRecorder.current.onstop = () => {
       const videoBlob = new Blob(videoChunks, { type: mimeType });
@@ -213,25 +219,22 @@ function Inner({
       setVideoChunks([]);
     };
   };
+  //   useEffect(() => {
+  //     getCameraPermission();
+  //   }, []);
+  //   useEffect(() => {
+  //     if (open) {
+  //       getCameraPermission();
+  //     } else {
+  //       if (mediaRecorder) mediaRecorder.current?.stop();
+  //       setRecordedVideo(null);
+  //       setRecordedVideo(null);
+  //       setVideoChunks([]);
+  //     }
+  //   }, [open]);
   useEffect(() => {
     getCameraPermission();
   }, []);
-  useEffect(() => {
-    if (open) {
-      getCameraPermission();
-    } else {
-      if (mediaRecorder) mediaRecorder.current?.stop();
-      setRecordedVideo(null);
-      setRecordedVideo(null);
-      setVideoChunks([]);
-    }
-  }, [open]);
-  const onChangeVideo = (e: any) => {
-    if (recording !== "inactive") return;
-    const videoUrl = URL.createObjectURL(e.target.file);
-    setRecordedVideo(videoUrl);
-  };
-
   return (
     <>
       <Box
@@ -251,7 +254,7 @@ function Inner({
         }}
       >
         <Header
-          label={recording === "active" ? timer(count) : "Record Video"}
+          label={recording === "recording" ? timer(count) : "Record Video"}
         />
         <video ref={liveVideoFeed} autoPlay />
         <Box
@@ -284,32 +287,7 @@ function Inner({
                 justifyContent: "center",
                 alignItems: "center",
               }}
-            >
-              <input
-                type="file"
-                accept="video/mp4, video/mkv, video/x-m4v, video/*"
-                id={`file-picker${id}`}
-                onChange={onChangeVideo}
-                style={{ display: "none" }}
-              />
-              <label htmlFor={`file-picker${id}`}>
-                <IconButton
-                  name="folder"
-                  prefix="fas"
-                  size={28}
-                  color={yellow[700]}
-                  backgroundColor={alpha("#ffffff", 0.2)}
-                  borderColor={alpha("#ffffff", 0.6)}
-                  sx={{
-                    width: 48,
-                    height: 48,
-                    borderRadius: "50%",
-                    display: recording !== "active" ? "flex" : "none",
-                  }}
-                  disableRipple={recording !== "inactive"}
-                />
-              </label>
-            </Box>
+            ></Box>
             <ButtonBase
               sx={{
                 width: 64,
@@ -327,7 +305,7 @@ function Inner({
                   width: "100%",
                   height: "100%",
                   backgroundColor:
-                    recording === "active" ? red["A400"] : "#ffffff",
+                    recording === "recording" ? red["A400"] : "#ffffff",
                   borderRadius: "50%",
                   overflow: "hidden",
                 }}
@@ -341,7 +319,7 @@ function Inner({
                 alignItems: "center",
               }}
             >
-              {recordedVideo && recording !== "active" && (
+              {recordedVideo && recording !== "recording" && (
                 <ButtonBase
                   sx={{
                     width: 48,
@@ -352,7 +330,7 @@ function Inner({
                   }}
                   onClick={onClickRecord}
                 >
-                  <video className="recorded" src={recordedVideo} autoPlay/>
+                  <video className="recorded" src={recordedVideo} autoPlay />
                 </ButtonBase>
               )}
             </Box>

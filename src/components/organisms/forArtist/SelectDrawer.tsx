@@ -64,7 +64,9 @@ export default function SelectDrawer({}: {}) {
           sx={{
             width: "100%",
             p: theme.spacing(1.5, 2),
+            alignItems: "center",
           }}
+          disableRipple
           onClick={onClickRecord}
         >
           <Icon name="camera" prefix="far" size={20} />
@@ -87,8 +89,10 @@ export default function SelectDrawer({}: {}) {
           style={{ display: "none" }}
         />
         <label htmlFor={`file-picker`}>
-          <ButtonBase
+          <Box
             sx={{
+              display: "flex",
+              alignItems: "center",
               width: "100%",
               p: theme.spacing(1.5, 2),
             }}
@@ -104,7 +108,7 @@ export default function SelectDrawer({}: {}) {
             >
               Select in gallery
             </Typography>
-          </ButtonBase>
+          </Box>
         </label>
       </Box>
     </Drawer>
