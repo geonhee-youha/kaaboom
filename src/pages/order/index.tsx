@@ -221,6 +221,9 @@ function Inner() {
         fromType: fromType?.value,
         instructions: instructions.value,
         hideVideo: hideVideo,
+        user: {
+          id: "1",
+        },
       };
       setOrders([currentOrder, ...tempOrders]);
     }

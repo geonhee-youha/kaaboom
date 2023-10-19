@@ -4,6 +4,7 @@ import youhaBlue from "../../constants/youhaBlue";
 import youhaGrey from "../../constants/youhaGrey";
 import { theme } from "../../themes/theme";
 import Icon from "./Icon";
+import { MouseEventHandler } from "react";
 
 export default function Button({
   disabled,
@@ -30,7 +31,7 @@ export default function Button({
   color?: string;
   borderColor?: string;
   children?: React.ReactNode;
-  onClick?: (e: any) => void;
+  onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
   sx?: SxProps;
   mobile?: boolean;
   web?: boolean;

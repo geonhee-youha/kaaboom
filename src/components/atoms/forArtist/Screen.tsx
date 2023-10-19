@@ -1,128 +1,61 @@
 import { Box, CircularProgress } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { theme } from "../../../themes/theme";
-import { Global } from "@emotion/react";
 import { forArtistCss } from "../../../styles/styles";
-import { useViewportSize } from "../../../hooks/useViewportSize";
-import { isIOS } from "react-device-detect";
+import { Global } from "@emotion/react";
 import youhaGrey from "../../../constants/youhaGrey";
-import { useWindowDimensions } from "../../../hooks/useWindowDimensions";
-import { useEffect, useState } from "react";
 
 export default function Screen({
-  bottom,
+  header,
+  loading,
   children,
 }: {
-  bottom?: boolean;
+  header?: React.ReactNode;
+  loading?: boolean;
   children?: React.ReactNode;
 }) {
-  const { windowHeight } = useWindowDimensions();
-  const { viewportHeight, offsetTop } = useViewportSize();
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = useState<boolean>(false);
   useEffect(() => {
     setMounted(true);
-  }, [setMounted]);
-  return (
+  }, []);
+  return mounted ? (
     <>
       <Global styles={forArtistCss} />
+      {header}
       <Box
         sx={{
-          width: "100%",
-          height: "100%",
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-        }}
-      >
-        <Box
-          sx={{
-            position: "relative",
-            width: "100%",
-            height: viewportHeight !== 0 && isIOS ? viewportHeight : "100%",
-            transform:
-              viewportHeight !== 0 && isIOS
-                ? `translateY(${offsetTop}px)`
-                : "none",
-            touchAction: "none",
-            backgroundColor: youhaGrey[900],
-            overflow: "hidden",
-          }}
-          className="Viewport"
-        >
-          <Box
-            sx={{
-              position: isIOS ? "absolute" : "fixed",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              paddingTop: "calc(56px + var(--sait))",
-              paddingBottom:
-                bottom === false
-                  ? "0px"
-                  : bottom === true
-                  ? windowHeight === viewportHeight
-                    ? "calc(var(--saib) + 56px)"
-                    : " 56px"
-                  : windowHeight === viewportHeight
-                  ? "var(--saib)"
-                  : " 0px",
-              touchAction: "none",
-              backgroundColor: youhaGrey[900],
-            }}
-          >
-            <Box
-              sx={{
-                position: "relative",
-                width: "100%",
-                height: "100%",
-                maxWidth: "480px",
-                minWidth: "320px",
-                m: theme.spacing(0, "auto"),
-                overflowX: "hidden",
-                overflowY: "scroll",
-              }}
-            >
-              {mounted ? (
-                <>{children} </>
-              ) : (
-                <Box
-                  sx={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <CircularProgress />
-                </Box>
-              )}
-            </Box>
-          </Box>
-        </Box>
-      </Box>
-      {/* <Box
-        sx={{
-          width: "100%",
-          maxWidth: "480px",
-          minWidth: "320px",
+          width: `100%`,
+          minWidth: "280px",
+          maxWidth: `480px`,
           m: theme.spacing(0, "auto"),
+          minHeight: "100vh",
           p: theme.spacing(
-            `calc(var(-sait) + 56px)`,
+            `calc(var(--sait) + 56px)`,
             0,
-            `calc(var(-saib) + 56px)`,
+            `calc(var(--saib) + 96px)`,
             0
           ),
-          minHeight: "100vh",
+          height: loading ? "100%" : "auto",
+          backgroundColor: youhaGrey[900],
         }}
       >
-        {children}
-      </Box> */}
+        {loading ? (
+          <Box
+            sx={{
+              minHeight: "100vh",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        ) : (
+          <>{children}</>
+        )}
+      </Box>
     </>
+  ) : (
+    <></>
   );
 }

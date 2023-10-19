@@ -12,7 +12,7 @@ export default function HeaderNavigation() {
   const router = useRouter();
   const pathnames = router.pathname.split("/");
   const pathname = pathnames[2];
-  const forArtist = pathnames[1] === "forArtist";
+  const forArtist = pathnames[1] === "forArtist" && pathnames[2] !== 'detail';
   const currentNavigation =
     navItems[
       _.findIndex(
@@ -29,12 +29,12 @@ export default function HeaderNavigation() {
   return mounted && forArtist ? (
     <Box
       sx={{
-        position: isIOS ? 'absolute' : 'fixed',
+        position: "fixed",
         left: 0,
         right: 0,
         top: 0,
         zIndex: 999,
-        p: theme.spacing("var(-sait)", 0, 0, 0),
+        p: theme.spacing("var(--sait)", 0, 0, 0),
         backgroundColor: youhaGrey[900],
       }}
     >
@@ -50,7 +50,7 @@ export default function HeaderNavigation() {
           alignItems: "center",
         }}
       >
-        <IconButton name="bars" prefix="far" size={24} />
+        <IconButton name="bars" prefix="fas" size={20} />
         <Box
           sx={{
             p: theme.spacing(0, 0.5),

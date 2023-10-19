@@ -180,3 +180,31 @@ export const formatTimer = (sec: number) => {
   }
   return stringMinuites + ":" + stringSeconds; // Return is HH : MM : SS
 };
+
+export const scrollToEl = (from: string, to: string | number, after?: () => void, more?: number, behavior?: boolean) => {
+  var fromEl: any = document.querySelector(`.${from}`);
+  if (fromEl !== null) {
+    if (typeof to === "string") {
+      if (to === "end") {
+        fromEl.scrollTo({
+          top: fromEl.scrollHeight,
+          left: 0,
+          behavior: behavior ? "auto" : "smooth",
+        });
+        if (after !== undefined) after();
+      } else {
+        var toEl: any = document.querySelector(`${to}`);
+        if (toEl !== null) {
+          fromEl.scrollBy({
+            top: toEl.getBoundingClientRect().top + (typeof more === "number" ? more : 0),
+            behavior: behavior ? "auto" : "smooth",
+          });
+          if (after !== undefined) after();
+        }
+      }
+    } else if (typeof to === "number") {
+      fromEl.scrollTo({ top: to, left: 0, behavior: behavior ? "auto" : "smooth" });
+      if (after !== undefined) after();
+    }
+  }
+};

@@ -27,7 +27,7 @@ export default function Index() {
   const selectedData = data[_.findIndex(data, (el) => el.id === `${id}`)];
   const onClickReset = () => {
     router.push(`/user/messages`, undefined, {
-      shallow: false,
+      shallow: true,
     });
   };
   useEffect(() => {
@@ -36,7 +36,7 @@ export default function Index() {
       if (bodyEl && bodyEl?.clientWidth > 960) {
         if (data.length > 0)
           router.push(`/user/messages?id=${data[0].id}`, undefined, {
-            shallow: false,
+            shallow: true,
           });
       }
     }, 20);
@@ -127,7 +127,7 @@ export default function Index() {
                 const focused = id === item.id;
                 const onClick = () => {
                   router.push(`/user/messages?id=${item.id}`, undefined, {
-                    shallow: false,
+                    shallow: true,
                   });
                 };
                 return (

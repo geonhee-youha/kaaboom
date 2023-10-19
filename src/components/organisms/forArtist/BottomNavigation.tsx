@@ -18,7 +18,7 @@ export type NavItemProps = {
 
 export const navItems: NavItemProps[] = [
   {
-    url: "/",
+    url: "/requests",
     icon: "cabinet-filing",
     label: "Requests",
   },
@@ -107,7 +107,7 @@ function NavItem({ item }: { item: NavItemProps }) {
 export default function BottomNavigation() {
   const router = useRouter();
   const pathnames = router.pathname.split("/");
-  const forArtist = pathnames[1] === "forArtist";
+  const forArtist = pathnames[1] === "forArtist" && pathnames[2] !== 'detail';
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
     setMounted(true);
@@ -115,14 +115,13 @@ export default function BottomNavigation() {
   return mounted && forArtist ? (
     <Box
       sx={{
-        position: isIOS ? 'absolute' : 'fixed',
+        position: "fixed",
         left: 0,
         right: 0,
         bottom: 0,
         backgroundColor: youhaGrey[900],
-        borderTop: `1px solid ${youhaGrey[700]}`,
         zIndex: 999,
-        p: theme.spacing("var(-sait)", 0, 0, 0),
+        p: theme.spacing("var(--sait)", 0, 0, 0),
       }}
     >
       <Box
@@ -133,6 +132,7 @@ export default function BottomNavigation() {
           m: theme.spacing(0, "auto"),
           height: 64,
           display: "flex",
+          borderTop: `1px solid ${youhaGrey[700]}`,
         }}
       >
         {navItems.map((item, index) => (

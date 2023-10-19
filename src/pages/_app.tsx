@@ -43,6 +43,9 @@ import SortDialog from "../components/templates/SortDialog";
 import RateDialog from "../components/templates/RateDialog";
 import BottomNavigation from "../components/organisms/forArtist/BottomNavigation";
 import HeaderNavigation from "../components/organisms/forArtist/HeaderNavigation";
+import { usePreserveScroll } from "../hooks/usePreserveScroll";
+import { useEffect } from "react";
+import RequestSlide from "../components/organisms/forArtist/RequestSlide";
 
 ChartJS.register(
   LineController,
@@ -226,6 +229,7 @@ function MyApp(props: MyAppProps) {
           <GlobalHeader />
           <HeaderNavigation />
           <Component {...pageProps} key={router.route} />
+          <RequestSlide />
           <GlobalFooter />
           <RateDialog />
           <SearchDialog />
