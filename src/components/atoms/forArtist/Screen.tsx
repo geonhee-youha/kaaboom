@@ -7,6 +7,7 @@ import youhaGrey from "../../../constants/youhaGrey";
 import { useRecoilState } from "recoil";
 import {
   dialogState,
+  recordedVideoState,
   selectDrawerState,
   sideNavigationState,
 } from "../../../constants/recoils";

@@ -1,10 +1,13 @@
 import { Box, ButtonBase, Drawer, Stack, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { theme } from "../../../themes/theme";
 import TextButton from "../../atoms/TextButton";
 import youhaGrey from "../../../constants/youhaGrey";
 import { useRecoilState } from "recoil";
-import { selectDrawerState } from "../../../constants/recoils";
+import {
+  recordedVideoState,
+  selectDrawerState,
+} from "../../../constants/recoils";
 import Link from "next/link";
 import { artistsMenus, globalMenus } from "../../../constants";
 import Icon from "../../atoms/Icon";
@@ -13,6 +16,7 @@ import { useRouter } from "next/router";
 export default function SelectDrawer({}: {}) {
   const router = useRouter();
   const [selectDrawer, setSelectDrawer] = useRecoilState(selectDrawerState);
+  const [recordedVideo, setRecordedVideo] = useRecoilState(recordedVideoState);
   const { open, id } = selectDrawer;
   const onClose = () => {
     setSelectDrawer({ open: false, id: "" });
@@ -27,9 +31,29 @@ export default function SelectDrawer({}: {}) {
       { shallow: true }
     );
   };
-  const onChangeVideo = () => {
-    onClose();
+  const onChangeVideo = (e: any) => {
+    const file = e.target.files[0];
+    const videoUrl = URL.createObjectURL(file);
+    console.log(e, videoUrl)
+    // setRecordedVideo(videoUrl);
   };
+  useEffect(() => {
+    if (
+      open &&
+      recordedVideo !== null &&
+      recordedVideo !== undefined &&
+      recordedVideo !== ""
+    ) {
+      router.push(
+        {
+          query: { ...router.query, sendVideoId: id },
+        },
+        undefined,
+        { shallow: true }
+      );
+      onClose();
+    }
+  }, [recordedVideo]);
   return (
     <Drawer
       anchor="bottom"
