@@ -280,7 +280,7 @@ export default function MessageItem({
           >
             <Video
               videoRef={videoRef}
-              playing={playing}
+              playing={!seeking && playing}
               muted={open || muted}
               url={`${item.src}`}
               onDuration={onDuration}
@@ -403,7 +403,7 @@ export default function MessageItem({
                 }}
               >
                 <IconButton
-                  name={playing ? "pause" : "play"}
+                  name={!seeking && playing ? "pause" : "play"}
                   prefix="fas"
                   size={20}
                   onClick={onClickPlay}

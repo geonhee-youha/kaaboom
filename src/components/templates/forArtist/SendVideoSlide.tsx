@@ -6,6 +6,7 @@ import IconButton from "../../atoms/IconButton";
 import {
   OrderProps,
   dialogState,
+  recordedVideoState,
   requestsState,
   tempOrders,
   tempSendVideoIdState,
@@ -90,7 +91,7 @@ export default function SendVideoSlide() {
       direction="up"
       loading={loading}
       zIndex={getZIndex("sendVideoId")}
-      pb={20}
+      fullscreen
     >
       {item ? <Inner open={open} /> : <></>}
     </Slider>
@@ -98,13 +99,16 @@ export default function SendVideoSlide() {
 }
 
 function Inner({ open }: { open: boolean }) {
-  const [stream, setStream] = useState<MediaStream | null>(null);
-  const [recordedVideo, setRecordedVideo] = useState<string | null>(null);
-  const [videoChunks, setVideoChunks] = useState<any[]>([]);
+  const router = useRouter();
+  const [recordedVideo, setRecordedVideo] = useRecoilState(recordedVideoState);
+  const onClickSend = () => {};
+  const onClickCancel = () => {
+    router.back();
+  };
   return (
     <Box
       sx={{
-        position: "absolute",
+        position: "fixed",
         top: 0,
         left: 0,
         right: 0,
@@ -117,31 +121,80 @@ function Inner({ open }: { open: boolean }) {
         },
       }}
     >
-      <VideoPlayer item={{ src: `${recordedVideo}` }} />
+      <Box
+        sx={{
+          position: "relative",
+          width: "100%",
+          maxWidth: "480px",
+          minWidth: "320px",
+          m: theme.spacing(0, "auto"),
+          display: "flex",
+          flexDirection: "column",
+          height: "100%",
+        }}
+      >
+        <Header />
+        <Box sx={{ flex: 1 }}>
+          <VideoPlayer
+            item={{ src: `${recordedVideo}` }}
+            sx={{
+              borderRadius: `0 !important`,
+              width: "100%",
+              height: "100%",
+              aspectRatio: "initial",
+            }}
+          />
+        </Box>
+        <Stack
+          direction={"row"}
+          spacing={1.5}
+          sx={{
+            //   position: "fixed",
+            //   left: 0,
+            //   right: 0,
+            //   bottom: 0,
+            p: theme.spacing(2, 2, 2, 2),
+          }}
+        >
+          <Button fullWidth size="lg" onClick={onClickSend}>
+            Send video
+          </Button>
+          <Button
+            fullWidth
+            size="lg"
+            backgroundColor={youhaGrey[600]}
+            color={youhaGrey[300]}
+            onClick={onClickCancel}
+          >
+            cancel
+          </Button>
+        </Stack>
+      </Box>
     </Box>
   );
 }
 
-function Header({ label }: { label: string }) {
+function Header({ label }: { label?: string }) {
   const router = useRouter();
   const onClickBack = () => {
     router.back();
   };
   return (
     <Box
-      sx={{
-        position: "fixed",
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0,
-        zIndex: 999,
-        p: theme.spacing("var(--sait)", 0, 0, 0),
-        background: `linear-gradient(${alpha(youhaGrey[900], 0.4)}, ${alpha(
-          youhaGrey[900],
-          0
-        )})`,
-      }}
+      sx={
+        {
+          // position: "fixed",
+          // left: 0,
+          // right: 0,
+          // top: 0,
+          // zIndex: 999,
+          // p: theme.spacing("var(--sait)", 0, 0, 0),
+          // background: `linear-gradient(${alpha(youhaGrey[900], 0.4)}, ${alpha(
+          //   youhaGrey[900],
+          //   0
+          // )})`,
+        }
+      }
     >
       <Box
         sx={{
@@ -183,7 +236,7 @@ function Header({ label }: { label: string }) {
               fontWeight: "700",
             }}
           >
-            {label}
+            Send video
           </Typography>
         </Box>
       </Box>

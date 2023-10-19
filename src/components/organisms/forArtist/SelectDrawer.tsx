@@ -34,8 +34,7 @@ export default function SelectDrawer({}: {}) {
   const onChangeVideo = (e: any) => {
     const file = e.target.files[0];
     const videoUrl = URL.createObjectURL(file);
-    console.log(e, videoUrl)
-    // setRecordedVideo(videoUrl);
+    setRecordedVideo(videoUrl);
   };
   useEffect(() => {
     if (

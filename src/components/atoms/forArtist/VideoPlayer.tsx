@@ -3,6 +3,7 @@ import {
   ButtonBase,
   Slider,
   Stack,
+  SxProps,
   Typography,
   alpha,
 } from "@mui/material";
@@ -41,8 +42,10 @@ export const fullscreenState = atom({
 
 export default function VideoPlayer({
   item,
+  sx,
 }: {
   item: { src: string; thumbnail?: string };
+  sx?: SxProps;
 }) {
   const router = useRouter();
   const [fullscreen, setFullscreen] = useRecoilState(fullscreenState);
@@ -166,7 +169,7 @@ export default function VideoPlayer({
               ? {
                   position: `relative`,
                   overflowY: `auto`,
-                  maxHeight: `calc(100% - 64px)`,
+                  maxHeight: `calc(100%)`,
                   maxWidth: `600px`,
                   width: "100%",
                   height: "100%",
@@ -191,7 +194,7 @@ export default function VideoPlayer({
               height: "100%",
               aspectRatio: `9 / 16`,
               overflow: "hidden",
-              borderRadius: open ? 0 : 1,
+              borderRadius: open ? `0 !important` : 1,
               "@media(min-width: 960px)": {
                 borderRadius: 1,
               },
@@ -210,6 +213,7 @@ export default function VideoPlayer({
               "&:hover .time": {
                 opacity: 0,
               },
+              ...sx,
             }}
             disableRipple
             // onMouseOver={onMouseOver}
@@ -218,7 +222,7 @@ export default function VideoPlayer({
           >
             <Video
               videoRef={videoRef}
-              playing={playing}
+              playing={!seeking && playing}
               muted={open || muted}
               url={`${item.src}`}
               onDuration={onDuration}
@@ -255,6 +259,7 @@ export default function VideoPlayer({
                   fontSize: 12,
                   lineHeight: "16px",
                   transition: `all 0.35s ease`,
+                  display: "none",
                 }}
                 className="time"
               >
@@ -294,7 +299,7 @@ export default function VideoPlayer({
                 }}
               >
                 <IconButton
-                  name={playing ? "pause" : "play"}
+                  name={!seeking && playing ? "pause" : "play"}
                   prefix="fas"
                   size={open ? 24 : 20}
                   onClick={onClickPlay}

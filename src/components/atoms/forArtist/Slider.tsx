@@ -11,6 +11,7 @@ type Props = {
   zIndex: number;
   reverse?: boolean;
   pb?: number;
+  fullscreen?: boolean;
 };
 export default function Slider({
   open,
@@ -21,6 +22,7 @@ export default function Slider({
   zIndex,
   reverse,
   pb,
+  fullscreen,
 }: Props) {
   return (
     <Slide
@@ -57,7 +59,7 @@ export default function Slider({
               `calc(var(--saib) + ${(pb ?? 0) * 8}px)`,
               0
             ),
-            height: loading ? "100%" : "auto",
+            height: fullscreen || loading ? "100%" : "auto",
             backgroundColor: youhaGrey[900],
           }}
         >

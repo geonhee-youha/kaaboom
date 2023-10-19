@@ -148,7 +148,7 @@ function Inner({
   //   const [recordedVideo, setRecordedVideo] = useState<any>(null);
   //   const [videoChunks, setVideoChunks] = useState<any>([]);
   const onClickRecord = () => {
-    if (recording === "inactive") {
+    if (recording === "inactive" && permission === true) {
       startRecording();
     } else if (recording === "recording") {
       stopRecording();
@@ -164,7 +164,6 @@ function Inner({
           video: true,
         };
         const audioConstraints = { audio: true };
-
         // create audio and video streams separately
         const audioStream = await navigator.mediaDevices.getUserMedia(
           audioConstraints
@@ -172,20 +171,15 @@ function Inner({
         const videoStream = await navigator.mediaDevices.getUserMedia(
           videoConstraints
         );
-
         setPermission(true);
-
         //combine both audio and video streams
-
         const combinedStream = new MediaStream([
           ...videoStream.getVideoTracks(),
           ...audioStream.getAudioTracks(),
         ]);
-
         setStream(combinedStream);
-
         //set videostream to live feed player
-        liveVideoFeed.current.srcObject = videoStream;
+        if (videoStream) liveVideoFeed.current.srcObject = videoStream;
       } catch (err: any) {
         alert(err.message);
       }
@@ -203,6 +197,7 @@ function Inner({
     mediaRecorder.current.ondataavailable = (event: any) => {
       if (typeof event.data === "undefined") return;
       if (event.data.size === 0) return;
+      console.log(event.data);
       localVideoChunks.push(event.data);
     };
     setVideoChunks(localVideoChunks);
@@ -210,11 +205,12 @@ function Inner({
 
   const stopRecording = () => {
     setPermission(false);
-    setRecording("inactive");
+    setRecording("waiting");
     mediaRecorder.current.stop();
     mediaRecorder.current.onstop = () => {
       const videoBlob = new Blob(videoChunks, { type: mimeType });
       const videoUrl = URL.createObjectURL(videoBlob);
+      console.log(videoUrl);
       setRecordedVideo(videoUrl);
       setVideoChunks([]);
     };
@@ -235,6 +231,24 @@ function Inner({
   useEffect(() => {
     getCameraPermission();
   }, []);
+  const router = useRouter();
+  useEffect(() => {
+    if (
+      recording === "waiting" &&
+      recordedVideo !== null &&
+      recordedVideo !== undefined &&
+      recordedVideo !== ""
+    ) {
+      router.push(
+        {
+          query: { ...router.query, sendVideoId: id },
+        },
+        undefined,
+        { shallow: true }
+      );
+      setRecording("inactive");
+    }
+  }, [recordedVideo]);
   return (
     <>
       <Box
