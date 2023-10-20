@@ -42,15 +42,9 @@ export default function UserSlide() {
         query: { ...router.query, userId: newOrderId },
       });
     }
-    if (open) {
-      document.body.style.overflowY = "hidden";
-    } else {
-      document.body.style.overflowY = "scroll";
-    }
   }, []);
   useEffect(() => {
     if (open) {
-      document.body.style.overflowY = "hidden";
       setLoading(true);
       if (userId !== undefined) {
         const item =
@@ -66,10 +60,8 @@ export default function UserSlide() {
           }, 350);
         }
       }
-    } else {
-      document.body.style.overflowY = "scroll";
     }
-  }, [open]);
+  }, [open, router]);
   return (
     <Slider
       open={open}

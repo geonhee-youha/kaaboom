@@ -7,7 +7,7 @@ import { far } from "@fortawesome/pro-regular-svg-icons";
 import { fas } from "@fortawesome/pro-solid-svg-icons";
 import { fad } from "@fortawesome/pro-duotone-svg-icons";
 import "@fortawesome/fontawesome-svg-core/styles.css";
-import { RecoilRoot } from "recoil";
+import { RecoilRoot, useRecoilState } from "recoil";
 import "../styles/index.css";
 // import "../styles/reset.ts";
 import "swiper/css";
@@ -53,6 +53,14 @@ import MessageSlide from "../components/templates/forArtist/MessageSlide";
 import SendVideoSlide from "../components/templates/forArtist/SendVideoSlide";
 import RecordVideoSlide from "../components/templates/forArtist/RecordVideoSlide";
 import SelectDrawer from "../components/organisms/forArtist/SelectDrawer";
+import { sendMessage } from "../utils/sendMessage";
+import { isIOS } from "react-device-detect";
+import {
+  dialogState,
+  selectDrawerState,
+  sideNavigationState,
+} from "../constants/recoils";
+import { fullscreenState } from "../components/atoms/forArtist/VideoPlayer";
 
 ChartJS.register(
   LineController,

@@ -114,6 +114,15 @@ function Page({
   const onClickReset = () => {
     setFilter(undefined);
   };
+  function getPriceSum() {
+    let price = 0;
+    _.filter(tempOrders, (el) =>
+      focused ? el.state === filter?.value : el.state === "completed"
+    ).map((el) => {
+      price = Number(price) + Number(el.price);
+    });
+    return price;
+  }
   return (
     <>
       <Box
@@ -195,14 +204,7 @@ function Page({
           }}
         >
           {`${shownLength} ${filter?.value ?? "requested"}`}
-          {filter?.value === "completed" &&
-            ` for $${_.filter(tempOrders, (el) =>
-              focused ? el.state === filter?.value : el.state === "completed"
-            ).map((el) => {
-              let price = 0;
-              price = price + el.price;
-              return el.price;
-            })}`}
+          {filter?.value === "completed" && ` for $${getPriceSum()}`}
         </Typography>
         <Box
           sx={{

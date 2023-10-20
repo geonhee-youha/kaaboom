@@ -8,11 +8,9 @@ import {
   dialogState,
   recordedVideoState,
   requestsState,
-  streamState,
   tempOrders,
   tempSendVideoIdState,
   tempUsers,
-  videoChunksState,
 } from "../../../constants/recoils";
 import _ from "lodash";
 import React, {
@@ -62,15 +60,9 @@ export default function RecordVideoSlide() {
         query: { ...router.query, recordVideoId: newOrderId },
       });
     }
-    if (open) {
-      document.body.style.overflowY = "hidden";
-    } else {
-      document.body.style.overflowY = "scroll";
-    }
   }, []);
   useEffect(() => {
     if (open) {
-      document.body.style.overflowY = "hidden";
       setLoading(true);
       if (recordVideoId !== undefined) {
         const item =
@@ -86,10 +78,8 @@ export default function RecordVideoSlide() {
           }, 350);
         }
       }
-    } else {
-      document.body.style.overflowY = "scroll";
     }
-  }, [open, requests]);
+  }, [open, router, requests]);
   return (
     <Slider
       open={open}
@@ -150,12 +140,9 @@ function Inner({
   const liveVideoFeed = useRef<any>(null);
   const [permission, setPermission] = useState<boolean>(false);
   const [recording, setRecording] = useState<string>("inactive");
-  const [stream, setStream] = useRecoilState(streamState);
   const [recordedVideo, setRecordedVideo] = useRecoilState(recordedVideoState);
-  const [videoChunks, setVideoChunks] = useRecoilState(videoChunksState);
-  //   const [stream, setStream] = useState<any>(null);
-  //   const [recordedVideo, setRecordedVideo] = useState<any>(null);
-  //   const [videoChunks, setVideoChunks] = useState<any>([]);
+  const [stream, setStream] = useState<any>(null);
+  const [videoChunks, setVideoChunks] = useState<any>([]);
   const getCameraPermission = async () => {
     setRecordedVideo(null);
     //get video and audio permissions and then stream the result media stream to the videoSrc variable
@@ -199,8 +186,9 @@ function Inner({
     mediaRecorder.current.ondataavailable = (event: any) => {
       if (typeof event.data === "undefined") return;
       if (event.data.size === 0) return;
-      let newPrev = localVideoChunks;
-      newPrev = [...newPrev, event.push];
+      localVideoChunks.push(event.data);
+      //   let newPrev = localVideoChunks;
+      //   newPrev = [...newPrev, event.data];
     };
     setVideoChunks(localVideoChunks);
   };
@@ -212,6 +200,7 @@ function Inner({
     mediaRecorder.current.onstop = () => {
       const videoBlob = new Blob(videoChunks, { type: mimeType });
       const videoUrl = URL.createObjectURL(videoBlob);
+      console.log("videoBlob: ", videoBlob);
       console.log("videoUrl: ", videoUrl);
       setRecordedVideo(videoUrl);
       setVideoChunks([]);
@@ -230,17 +219,18 @@ function Inner({
   //       setVideoChunks([]);
   //     }
   //   }, [open]);
+  const router = useRouter();
+  const notLastSlide = router.query.sendVideoId !== undefined;
   useEffect(() => {
-    getCameraPermission();
-  }, []);
+    if (!notLastSlide && open) getCameraPermission();
+  }, [router, open]);
   useEffect(() => {
-    if (!open) {
+    if (notLastSlide || !open) {
       stream
         .getTracks() // get all tracks from the MediaStream
         .forEach((track: any) => track.stop()); // stop each of them
     }
-  }, [open]);
-  const router = useRouter();
+  }, [open, notLastSlide]);
   useEffect(() => {
     if (
       recording === "waiting" &&

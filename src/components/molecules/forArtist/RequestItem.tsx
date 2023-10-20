@@ -64,7 +64,7 @@ export default function RequestItem({
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
   ) => {
     e.stopPropagation();
-    setSelectDrawer({ open: true , id: id});
+    setSelectDrawer({ open: true, id: id });
     // router.push(
     //   {
     //     query: { ...router.query, recordVideoId: item.id },
@@ -101,6 +101,18 @@ export default function RequestItem({
         },
       };
     });
+  };
+  const onClickSentVideo = (
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
+  ) => {
+    e.stopPropagation();
+    router.push(
+      {
+        query: { ...router.query, messageId: id },
+      },
+      undefined,
+      { shallow: true }
+    );
   };
   return (
     <Box
@@ -305,6 +317,7 @@ export default function RequestItem({
                 size="md"
                 backgroundColor={cyan[500]}
                 // color={youhaGrey[200]}
+                onClick={onClickSentVideo}
               >
                 View sent video
               </Button>

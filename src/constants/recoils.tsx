@@ -463,15 +463,13 @@ export const sideNavigationState = atom({
   },
 });
 
-
 export const selectDrawerState = atom({
   key: "selectDrawerState",
   default: {
     open: false,
-    id: ''
+    id: "",
   },
 });
-
 
 export const tempLoadedRequestsState = atom({
   key: "tempLoaded/requests",
@@ -488,40 +486,27 @@ export const tempLoadedMessagesState = atom({
   default: false,
 });
 
-
 export const tempLoadedProfileState = atom({
   key: "tempLoaded/profile",
   default: false,
 });
-
 
 export const tempMessageIdsState = atom<string[]>({
   key: "tempMessageIdsState",
   default: [],
 });
 
-
 export const tempOrderIdsState = atom<string[]>({
   key: "tempOrderIdsState",
   default: [],
 });
-
 
 export const tempSendVideoIdState = atom<string[]>({
   key: "tempSendVideoIdState",
   default: [],
 });
 
-export const streamState = atom<any | null>({
-  key: `streamState`,
-  default: null,
-});
-
 export const recordedVideoState = atom<string | null>({
   key: `recordedVideoState`,
   default: null,
-});
-export const videoChunksState = atom<any[]>({
-  key: "videoChunksState",
-  default: [],
 });

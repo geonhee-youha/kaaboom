@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, ButtonBase, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { theme } from "../../../themes/theme";
@@ -35,6 +35,9 @@ export default function HeaderNavigation() {
   useEffect(() => {
     setMounted(true);
   }, [setMounted]);
+  const onClickLabel = () => {
+    window.scrollTo(0, 0);
+  };
   return mounted && forArtist ? (
     <Box
       sx={{
@@ -60,10 +63,11 @@ export default function HeaderNavigation() {
         }}
       >
         <IconButton name="bars" prefix="fas" size={20} onClick={onClickBars} />
-        <Box
+        <ButtonBase
           sx={{
             p: theme.spacing(0, 0.5),
           }}
+          onClick={onClickLabel}
         >
           <Typography
             sx={{
@@ -72,9 +76,9 @@ export default function HeaderNavigation() {
               fontWeight: "700",
             }}
           >
-            {currentNavigation?.label ?? ''}
+            {currentNavigation?.label ?? ""}
           </Typography>
-        </Box>
+        </ButtonBase>
       </Box>
     </Box>
   ) : (

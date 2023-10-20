@@ -47,15 +47,9 @@ export default function RequestSlide() {
         query: { ...router.query, orderId: newOrderId },
       });
     }
-    if (open) {
-      document.body.style.overflowY = "hidden";
-    } else {
-      document.body.style.overflowY = "scroll";
-    }
   }, []);
   useEffect(() => {
     if (open) {
-      document.body.style.overflowY = "hidden";
       setLoading(true);
       if (orderId !== undefined) {
         const item = requests[_.findIndex(requests, (el) => el.id === orderId)];
@@ -70,10 +64,8 @@ export default function RequestSlide() {
           }, 350);
         }
       }
-    } else {
-      document.body.style.overflowY = "scroll";
     }
-  }, [open, requests]);
+  }, [open, router, requests]);
   return (
     <Slider
       open={open}
@@ -193,7 +185,7 @@ function Inner({ item }: { item: OrderProps }) {
     //   undefined,
     //   { shallow: true }
     // );
-    setSelectDrawer({ open: true , id: id});
+    setSelectDrawer({ open: true, id: id });
   };
   const onClickDecline = (
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
@@ -223,6 +215,18 @@ function Inner({ item }: { item: OrderProps }) {
         },
       };
     });
+  };
+  const onClickSentVideo = (
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
+  ) => {
+    e.stopPropagation();
+    router.push(
+      {
+        query: { ...router.query, messageId: id },
+      },
+      undefined,
+      { shallow: true }
+    );
   };
   return (
     <>
@@ -510,6 +514,7 @@ function Inner({ item }: { item: OrderProps }) {
                 size="lg"
                 backgroundColor={cyan[500]}
                 // color={youhaGrey[200]}
+                onClick={onClickSentVideo}
               >
                 View sent video
               </Button>

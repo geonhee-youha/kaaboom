@@ -72,13 +72,13 @@ export default function SideNavigation({}: {}) {
             p: theme.spacing(1.5, 2),
           }}
         >
-          <Icon name="power-off" prefix="far" size={20} />
+          <Icon name="power-off" prefix="far" size={24} />
           <Typography
             sx={{
               flex: 1,
               m: theme.spacing(0, 0, 0, 2),
-              fontSize: 14,
-              lineHeight: "20px",
+              fontSize: 16,
+              lineHeight: "24px",
             }}
           >
             Log out

@@ -2,12 +2,18 @@ import { Box } from "@mui/material";
 import Screen from "../../components/atoms/forArtist/Screen";
 import { useEffect, useState } from "react";
 import { theme } from "../../themes/theme";
-import { OrderProps, tempLoadedMessagesState, tempOrders } from "../../constants/recoils";
+import {
+  OrderProps,
+  tempLoadedMessagesState,
+  tempOrders,
+} from "../../constants/recoils";
 import _ from "lodash";
 import { atom, useRecoilState } from "recoil";
 import MessageItem from "../../components/molecules/forArtist/MessageItem";
+import { useRouter } from "next/router";
 
 export default function Index() {
+  const router = useRouter()
   const [tempLoaded, setTempLoaded] = useRecoilState(tempLoadedMessagesState);
   const [data, setData] = useState<{ id: string; requests: OrderProps[] }[]>(
     []

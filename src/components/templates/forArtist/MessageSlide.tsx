@@ -46,16 +46,10 @@ export default function MessageSlide() {
         query: { ...router.query, messageId: newOrderId },
       });
     }
-    if (open) {
-      document.body.style.overflowY = "hidden";
-    } else {
-      document.body.style.overflowY = "scroll";
-    }
   }, []);
   useEffect(() => {
     if (open) {
       if (requests.length === 0) setRequests(tempOrders);
-      document.body.style.overflowY = "hidden";
       setLoading(true);
       if (messageId !== undefined) {
         const item = _.filter(
@@ -73,10 +67,8 @@ export default function MessageSlide() {
           }, 350);
         }
       }
-    } else {
-      document.body.style.overflowY = "scroll";
     }
-  }, [open, requests]);
+  }, [open, router, requests]);
   return (
     <Slider
       open={open}

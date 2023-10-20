@@ -284,7 +284,7 @@ export default function VideoPlayer({
                 right: 0,
                 zIndex: 98,
                 background:
-                  "linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8))",
+                  `linear-gradient${alpha(youhaGrey[900], 0)} ${alpha(youhaGrey[900], 0.8)}})`,
                 p: theme.spacing(4, 0.5, open ? 1 : 0.5, 0.5),
                 transition: `all 0.35s ease`,
               }}

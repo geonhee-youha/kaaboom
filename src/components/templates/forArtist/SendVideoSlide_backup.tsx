@@ -57,15 +57,9 @@ export default function SendVideoSlide() {
         query: { ...router.query, sendVideoId: newOrderId },
       });
     }
-    if (open) {
-      document.body.style.overflowY = "hidden";
-    } else {
-      document.body.style.overflowY = "scroll";
-    }
   }, []);
   useEffect(() => {
     if (open) {
-      document.body.style.overflowY = "hidden";
       setLoading(true);
       if (sendVideoId !== undefined) {
         const item =
@@ -81,10 +75,8 @@ export default function SendVideoSlide() {
           }, 350);
         }
       }
-    } else {
-      document.body.style.overflowY = "scroll";
     }
-  }, [open, requests]);
+  }, [open, router, requests]);
   return (
     <Slider
       open={open}

@@ -36,6 +36,44 @@ export default function Screen({
   const [selectDrawer, setSelectDrawer] = useRecoilState(selectDrawerState);
   const [fullscreen, setFullscreen] = useRecoilState(fullscreenState);
   useEffect(() => {
+    window.addEventListener("scroll", () => {
+      document.documentElement.style.setProperty(
+        "--scroll-y",
+        `${window.scrollY}px`
+      );
+    });
+    return window.removeEventListener("scroll", () => {
+      document.documentElement.style.setProperty(
+        "--scroll-y",
+        `${window.scrollY}px`
+      );
+    });
+  }, []);
+  useEffect(() => {
+    if (
+      dialog.open ||
+      sideNavigation.open ||
+      selectDrawer.open ||
+      fullscreen.open ||
+      (router.pathname.split("/")[1] === "forArtist" &&
+        Object.keys(router.query).length > 0)
+    ) {
+      // document.body.style.overflowY = "hidden";
+      const scrollY =
+        document.documentElement.style.getPropertyValue("--scroll-y");
+      const body = document.body;
+      body.style.position = "fixed";
+      body.style.top = `-${scrollY}`;
+    } else {
+      // document.body.style.overflowY = "scroll";
+      const body = document.body;
+      const scrollY = body.style.top;
+      body.style.position = "";
+      body.style.top = "";
+      window.scrollTo(0, parseInt(scrollY || "0") * -1);
+    }
+  }, [dialog, sideNavigation, selectDrawer, fullscreen, router]);
+  useEffect(() => {
     if (!isIOS) {
       sendMessage({ name: "backEnable", body: "" });
       const finish = () => {
