@@ -147,7 +147,11 @@ function Inner({ open }: { open: boolean }) {
               }
               return next;
             });
-            router.replace(`${router.pathname}`, undefined, { shallow: true });
+            router.replace(
+              `${router.pathname}?messageId=${sendVideoId}`,
+              undefined,
+              { shallow: false }
+            );
           },
         },
       };

@@ -12,7 +12,7 @@ import {
   tempUsers,
 } from "../../../constants/recoils";
 import _ from "lodash";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import moment from "moment";
 import Slider from "../../atoms/forArtist/Slider";
 import { atom, useRecoilState } from "recoil";
@@ -83,19 +83,25 @@ export default function MessageSlide() {
 }
 
 function Inner({ item }: { item: OrderProps[] }) {
+  const bottomRef = useRef<any>(null);
   const messages = item;
+  useEffect(() => {
+    if (bottomRef) bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, []);
   return (
     <>
       <Stack
         spacing={2}
         sx={{
-          p: theme.spacing(16, 0, 4, 0),
+          p: theme.spacing(16, 0, 0, 0),
           minHeight: "100vh",
+          flexDirection: "column-reverse",
         }}
       >
         {messages.map((item, index) => {
           return <ChatItem key={index} item={item} />;
         })}
+        <Box ref={bottomRef} sx={{ width: "100%", height: 16 }} />
       </Stack>
     </>
   );

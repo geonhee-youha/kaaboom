@@ -45,7 +45,7 @@ export default function SideNavigation({}: {}) {
           borderBottom: `1px solid ${youhaGrey[700]}`,
         }}
       >
-        <Link href={"/"} passHref>
+        <Link href={"/forArtist/requests"} passHref>
           <ButtonBase
             disableRipple
             sx={{

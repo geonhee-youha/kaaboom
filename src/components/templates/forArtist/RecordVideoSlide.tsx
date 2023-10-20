@@ -181,7 +181,7 @@ function Inner({
     setRecording("recording");
     const media = new MediaRecorder(stream, { mimeType });
     mediaRecorder.current = media;
-    mediaRecorder.current.start();
+    mediaRecorder.current?.start();
     let localVideoChunks: any[] = [];
     mediaRecorder.current.ondataavailable = (event: any) => {
       if (typeof event.data === "undefined") return;
@@ -196,7 +196,7 @@ function Inner({
   const stopRecording = () => {
     setPermission(false);
     setRecording("waiting");
-    mediaRecorder.current.stop();
+    mediaRecorder.current?.stop();
     mediaRecorder.current.onstop = () => {
       const videoBlob = new Blob(videoChunks, { type: mimeType });
       const videoUrl = URL.createObjectURL(videoBlob);
@@ -209,28 +209,30 @@ function Inner({
   //   useEffect(() => {
   //     getCameraPermission();
   //   }, []);
-  //   useEffect(() => {
-  //     if (open) {
-  //       getCameraPermission();
-  //     } else {
-  //       if (mediaRecorder) mediaRecorder.current?.stop();
-  //       setRecordedVideo(null);
-  //       setRecordedVideo(null);
-  //       setVideoChunks([]);
-  //     }
-  //   }, [open]);
   const router = useRouter();
   const notLastSlide = router.query.sendVideoId !== undefined;
+  //   useEffect(() => {
+  //     return () => {
+  //       stream
+  //         .getTracks() // get all tracks from the MediaStream
+  //         .forEach((track: any) => track.stop()); // stop each of them
+  //     };
+  //   }, []);
   useEffect(() => {
-    if (!notLastSlide && open) getCameraPermission();
-  }, [router, open]);
+    if (open && !notLastSlide) getCameraPermission();
+  }, [open]);
   useEffect(() => {
-    if (notLastSlide || !open) {
+    if (!open) {
       stream
         .getTracks() // get all tracks from the MediaStream
         .forEach((track: any) => track.stop()); // stop each of them
     }
-  }, [open, notLastSlide]);
+  }, [open, router]);
+  const onBack = () => {
+    stream
+      .getTracks() // get all tracks from the MediaStream
+      .forEach((track: any) => track.stop()); // stop each of them
+  };
   useEffect(() => {
     if (
       recording === "waiting" &&
@@ -245,9 +247,9 @@ function Inner({
         undefined,
         { shallow: true }
       );
-      stream
-        .getTracks() // get all tracks from the MediaStream
-        .forEach((track: any) => track.stop()); // stop each of them
+      //   stream
+      //     .getTracks() // get all tracks from the MediaStream
+      //     .forEach((track: any) => track.stop()); // stop each of them
       setRecording("inactive");
     }
   }, [recordedVideo]);
@@ -306,6 +308,7 @@ function Inner({
       >
         <Header
           label={recording === "recording" ? timer(count) : "Record Video"}
+          onBack={onBack}
         />
         <video ref={liveVideoFeed} autoPlay />
         <Box
@@ -450,10 +453,11 @@ function Inner({
   );
 }
 
-function Header({ label }: { label: string }) {
+function Header({ label, onBack }: { label: string; onBack: () => void }) {
   const router = useRouter();
   const onClickBack = () => {
     router.back();
+    onBack();
   };
   return (
     <Box

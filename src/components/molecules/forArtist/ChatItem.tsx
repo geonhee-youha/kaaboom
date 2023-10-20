@@ -44,7 +44,11 @@ export default function ChatItem({ item }: { item: OrderProps }) {
   const video = messages[_.findIndex(messages, (el) => el.id === item.id)];
   const review = reviews[0];
   return (
-    <>
+    <Box
+      sx={{
+        p: theme.spacing(0, 0, 8, 0),
+      }}
+    >
       <Box
         sx={{
           width: "100%",
@@ -292,6 +296,6 @@ export default function ChatItem({ item }: { item: OrderProps }) {
           </Box>
         </Box>
       )}
-    </>
+    </Box>
   );
 }
