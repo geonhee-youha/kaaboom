@@ -233,6 +233,13 @@ function Inner({
   useEffect(() => {
     getCameraPermission();
   }, []);
+  useEffect(() => {
+    if (!open) {
+      stream
+        .getTracks() // get all tracks from the MediaStream
+        .forEach((track: any) => track.stop()); // stop each of them
+    }
+  }, [open]);
   const router = useRouter();
   useEffect(() => {
     if (
@@ -248,6 +255,9 @@ function Inner({
         undefined,
         { shallow: true }
       );
+      stream
+        .getTracks() // get all tracks from the MediaStream
+        .forEach((track: any) => track.stop()); // stop each of them
       setRecording("inactive");
     }
   }, [recordedVideo]);

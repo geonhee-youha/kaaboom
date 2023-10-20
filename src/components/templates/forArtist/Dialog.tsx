@@ -104,7 +104,7 @@ export default function Dialog() {
         sx={{
           display: "flex",
           justifyContent: "flex-end",
-          p: theme.spacing(0, 1, 0.5, 1),
+          p: theme.spacing(1),
         }}
       >
         {cancel.show ? (

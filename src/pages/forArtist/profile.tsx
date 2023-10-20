@@ -2,7 +2,11 @@ import { Box, ButtonBase, Stack, Typography, alpha } from "@mui/material";
 import Screen from "../../components/atoms/forArtist/Screen";
 import { useEffect, useState } from "react";
 import { theme } from "../../themes/theme";
-import { OrderProps, tempLoadedProfileState, tempOrders } from "../../constants/recoils";
+import {
+  OrderProps,
+  tempLoadedProfileState,
+  tempOrders,
+} from "../../constants/recoils";
 import _ from "lodash";
 import { atom, useRecoilState } from "recoil";
 import MessageItem from "../../components/molecules/forArtist/MessageItem";
@@ -12,7 +16,6 @@ import User from "../../components/atoms/forArtist/User";
 import youhaGrey from "../../constants/youhaGrey";
 import youhaBlue from "../../constants/youhaBlue";
 import Icon from "../../components/atoms/Icon";
-
 
 export default function Index() {
   const [tempLoaded, setTempLoaded] = useRecoilState(tempLoadedProfileState);
@@ -194,13 +197,13 @@ function Page({ item }: { item: TempArtistUserProps }) {
             p: theme.spacing(1.5, 2),
           }}
         >
-          <Icon name="pen" prefix="far" size={20} />
+          <Icon name="pen" prefix="far" size={24} />
           <Typography
             sx={{
               flex: 1,
               m: theme.spacing(0, 0, 0, 2),
-              fontSize: 14,
-              lineHeight: "20px",
+              fontSize: 16,
+              lineHeight: "24px",
             }}
           >
             Edit profile
@@ -218,13 +221,13 @@ function Page({ item }: { item: TempArtistUserProps }) {
             p: theme.spacing(1, 2),
           }}
         >
-          <Icon name="circle-dollar" prefix="far" size={20} />
+          <Icon name="circle-dollar" prefix="far" size={24} />
           <Typography
             sx={{
               flex: 1,
               m: theme.spacing(0, 0, 0, 2),
-              fontSize: 14,
-              lineHeight: "20px",
+              fontSize: 16,
+              lineHeight: "24px",
             }}
           >
             Availability and pricing
