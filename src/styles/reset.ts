@@ -201,7 +201,7 @@ const reset = css`
   }
   input {
     /* font-family: 'Montserrat', sans-serif !important; */
-    font-family: 'Poppins', Helvetica, sans-serif !important;
+    font-family: 'TheJamsil', 'Poppins', Helvetica, sans-serif !important;
     font-size: 16px;
     color: #ffffff;
     vertical-align: middle;
@@ -213,7 +213,7 @@ const reset = css`
     font-size: 17px;
     color: #ffffff;
     vertical-align: middle;
-    font-family: 'Poppins', Helvetica, sans-serif !important;
+    font-family: 'TheJamsil', 'Poppins', Helvetica, sans-serif !important;
   }
   a,
   a:link,
@@ -249,7 +249,7 @@ const reset = css`
     font-weight: bold;
   }
   html {
-    background-color: #101418 !important;
+    background-color: #121212 !important;
     /* background-color: #ffffff !important; */
     -webkit-font-smoothing: antialiased;
     box-sizing: border-box;
@@ -262,7 +262,7 @@ const reset = css`
     font-weight: 400;
     line-height: 1.5;
     color: #ffffff;
-    background-color: #101418 !important;
+    background-color: #121212 !important;
     scroll-behavior: smooth;
     letter-spacing: 0.15px !important;
     width: 100%;
@@ -284,32 +284,25 @@ const reset = css`
     text-size-adjust: 100%;
   }
   /* 사파리 누를때 줌 안되게 */
-  // * {
-  //   -webkit-touch-callout: none;
-  //   -webkit-user-select: none;
-  //   -khtml-user-select: none;
-  //   -moz-user-select: none;
-  //   -ms-user-select: none;
-  //   user-select: none;
+ 
+   ::-moz-scrollbar {
+     display: none !important;
+   }
+   ::-webkit-scrollbar {
+     display: none !important;
+   }
+  // body::-webkit-scrollbar-track,
+  // .scroller::-webkit-scrollbar-track {
+  //   background-color: #ACBAC8 !important
   // }
-  // ::-moz-scrollbar {
-  //   display: none !important;
+  // body::-webkit-scrollbar-thumb:hover,
+  // .scroller::-webkit-scrollbar-thumb:hover  {
+  //   background-color: #4B5E71 !important
   // }
-  // ::-webkit-scrollbar {
-  //   display: none !important;
+  // body::-webkit-scrollbar-thumb 
+  // .scroller::-webkit-scrollbar-thumb {
+  //   background-color: #2F3A46 !important
   // }
-  body::-webkit-scrollbar-track,
-  .scroller::-webkit-scrollbar-track {
-    background-color: #ACBAC8 !important
-  }
-  body::-webkit-scrollbar-thumb:hover,
-  .scroller::-webkit-scrollbar-thumb:hover  {
-    background-color: #4B5E71 !important
-  }
-  body::-webkit-scrollbar-thumb 
-  .scroller::-webkit-scrollbar-thumb {
-    background-color: #2F3A46 !important
-  }
   img {
     border: none;
     vertical-align: middle;
@@ -374,7 +367,7 @@ const reset = css`
   }
   html,
   body {
-    font-family: "Poppins", Helvetica, sans-serif;
+    font-family: 'TheJamsil', "Poppins", Helvetica, sans-serif;
   }
   #__next {
     width: 100%;

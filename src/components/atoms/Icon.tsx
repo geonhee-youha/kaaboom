@@ -7,7 +7,6 @@ import {
 import { Badge, SxProps } from "@mui/material";
 import { red } from "@mui/material/colors";
 import { MouseEventHandler } from "react";
-import youhaGrey from "../../constants/youhaGrey";
 
 export type IconProps = {
   name: IconName;
@@ -23,9 +22,9 @@ export type IconProps = {
 
 export default function Icon({
   name = "circle",
-  prefix = "fas",
+  prefix = "fal",
   badgeCount,
-  size = 24,
+  size = 20,
   padding = 2,
   className,
   color = "#ffffff",
@@ -49,8 +48,13 @@ export default function Icon({
         justifyContent: "center",
         alignItems: "center",
         width: `${size}px !important`,
-        padding: `${padding}px !important`,
+        height: `${size}px !important`,
+        // padding: `${padding}px !important`,
         fontSize: `${(size - 4) / 2}px !important`,
+        overflow: "visible",
+        "& .fa-secondary": {
+          opacity: 0.4,
+        },
         ...sx,
         "& .MuiBadge-badge": {
           width: 12,
@@ -67,7 +71,7 @@ export default function Icon({
       className={className}
       onClick={onClick}
     >
-      <FontAwesomeIcon icon={icon} size="2x" />
+      <FontAwesomeIcon icon={icon} size="2x" className="fa-fw" />
     </Badge>
   );
 }

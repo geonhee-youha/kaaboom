@@ -1,90 +1,40 @@
 import Head from "next/head";
 import { AppProps } from "next/app";
 import CssBaseline from "@mui/material/CssBaseline";
-import { ThemeProvider } from "@mui/material/styles";
 import { fal } from "@fortawesome/pro-light-svg-icons";
 import { far } from "@fortawesome/pro-regular-svg-icons";
 import { fas } from "@fortawesome/pro-solid-svg-icons";
 import { fad } from "@fortawesome/pro-duotone-svg-icons";
-import "@fortawesome/fontawesome-svg-core/styles.css";
-import { RecoilRoot, useRecoilState } from "recoil";
-import "../styles/index.css";
-// import "../styles/reset.ts";
+import { RecoilRoot } from "recoil";
+import "../styles/main.css";
 import "swiper/css";
 import "swiper/css/pagination";
-import { theme } from "../themes/theme";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import {
+  getAndroidIsWifi,
+  getAndroidPushMessage,
+  getiOSIsWifi,
+  getiOSPushMessage,
+  sendMessage,
+} from "../utils/sendMessage";
 import { CacheProvider, EmotionCache, Global } from "@emotion/react";
 import { createEmotionCache } from "../utils";
+import App from "./components";
 import reset from "../styles/reset";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  LineController,
-  BarController,
-  PointElement,
-  LineElement,
-  BarElement,
-  ArcElement,
-  RadarController,
-  Tooltip,
-  Legend,
-  RadialLinearScale,
-  PieController,
-  DoughnutController,
-} from "chart.js";
-import _ from "lodash";
-import GlobalHeader from "../components/organisms/GlobalHeader";
-import SearchDialog from "../components/templates/SearchDialog";
-import SideDrawer from "../components/templates/SideDrawer";
-import GlobalFooter from "../components/organisms/GlobalFooter";
-import SortDialog from "../components/templates/SortDialog";
-import RateDialog from "../components/templates/RateDialog";
-import BottomNavigation from "../components/organisms/forArtist/BottomNavigation";
-import HeaderNavigation from "../components/organisms/forArtist/HeaderNavigation";
-import { usePreserveScroll } from "../hooks/usePreserveScroll";
-import { useEffect } from "react";
-import RequestSlide from "../components/templates/forArtist/RequestSlide";
-import UserSlide from "../components/templates/forArtist/UserSlide";
-import Dialog from "../components/templates/forArtist/Dialog";
-import SideNavigation from "../components/organisms/forArtist/SideNavigation";
-import MessageSlide from "../components/templates/forArtist/MessageSlide";
-import SendVideoSlide from "../components/templates/forArtist/SendVideoSlide";
-import RecordVideoSlide from "../components/templates/forArtist/RecordVideoSlide";
-import SelectDrawer from "../components/organisms/forArtist/SelectDrawer";
-import { sendMessage } from "../utils/sendMessage";
-import { isIOS } from "react-device-detect";
-import {
-  dialogState,
-  selectDrawerState,
-  sideNavigationState,
-} from "../constants/recoils";
-import { fullscreenState } from "../components/atoms/forArtist/VideoPlayer";
-
-ChartJS.register(
-  LineController,
-  BarController,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  ArcElement,
-  RadarController,
-  RadialLinearScale,
-  PieController,
-  DoughnutController,
-  Tooltip,
-  Legend
-);
+import BottomNav from "../components/organisms/BottomNav";
+import MainHeader from "../components/organisms/MainHeader";
+import MainFab from "../components/organisms/MainFab";
 
 const clientSideEmotionCache = createEmotionCache();
+
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }
+
 const { library, config } = require("@fortawesome/fontawesome-svg-core");
 library.add(fal, far, fas, fad);
+
 declare global {
   interface Window {
     webkit?: any;
@@ -103,6 +53,55 @@ declare global {
 function MyApp(props: MyAppProps) {
   const router = useRouter();
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+  var target: any = { scrollTop: 0 };
+  if (typeof document !== "undefined")
+    target = document.querySelector("#__next");
+  //#region 1.안드로이드 푸쉬알림 받으면 항상 아래로옴.
+  //        2.안드로이드 백그라운드는 실행 안됨. (포그라운드일때만 옴.)
+  // const getAndroidPushMessage: any = (event: androidPushEventType) => {
+  //   console.debug(event.detail);
+  // };
+
+  // useEffect(() => {
+  //   // FCM token 서버로 보내기
+  //   const Window: any = window;
+  //   Window.addEventListener('deviceTokenUpdateToServer', (d: any) => deviceTokenUpdateToServer(d, 'android')); //And
+  //   Window.deviceTokenUpdateToServer = (d: any) => deviceTokenUpdateToServer(d, 'ios'); //iOS
+  //   // postMessage;
+  //   return () => {
+  //     Window.removeEventListener('deviceTokenUpdateToServer', (d: any) => deviceTokenUpdateToServer(d, 'android'));
+  //   };
+  // }, []);
+  //#endregion
+  const goMessagesPush = (room_id: string, isPush: boolean) => {
+    // router.push(`/home?page=${bottomNav.split('/')[1]}&slide=message&id=${room_id}`, `/message/${room_id}&isPush=${isPush}`, {
+    //   shallow: false,
+    // });
+    // setMessageSlide({ open: true });
+  };
+  const [isWifi, setIsWifi] = useState<boolean>(false);
+  // useEffect(() => {
+  //   // 처음 앱 킬때마다 서버에 devicetoken fetch
+  //   sendMessage({ name: "deviceTokenUpdateToServer", body: "" });
+  //   sendMessage({ name: "getNotiData", body: "" });
+  //   sendMessage({ name: "isWifi", body: "" });
+  //   // 메세지 Noti Message 클릭해서 들어왔는지 체크
+  //   window.isWifi = getiOSIsWifi; //iOS
+  //   window.getNotiData = (d: any) => getiOSPushMessage(d, goMessagesPush); //iOS
+
+  //   window.addEventListener("getNotiData", (d) =>
+  //     getAndroidPushMessage(d, goMessagesPush)
+  //   ); //And
+  //   window.addEventListener("isWifi", (d) => getAndroidIsWifi(d, setIsWifi)); //And
+  //   return () => {
+  //     window.removeEventListener("getNotiData", (d) =>
+  //       getAndroidPushMessage(d, goMessagesPush)
+  //     );
+  //     window.removeEventListener("isWifi", (d) =>
+  //       getAndroidIsWifi(d, setIsWifi)
+  //     );
+  //   };
+  // }, []);
   return (
     <CacheProvider value={emotionCache}>
       <Head>
@@ -247,29 +246,17 @@ function MyApp(props: MyAppProps) {
         ></script>
       </Head>
       <RecoilRoot>
-        <ThemeProvider theme={theme}>
+        <App>
           <CssBaseline />
           <Global styles={reset} />
-          <GlobalHeader />
-          <HeaderNavigation />
           <Component {...pageProps} key={router.route} />
-          <RequestSlide />
-          <RecordVideoSlide />
-          <SendVideoSlide />
-          <MessageSlide />
-          <UserSlide />
-          <SideNavigation />
-          <SelectDrawer />
-          <Dialog />
-          <GlobalFooter />
-          <RateDialog />
-          <SearchDialog />
-          <SortDialog />
-          <SideDrawer />
-          <BottomNavigation />
-        </ThemeProvider>
+          <BottomNav />
+          <MainHeader />
+          <MainFab />
+        </App>
       </RecoilRoot>
     </CacheProvider>
   );
 }
+
 export default MyApp;

@@ -1,10 +1,8 @@
 import { IconName } from "@fortawesome/fontawesome-svg-core";
 import { alpha, Box, ButtonBase, SxProps, Typography } from "@mui/material";
-import youhaBlue from "../../constants/youhaBlue";
-import youhaGrey from "../../constants/youhaGrey";
 import { theme } from "../../themes/theme";
 import Icon from "./Icon";
-import { MouseEventHandler } from "react";
+import { grey, pink } from "@mui/material/colors";
 
 export default function Button({
   disabled,
@@ -12,7 +10,7 @@ export default function Button({
   size = "md",
   fullWidth,
   name,
-  backgroundColor: backgroundColorOrigin = youhaBlue[500],
+  backgroundColor: backgroundColorOrigin = pink[500],
   color,
   borderColor,
   children,
@@ -31,7 +29,7 @@ export default function Button({
   color?: string;
   borderColor?: string;
   children?: React.ReactNode;
-  onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
+  onClick?: (e: any) => void;
   sx?: SxProps;
   mobile?: boolean;
   web?: boolean;
@@ -45,7 +43,7 @@ export default function Button({
       disabled={disabled}
       sx={{
         width: fullWidth ? "100%" : "auto",
-        borderRadius: style === "round" ? 20 : 1,
+        borderRadius: style === "round" ? 20 : 1.5,
         justifyContent: "center",
         alignItems: "center",
         overflow: "hidden",
@@ -62,7 +60,7 @@ export default function Button({
         "&:hover": {
           opacity: type === "outlined" ? 0.7 : 1,
         },
-        minHeight: 40,
+        minHeight: 44,
         p: theme.spacing(0, 2),
         "&.lg": {
           minHeight: 48,
@@ -71,7 +69,7 @@ export default function Button({
           p: theme.spacing(1, 2),
         },
         "&.sm": {
-          minHeight: 32,
+          minHeight: 36,
           p: theme.spacing(0, 1.5),
           fontSize: 12,
           lineHeight: "16px",
@@ -80,7 +78,7 @@ export default function Button({
         "@media(max-width: 480px)": {
           display: mobile ? "flex" : web ? "none" : "flex",
         },
-        fontWeight: "500",
+        fontWeight: "700",
         zIndex: 1,
         fontSize: 14,
         lineHeight: "20px",
@@ -88,10 +86,10 @@ export default function Button({
         color:
           type === "outlined"
             ? disabled
-              ? youhaGrey[300]
+              ? grey[300]
               : color ?? backgroundColor
             : disabled
-            ? youhaGrey[300]
+            ? grey[300]
             : color ?? "#ffffff",
         ...sx,
       }}
@@ -107,7 +105,7 @@ export default function Button({
           right: 0,
           bottom: 0,
           backgroundColor: alpha("#000000", 0.15),
-          transition: `all 0.35s ease`,
+          transition: `all 0.5s ease`,
           opacity: 0,
           zIndex: type === "outlined" ? 2 : -1,
           display: "none",
@@ -124,7 +122,7 @@ export default function Button({
             type === "outlined"
               ? backgroundColor
               : disabled
-              ? youhaGrey[300]
+              ? grey[300]
               : color
           }
         />

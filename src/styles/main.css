@@ -1,0 +1,110 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;500;700;900&display=swap");
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/variable/pretendardvariable-dynamic-subset.css");
+@import url("https://cdn.jsdelivr.net/gh/poposnail61/min-sans@main/web/css/minsans-dynamic-subset.css");
+@import url("https://cdn.jsdelivr.net/gh/poposnail61/min-sans@main/web/css/minsansvf-dynamic-subset.css");
+@import url("https://webfontworld.github.io/TheJamsil/TheJamsil.css");
+@font-face {
+  font-family: 'TheJamsil5Regular';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'TheJamsil5Medium';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'TheJamsil5Bold';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2302_01@1.0/TheJamsil5Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+body {
+  color: #ffffff;
+}
+* {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+textarea,
+input {
+  -webkit-touch-callout: initial !important;
+  -webkit-user-select: initial !important;
+  -khtml-user-select: initial !important;
+  -moz-user-select: initial !important;
+  -ms-user-select: initial !important;
+  user-select: initial !important;
+}
+:root {
+  --sait: var(--android-safe-area-inset-top, env(safe-area-inset-top));
+  --saib: var(--android-safe-area-inset-bottom, env(safe-area-inset-bottom));
+  --sail: var(--android-safe-area-inset-left, env(safe-area-inset-left));
+  --sair: var(--android-safe-area-inset-right, env(safe-area-inset-right));
+}
+body,
+html {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+*,
+:after,
+:before {
+  box-sizing: border-box;
+}
+button:disabled,
+input:disabled {
+  cursor: not-allowed;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.ptr {
+  overflow: visible !important;
+}
+.ptr__pull-down--pull-more > div,
+.ptr__pull-down--pull-more > div > p {
+  display: none;
+}
+
+.d-flex {
+  display: flex;
+}
+.j-center {
+  justify-content: center;
+}
+.a-center {
+  align-items: center;
+}
+
+@keyframes upDown {
+  0%,
+  100% {
+    bottom: 24px;
+  }
+  50% {
+    bottom: 32px;
+  }
+}
+
+@keyframes upDown2 {
+  0%,
+  100% {
+    top: 50%;
+  }
+  50% {
+    top: 45%;
+  }
+}
+
+.shadow6 {
+  box-shadow: 0px 3px 5px -1px rgb(0 0 0 / 20%), 0px 6px 10px 0px rgb(0 0 0 / 14%), 0px 1px 18px 0px rgb(0 0 0 / 12%);
+}

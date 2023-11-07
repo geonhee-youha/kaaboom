@@ -15,17 +15,17 @@ export default function IconButton({
   borderColor = "transparent",
   onClick,
   name = "circle",
-  prefix = "fas",
-  size = 24,
+  prefix = "fal",
+  size = 20,
   color = "#ffffff",
   sx,
 }: IconButtonProps) {
   return (
     <ButtonBase
       sx={{
-        borderRadius: 1,
-        width: 40,
-        height: 40,
+        borderRadius: 1.5,
+        width: 44,
+        height: 44,
         justifyContent: "center",
         alignItems: "center",
         border: `1px solid ${borderColor}`,

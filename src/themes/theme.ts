@@ -1,50 +1,82 @@
 import { alpha } from "@mui/material";
 import { createTheme } from "@mui/material/styles";
-import {
-  red,
-  purple,
-  cyan,
-  grey,
-} from "@mui/material/colors";
-import youhaBlue from "../constants/youhaBlue";
-import youhaGrey from "../constants/youhaGrey";
+import { deepOrange, amber, lightBlue, indigo, blue, red, teal, grey, orange, cyan, pink } from "@mui/material/colors";
+
 export const theme = createTheme({
   palette: {
     mode: "dark",
-    primary: {
-      main: youhaBlue[500],
-      ...youhaBlue
-    },
-    secondary: purple,
-    grey: youhaGrey,
-    error: red,
-    // action: {
-    //   active: alpha(youhaGrey[900], 0.54),
-    //   hover: alpha(youhaGrey[900], 0.04),
-    //   selected: alpha(youhaGrey[900], 0.08),
-    //   disabled: alpha(youhaGrey[900], 0.26),
-    //   disabledBackground: alpha(youhaGrey[900], 0.12),
-    //   focus: alpha(youhaGrey[900], 0.12),
-    // },
+    primary: pink,
+    secondary: cyan,
+    grey: grey,
+    error: deepOrange,
+    success: {
+      main: '#ffffff',
+    }
   },
   shape: {
     borderRadius: 8,
   },
+  typography: {
+    h1: {
+      fontSize: 33,
+      lineHeight: "40px",
+      fontWeight: "700",
+    },
+  },
   components: {
+    // MuiInputLabel: {
+    //   styleOverrides: {
+    //     root: {
+    //       fontWeight: 500,
+    //     },
+    //   },
+    // },
+    MuiFormHelperText: {
+      styleOverrides: {
+        root: {
+          // color: grey[300],
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          // "& label": {
+          //   color: grey[300],
+          // },
+          // "& fieldset": {
+          //   borderColor: grey[100],
+          // },
+          // "&:hover fieldset": {
+          //   borderColor: grey[100],
+          // },
+          // "&.Mui-focused fieldset": {
+          //   borderColor: deepOrange[700],
+          // },
+        },
+      },
+    },
     MuiTypography: {
       styleOverrides: {
         root: {
-          // fontFamily: `LINESeedKR, Pretendard, -apple-system, BlinkMacSystemFont, system- ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo","Noto Sans KR", "Malgun Gothic", sans- serif`,
-          // fontFamily: `Noto Sans KR, Pretendard, -apple-system, BlinkMacSystemFont, system- ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo","Noto Sans KR", "Malgun Gothic", sans- serif`,
-          // fontFamily: `'Montserrat', sans-serif, LINESeedKR, -apple-system, BlinkMacSystemFont, system- ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo","Noto Sans KR", "Malgun Gothic", sans- serif`,
-          fontFamily: "'Poppins', Helvetica, sans-serif",
-        }
-      }
+          fontFamily: `'TheJamsil', "Poppins", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo" !important`,
+          color: '#ffffff',
+          transition: `all 0.5s ease`
+        },
+      },
+    },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          fontFamily: `'TheJamsil', "Poppins", -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo" !important`,
+          color: '#ffffff',
+          transition: `all 0.5s ease`
+        },
+      },
     },
     MuiButtonBase: {
       styleOverrides: {
         root: {
-          borderRadius: 0,
           justifyContent: 'flex-start',
           alignItems: 'flex-start',
           textAlign: "left",
@@ -52,26 +84,126 @@ export const theme = createTheme({
           '& *': {
             cursor: 'pointer !important',
           },
-          transition: `all 0.35s ease`,
-          // fontFamily: `'Montserrat', sans-serif;, Pretendard, -apple-system, BlinkMacSystemFont, system- ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo","Noto Sans KR", "Malgun Gothic", sans- serif`,
-          fontFamily: "'Poppins', Helvetica, sans-serif",
+          transition: `all 0.5s ease`,
+          '.MuiTouchRipple-child': {
+            backgroundColor: '#ffffff'
+          }
+          // '&:hover': {
+          //   backgroundColor: 'transparent',
+          // },
+          // '&:focus': {
+          //   backgroundColor: 'transparent',
+          // },
         },
       },
     },
     MuiContainer: {
+      // defaultProps: {
+      //   maxWidth: "xs",
+      // },
+      styleOverrides: {
+        root: {
+          // paddingLeft: "16px",
+          // paddingRight: "16px",
+          // paddingLeft: "24px",
+          // paddingRight: "24px",
+          minWidth: `280px`
+        },
+      },
+    },
+    MuiList: {
+      styleOverrides: {
+        root: {
+          maxWidth: 444,
+          marginLeft: "auto",
+          marginRight: "auto",
+        },
+      },
+    },
+    MuiListItem: {
+      styleOverrides: {
+        root: {
+          maxWidth: 444,
+          paddingLeft: "16px",
+          paddingRight: "16px",
+          marginLeft: "auto",
+          marginRight: "auto",
+        },
+      },
+    },
+    MuiListItemButton: {
       defaultProps: {
-        maxWidth: false,
+        disableRipple: true,
+        disableTouchRipple: true,
       },
       styleOverrides: {
         root: {
-          maxWidth: 1200,
+          maxWidth: 444,
+          paddingLeft: "16px",
+          paddingRight: "16px",
+          marginLeft: "auto",
+          marginRight: "auto",
+          "&:hover": {
+            backgroundColor: "transparent",
+          },
+          "&:focus": {
+            backgroundColor: "transparent",
+          },
+        },
+      },
+    },
+    MuiDivider: {
+      styleOverrides: {
+        root: {
+          maxWidth: 444,
+          marginLeft: "auto",
+          marginRight: "auto",
         },
       },
     },
     MuiBackdrop: {
       styleOverrides: {
         root: {
-          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          backgroundColor: "rgba(0, 0, 0, 0.8)",
+        },
+      },
+    },
+    MuiIcon: {
+      styleOverrides: {
+        root: {
+          width: "auto",
+          height: "auto",
+          fontSize: "1.25rem",
+          padding: ".25rem",
+        },
+        fontSizeSmall: {
+          fontSize: "1rem",
+        },
+        fontSizeLarge: {
+          fontSize: "1.75rem",
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "transparent",
+        },
+      },
+    },
+    MuiToolbar: {
+      styleOverrides: {
+        root: {
+          minHeight: 56,
+          paddingLeft: "16px",
+          paddingRight: "16px",
+        },
+      },
+    },
+    MuiBottomNavigation: {
+      styleOverrides: {
+        root: {
+          height: 56,
         },
       },
     },
@@ -81,38 +213,86 @@ export const theme = createTheme({
         variant: "contained",
         size: "large",
       },
-    },
-    MuiIconButton: {
       styleOverrides: {
         root: {
-          width: 40,
-          height: 40,
-          borderRadius: 8,
-          padding: 0,
-          cursor: 'pointer',
-          '& *': {
-            cursor: 'pointer',
+          minWidth: 0,
+          letterSpacing: "-0.4px",
+          whiteSpace: "nowrap",
+          textTransform: "none",
+          // '&:hover': {
+          //   backgroundColor: 'transparent',
+          // },
+          // '&:focus': {
+          //   backgroundColor: 'transparent',
+          // },
+        },
+        containedPrimary: {
+          // color: '#ffffff',
+        },
+        sizeSmall: {
+          minHeight: 28,
+          fontSize: 12,
+          padding: `4px 12px !important`,
+        },
+        sizeLarge: {
+          fontSize: 15,
+          lineHeight: "20px",
+          minHeight: 48,
+        },
+        iconSizeSmall: {
+          "& > span": {
+            fontSize: "1rem",
+            marginBottom: ".1rem",
           },
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center'
+        },
+        iconSizeMedium: {
+          "& > span": {
+            fontSize: "1.1rem",
+            marginBottom: ".1rem",
+          },
+        },
+        iconSizeLarge: {
+          "& > span": {
+            fontSize: "1.2rem",
+            marginBottom: ".1rem",
+          },
         },
       },
     },
-    MuiInputBase: {
+    MuiChip: {
       styleOverrides: {
         root: {
-          font: 'initial !important',
+          borderRadius: 8,
+          color: grey[700],
+        },
+        sizeSmall: {
+          fontSize: 12,
+        },
+        sizeMedium: {
           fontSize: 14,
-          lineHeight: '20px',
-          '& input': {
-            fontSize: 14,
-            lineHeight: '20px !important',
-            padding: 0,
-            height: 'auto',
-          }
-        }
-      }
-    }
+        },
+      },
+    },
+    MuiIconButton: {
+      defaultProps: {
+        size: "large",
+        disableRipple: true,
+        disableTouchRipple: true,
+      },
+      styleOverrides: {
+        root: {
+          // width: "2em",
+          // height: "2em",
+          width: 56,
+          height: 56,
+          "&:hover": {
+            backgroundColor: "transparent",
+          },
+          "&:focus": {
+            backgroundColor: "transparent",
+          },
+        },
+      },
+    },
   },
 });

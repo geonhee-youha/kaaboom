@@ -1,0 +1,47 @@
+export type NoticeItemProps = {
+  comments_count: number;
+  created_at: string;
+  id: number;
+  is_new: boolean;
+  title: string;
+};
+export type NoticeProps = {
+  content: string;
+  created_at: string;
+  id: number;
+  images: { image: string; notice_id: number; type: string }[];
+  is_new: boolean;
+  link_text: string | null;
+  link_url: string | null;
+  missions: [];
+  title: string;
+};
+export type ActivityProps = {
+  count: number;
+  created_at: string;
+  feed_comment: string | null;
+  feed_comment_id: number | null;
+  feed_id: number | null;
+  feed_image: string | null;
+  feed_image_type: string | null;
+  gender: string | null;
+  id: number;
+  ids: string;
+  is_following: number | null;
+  is_read: boolean;
+  link: string | null;
+  link_left: string | null;
+  link_right: string | null;
+  message: string;
+  mission_comment: string | null;
+  mission_comment_id: number | null;
+  mission_emoji: string | null;
+  mission_id: number | null;
+  mission_image: string | null;
+  mission_title: string | null;
+  nickname: string | null;
+  profile: string | null;
+  type: string;
+  user_id: number | null;
+  variables: string | null;
+};

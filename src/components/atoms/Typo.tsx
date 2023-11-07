@@ -1,4 +1,3 @@
-import { SxProps } from "@mui/material";
 import Typography from "@mui/material/Typography";
 type TypoProps = {
   variant?: any;
@@ -6,7 +5,7 @@ type TypoProps = {
   textAlign?: "center" | "right" | undefined;
   lines?: number;
   children?: React.ReactNode;
-  sx?: SxProps;
+  sx?: any;
   className?: any;
 };
 export default function Typo({
@@ -30,12 +29,12 @@ export default function Typo({
               lineClamp: lines,
               WebkitLineClamp: lines,
               whiteSpace: "pre-line",
-              wordBreak: "break-all",
+              wordBreak: "keep-all",
               textAlign: textAlign,
               ...sx,
             }
           : {
-              wordBreak: "break-all",
+              wordBreak: "keep-all",
               textAlign: textAlign,
               ...sx,
             }
