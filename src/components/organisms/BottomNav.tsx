@@ -8,7 +8,6 @@ import {
   Container,
   Typography,
 } from "@mui/material";
-import { bottomTabs } from "../../constants";
 import Icon from "../atoms/Icon";
 import User from "../atoms/User";
 import { theme } from "../../themes/theme";
@@ -26,18 +25,57 @@ import {
   yellow,
 } from "@mui/material/colors";
 import { useEffect, useState } from "react";
+import { IconName } from "@fortawesome/fontawesome-svg-core";
+import { usePreserveScroll } from "../../hooks/usePreserveScroll";
+
+export const bottomTabs: BottomTabsProps[] = [
+  {
+    label: { ko: "홈", en: "Home" },
+    value: "/home",
+    name: "house",
+  },
+  {
+    label: { ko: "둘러보기", en: "Exlpore" },
+    value: "/explore",
+    name: "compass",
+  },
+  {
+    label: { ko: "랭킹", en: "ranking" },
+    value: "/ranking",
+    name: "trophy-star",
+  },
+  {
+    label: { ko: "즐겨찾기", en: "Favorite" },
+    value: "/favorite",
+    name: "star",
+  },
+  {
+    label: { ko: "마이카붐", en: "Account" },
+    value: "/account",
+    name: "user",
+  },
+];
+
+export type BottomTabsProps = {
+  label: { ko: string; en: string };
+  value: string;
+  name: IconName;
+};
 
 export default function BottomNav() {
   const router = useRouter();
+  const { en } = router.query;
   const user = useRecoilValue(userState);
+  const { scrollPositions } = usePreserveScroll();
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    router.push(newValue);
+    router.push({ pathname: newValue, query: { en: en } });
   };
   const [mounted, setMounted] = useState<boolean>(false);
   useEffect(() => {
     setMounted(true);
   }, []);
-  return mounted ? (
+  const active = bottomTabs.flatMap((el) => el.value).includes(router.pathname);
+  return mounted && active ? (
     <Box
       sx={{
         position: "fixed",
@@ -80,7 +118,7 @@ export default function BottomNav() {
                       color: color,
                     }}
                   >
-                    {item.label}
+                    {en === "true" ? item.label.en : item.label.ko}
                   </Typography>
                 }
                 value={item.value}
@@ -107,9 +145,10 @@ export default function BottomNav() {
                       </Box>
                     ) : (
                       <Icon
-                        prefix={active ? "fas" : "fal"}
+                        // prefix={active ? "fas" : "fal"}
+                        prefix="fas"
                         name={item.name}
-                        size={20}
+                        size={item.value === "/ranking" ? 20 : 20}
                         color={color}
                       />
                     )}

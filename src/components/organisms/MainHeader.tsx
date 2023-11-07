@@ -9,6 +9,7 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
+  Paper,
   Typography,
 } from "@mui/material";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
@@ -19,15 +20,22 @@ import { theme } from "../../themes/theme";
 import { useRouter } from "next/router";
 import { getCountryFlagEmoji } from "../../utils";
 import { CountryCode } from "../../constants/country";
+import { bottomTabs } from "./BottomNav";
 
 export default function MainHeader() {
   const [open, setOpen] = useState<boolean>(false);
   const onClickSearch = () => {};
   const onClickBell = () => {};
   const onClickGlobe = () => {
-    setOpen(true);
+    setOpen(!open);
   };
-  return (
+  const router = useRouter();
+  const { en } = router.query;
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const active = bottomTabs.flatMap((el) => el.value).includes(router.pathname);
+  return active ? (
     <>
       <AppBar
         component="div"
@@ -41,8 +49,17 @@ export default function MainHeader() {
           borderBottomWidth: 1,
         }}
         elevation={0}
-        className="Header"
       >
+        <Box
+          sx={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+          }}
+          className="HeaderBackground"
+        />
         <Container
           sx={{
             transition: "all 0.5s ease",
@@ -68,10 +85,73 @@ export default function MainHeader() {
               forceShow
             />
           </Box>
-          <Box sx={{ m: theme.spacing(0, -1, 0, 0) }}>
+          <Box
+            sx={{
+              display: "flex",
+              m: theme.spacing(0, -1, 0, 0),
+            }}
+          >
             <IconButton name="search" onClick={onClickSearch} />
             <IconButton name="bell" onClick={onClickBell} />
-            <IconButton name="globe" onClick={onClickGlobe} />
+            <Box
+              sx={{
+                position: "relative",
+              }}
+            >
+              <IconButton name="globe" onClick={onClickGlobe} />
+              <Paper
+                elevation={10}
+                sx={{
+                  position: "absolute",
+                  top: 40,
+                  right: 4,
+                  display: open ? "block" : "none",
+                }}
+              >
+                {languages.map((item, index) => {
+                  const handleClick = () => {
+                    router.push({
+                      query:
+                        item.value === "KR"
+                          ? { ...router.query, en: undefined }
+                          : { ...router.query, en: true },
+                    });
+                    handleClose();
+                  };
+                  return (
+                    <ButtonBase
+                      sx={{
+                        display: "flex",
+                        height: 40,
+                        justifyContent: "center",
+                        alignItems: "center",
+                        p: theme.spacing(0, 2),
+                      }}
+                      key={index}
+                      onClick={handleClick}
+                    >
+                      <Typography
+                        sx={{
+                          fontSize: 16,
+                          lineHeight: "16px",
+                          m: theme.spacing(0, 1, 0, 0),
+                        }}
+                      >
+                        {getCountryFlagEmoji(item.value)}
+                      </Typography>
+                      <Typography
+                        sx={{
+                          fontSize: 12,
+                          lineHeight: "16px",
+                        }}
+                      >
+                        {item.label}
+                      </Typography>
+                    </ButtonBase>
+                  );
+                })}
+              </Paper>
+            </Box>
           </Box>
         </Container>
         <Box
@@ -85,8 +165,9 @@ export default function MainHeader() {
           className="HeaderBottom"
         />
       </AppBar>
-      <LanguageDialog open={open} setOpen={setOpen} />
     </>
+  ) : (
+    <></>
   );
 }
 
@@ -100,63 +181,3 @@ const languages: { label: string; value: CountryCode }[] = [
     value: "US",
   },
 ];
-
-function LanguageDialog({
-  open,
-  setOpen,
-}: {
-  open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
-}) {
-  const router = useRouter();
-  const { en } = router.query;
-  const handleClose = () => {
-    setOpen(false);
-  };
-  return (
-    <Dialog onClose={handleClose} open={open}>
-      <Box>
-        {languages.map((item, index) => {
-          const handleClick = () => {
-            router.push({
-              query: en
-                ? { ...router.query, en: undefined }
-                : { ...router.query, en: true },
-            });
-            handleClose();
-          };
-          return (
-            <ButtonBase
-              sx={{
-                width: "100%",
-                height: 44,
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-              key={index}
-              onClick={handleClick}
-            >
-              <Typography
-                sx={{
-                  fontSize: 20,
-                  lineHeight: "20px",
-                  m: theme.spacing(0, 1, 0, 0),
-                }}
-              >
-                {getCountryFlagEmoji(item.value)}
-              </Typography>
-              <Typography
-                sx={{
-                  fontSize: 14,
-                  lineHeight: "20px",
-                }}
-              >
-                {item.label}
-              </Typography>
-            </ButtonBase>
-          );
-        })}
-      </Box>
-    </Dialog>
-  );
-}

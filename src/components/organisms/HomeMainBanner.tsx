@@ -7,9 +7,9 @@ import { useRouter } from "next/router";
 import { grey } from "@mui/material/colors";
 import { theme } from "../../themes/theme";
 
-const homeMainBannerHeight = `calc(100vh - 56px - var(--saib))`;
-const homeMainBannerItemHeight = `calc((100vh - 56px - var(--saib)) * 0.67)`;
-const homeMainBannerContentsHeight = `calc((100vh - 56px - var(--saib)) * 0.67 + 36px)`;
+const homeMainBannerHeight = `calc((100vh - 56px - var(--saib)))`;
+const homeMainBannerItemHeight = `calc((100vh - 56px - var(--saib)) * 0.6)`;
+export const homeMainBannerContentsHeight = `calc((100vh - 56px - var(--saib)) * 0.6 + 36px)`;
 
 export type HomeMainBannerItemProps = {
   id: string;
@@ -25,8 +25,8 @@ function HomeMainBannerItem({ item }: { item: HomeMainBannerItemProps }) {
     router.push(`/celeb/${item.id}`);
   };
   return (
-    <Box>
-      <Box className="HomeMainBannerItem">
+    <>
+      <Box className="HomeMainBannerItem HomeMainBannerImage">
         <Visual src={item.thumbnail} absolute top forceShow />
       </Box>
       <Box
@@ -53,29 +53,30 @@ function HomeMainBannerItem({ item }: { item: HomeMainBannerItemProps }) {
         onClick={handleClick}
         className="HomeMainBannerItem"
       >
-        <Typography
-          sx={{
-            fontSize: 28,
-            lineHeight: "36px",
-            fontWeight: "700",
-          }}
-          className="HomeMainBannerContents"
-        >
-          {en === "true" ? item.title.en : item.title.ko}
-        </Typography>
-        <Typography
-          sx={{
-            fontSize: 14,
-            lineHeight: "20px",
-            color: grey[400],
-            fontWeight: "300",
-            m: theme.spacing(1, 0, 0, 0),
-          }}
-        >
-          {en === "true" ? item.description.en : item.description.ko}
-        </Typography>
+        <Box className="HomeMainBannerText">
+          <Typography
+            sx={{
+              fontSize: 28,
+              lineHeight: "36px",
+              fontWeight: "700",
+            }}
+          >
+            {en === "true" ? item.title.en : item.title.ko}
+          </Typography>
+          <Typography
+            sx={{
+              fontSize: 14,
+              lineHeight: "20px",
+              color: grey[400],
+              fontWeight: "300",
+              m: theme.spacing(1, 0, 0, 0),
+            }}
+          >
+            {en === "true" ? item.description.en : item.description.ko}
+          </Typography>
+        </Box>
       </Container>
-    </Box>
+    </>
   );
 }
 
@@ -87,33 +88,50 @@ export default function HomeMainBanner({
   const [swiper, setSwiper] = useState<SwiperCore>();
   const handleSlideChange = () => {};
   useEffect(() => {
-    var headerEl: any = document.querySelector(`.Header`);
+    var headerBackgroundEl: any = document.querySelector(`.HeaderBackground`);
     var headerBottomEl: any = document.querySelector(`.HeaderBottom`);
-    var targetEl: any = document.querySelector(`.HomeMainBannerContents`);
-    var targetEl2: any = document.querySelector(`.HomeContents`);
-    var bannerEl: any = document.querySelector(`.HomeMainBanner`);
+    var contentsEls: any = document.querySelectorAll(`.HomeMainBannerText`);
+    var homeContentsEl: any = document.querySelector(`.HomeContents`);
+    var imageEls: any = document.querySelectorAll(
+      `.HomeMainBannerImage .ImageContainer`
+    );
     var itemEls: any = document.querySelectorAll(`.HomeMainBannerItem`);
     var paginationEl: any = document.querySelector(
       `.HomeMainBanner .swiper-pagination`
     );
     const listener1 = (e: any) => {
-      var scrollY = window.scrollY;
-      var remainedHeight = targetEl.offsetTop - headerBottomEl.offsetTop;
-      var remainedHeight2 = targetEl2.offsetTop - headerBottomEl.offsetTop;
-      var variableOpacity = (remainedHeight - scrollY) / remainedHeight;
-      var variableColorOpacity: any =
-        1 - (remainedHeight - scrollY) / remainedHeight;
-      var variableColorOpacity2: any =
-        1 - (remainedHeight2 - scrollY) / remainedHeight2;
-      headerEl.style.setProperty(
-        "background",
-        alpha("#121212", variableColorOpacity2 > 1 ? 1 : variableColorOpacity2)
+      var scrollY = Number(window.scrollY.toFixed(0));
+      var swiperLineOffsetTop = homeContentsEl.getBoundingClientRect().top + 32;
+      var top = swiperLineOffsetTop < 1 ? 1 : swiperLineOffsetTop;
+      var headerBackgroundOffsetBottom =
+        headerBottomEl.getBoundingClientRect().bottom;
+      var bannerOpacity: number = Number(
+        ((top - headerBackgroundOffsetBottom) / top).toFixed(1)
       );
-      bannerEl.style.transform = `translateY(-${scrollY / 2}px)`;
-      itemEls.forEach(function (el: any) {
-        el.style.setProperty("opacity", variableOpacity);
+      var headerBlur: number = Number(
+        (1 - (top - headerBackgroundOffsetBottom) / top).toFixed(1)
+      );
+      headerBackgroundEl.style.setProperty(
+        "background",
+        alpha("#121212", headerBlur > 1 ? 1 : headerBlur < 0 ? 0 : headerBlur)
+      );
+      imageEls.forEach(function (el: any) {
+        el.style.transform = `translateY(-${scrollY / 3}px)`;
       });
-      paginationEl.style.setProperty("opacity", variableOpacity);
+      contentsEls.forEach(function (el: any) {
+        el.style.transform = `translateY(-${scrollY / 2}px)`;
+      });
+      paginationEl.style.transform = `translateY(-${scrollY / 3}px)`;
+      itemEls.forEach(function (el: any) {
+        el.style.setProperty(
+          "opacity",
+          bannerOpacity > 1 ? 1 : bannerOpacity < 0 ? 0 : bannerOpacity
+        );
+      });
+      paginationEl.style.setProperty(
+        "opacity",
+        bannerOpacity > 1 ? 1 : bannerOpacity < 0 ? 0 : bannerOpacity
+      );
     };
     window.addEventListener("scroll", listener1);
     window.addEventListener("resize", listener1);
@@ -130,7 +148,7 @@ export default function HomeMainBanner({
       />
       <Box
         sx={{
-          position: "absolute",
+          position: "fixed",
           top: 0,
           left: 0,
           right: 0,
@@ -157,8 +175,10 @@ export default function HomeMainBanner({
                 right: 0,
                 bottom: 0,
                 zIndex: 2,
+                // background:
+                //   "linear-gradient(rgba(18, 18, 18, 0.8) 0%, rgba(18, 18, 18, 0.4) calc((100vh - 56px) * 0.2), rgba(18, 18, 18, 0.6) calc((100vh - 56px) * 0.4), rgba(18, 18, 18, 1) calc((100vh - 56px) * 0.8), rgba(18, 18, 18, 1) 100%)",
                 background:
-                  "linear-gradient(rgba(18, 18, 18, 0.8) 0%, rgba(18, 18, 18, 0.4) 128px, rgba(18, 18, 18, 0.4) calc(((100vh - 56px) * 0.67) / 2), rgba(18, 18, 18, 1) calc(((100vh - 56px) * 0.67) + 240px), rgba(18, 18, 18, 1) 100%)",
+                  "linear-gradient(rgba(18, 18, 18, 0.8) 0%, rgba(18, 18, 18, 0.4) calc((100vh - 56px) * 0.2), rgba(18, 18, 18, 0.8) 100%)",
               },
             },
             "& .swiper-pagination": {

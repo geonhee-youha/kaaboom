@@ -25,6 +25,8 @@ import reset from "../styles/reset";
 import BottomNav from "../components/organisms/BottomNav";
 import MainHeader from "../components/organisms/MainHeader";
 import MainFab from "../components/organisms/MainFab";
+import { usePreserveScroll } from "../hooks/usePreserveScroll";
+import '@fortawesome/fontawesome-svg-core/styles.css'
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -102,6 +104,8 @@ function MyApp(props: MyAppProps) {
   //     );
   //   };
   // }, []);
+
+  usePreserveScroll();
   return (
     <CacheProvider value={emotionCache}>
       <Head>

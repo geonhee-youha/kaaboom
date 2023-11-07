@@ -38,6 +38,9 @@ export default function Visual({
     if (inView && loaded) {
       setShow(true);
     }
+    if (forceShow && src) {
+      setShow(true);
+    }
     if (video) setPlaying(inView);
   }, [inView, loaded]);
   return (
@@ -94,7 +97,19 @@ export default function Visual({
       onClick={onClick}
       className={video ? "video" : ""}
     >
-      <Box sx={absolute ? { width: "100%", height: "100%", ...sx } : { ...sx }}>
+      <Box
+        sx={
+          absolute
+            ? {
+                width: "100%",
+                height: "100%",
+                ...sx,
+                transition: "none !important",
+              }
+            : { ...sx }
+        }
+        className="ImageContainer"
+      >
         {video && (
           <ReactPlayer
             playsinline
@@ -123,7 +138,7 @@ export default function Visual({
             height: "100%",
             objectFit: "cover",
             display: video ? "none" : "initial",
-            opacity: forceShow || show ? 1 : 0,
+            opacity: show ? 1 : 0,
             transition: "all 0.5s ease",
             objectPosition: top ? "top center" : "center center !important",
           }}

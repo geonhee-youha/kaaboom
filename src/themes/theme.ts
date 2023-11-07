@@ -77,6 +77,7 @@ export const theme = createTheme({
     MuiButtonBase: {
       styleOverrides: {
         root: {
+          display: "flex",
           justifyContent: 'flex-start',
           alignItems: 'flex-start',
           textAlign: "left",
