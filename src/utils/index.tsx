@@ -2,9 +2,6 @@ import _ from "lodash";
 import React from "react";
 import createCache from "@emotion/cache";
 import { useEffect, useState } from "react";
-import { SetterOrUpdater } from "recoil";
-import { userDefaultProps, UserProps } from "../types";
-import useAxios, { API_URL } from "../hooks";
 import { CountryCode } from "../constants/country";
 export function createEmotionCache() {
   return createCache({ key: "css" });
@@ -144,23 +141,23 @@ export const dateToString = (date: Date) => {
   return year + month + day;
 };
 
-export function displayedAt(str: string | null) {
-  const date = str === null ? 0 : new Date(str).getTime();
+export function displayedAt(value: Date, en?: boolean) {
+  const date = value.getTime();
   const milliSeconds = new Date().getTime() - date;
   const seconds = milliSeconds / 1000;
-  if (seconds < 60) return `방금 전`;
+  if (seconds < 60) return en ? `Just before` : `방금 전`;
   const minutes = seconds / 60;
-  if (minutes < 60) return `${Math.floor(minutes)}분 전`;
+  if (minutes < 60) return `${Math.floor(minutes)}m ago`;
   const hours = minutes / 60;
-  if (hours < 24) return `${Math.floor(hours)}시간 전`;
+  if (hours < 24) return `${Math.floor(hours)}h ago`;
   const days = hours / 24;
-  if (days < 4) return `${Math.floor(days)}일 전`;
+  if (days < 4) return `${Math.floor(days)}d ago`;
   const weeks = days / 7;
-  if (weeks < 5) return `${Math.floor(weeks)}주 전`;
+  if (weeks < 5) return `${Math.floor(weeks)}W ago`;
   const months = days / 30;
-  if (months < 12) return `${Math.floor(months)}개월 전`;
+  if (months < 12) return `${Math.floor(months)}M 전`;
   const years = days / 365;
-  return `${Math.floor(years)}년 전`;
+  return `${Math.floor(years)}Y 전`;
 }
 
 export const messagedAt = (str: string | null) => {
@@ -311,25 +308,6 @@ export function viewSplitLine(message: string) {
   };
 
   return <div dangerouslySetInnerHTML={replace(message)}></div>;
-}
-export function getUser(
-  set: SetterOrUpdater<UserProps>,
-  before?: any,
-  after?: any
-) {
-  if (typeof before === "function") before();
-  useAxios(`${API_URL}/user`)
-    .then((res) => {
-      if (res.status === 401) {
-        //처음 앱 깔았거나, 로그아웃된 상태
-        set({ ...userDefaultProps });
-      } else if (res.status === 200) {
-        //로그인된 값이 있다.
-        set({ ...res.data.data });
-      }
-      if (typeof after === "function") after();
-    })
-    .catch(() => set(userDefaultProps));
 }
 
 export const queryToObj = (query: string) => {

@@ -9,7 +9,7 @@ import { theme } from "../../themes/theme";
 
 const homeMainBannerHeight = `calc((100vh - 56px - var(--saib)))`;
 const homeMainBannerItemHeight = `calc((100vh - 56px - var(--saib)) * 0.6)`;
-export const homeMainBannerContentsHeight = `calc((100vh - 56px - var(--saib)) * 0.6 + 36px)`;
+export const homeMainBannerContentsHeight = `calc((100vh - 56px - var(--saib)) * 0.6 + 40px)`;
 
 export type HomeMainBannerItemProps = {
   id: string;
@@ -189,17 +189,20 @@ export default function HomeMainBanner({
               "@media(min-width: 600px)": {
                 p: theme.spacing(2, 3),
               },
-              height: `36px`,
+              height: `40px`,
               transition: "none !important",
             },
             "& .swiper-pagination-bullet": {
-              width: "12px",
-              height: "4px",
-              borderRadius: 0,
-              m: "0 4px 0 0 !important",
+              width: "6px",
+              height: "6px",
+              borderRadius: 2,
               backgroundColor: "white",
+              transition: `all 0.5s ease`,
+              m: `0 4px 0 0 !important`,
+              opacity: `0.4 !important`,
               "&.swiper-pagination-bullet-active": {
-                opacity: 1,
+                opacity: `1 !important`,
+                width: "24px",
               },
             },
             "& video": {

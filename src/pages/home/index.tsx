@@ -1,17 +1,19 @@
 import { Box, Container, Typography } from "@mui/material";
 import HomeMainBanner, {
-  HomeMainBannerItemProps, homeMainBannerContentsHeight,
+  HomeMainBannerItemProps,
+  homeMainBannerContentsHeight,
 } from "../../components/organisms/HomeMainBanner";
 import { theme } from "../../themes/theme";
 import { useEffect, useRef, useState } from "react";
 import { grey } from "@mui/material/colors";
 import { useRouter } from "next/router";
-import ContentsItem, {
-  ContentsProps,
-} from "../../components/molecules/ContentsItem";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Pagination } from "swiper";
 import { CelebProps } from "../../components/molecules/CelebItem";
+import ProjectItem, {
+  ProjectProps,
+} from "../../components/molecules/ProjectItem";
+import IdeaItem, { IdeaProps } from "../../components/molecules/IdeaItem";
 
 const testHomeMainBanner: HomeMainBannerItemProps[] = [
   {
@@ -127,9 +129,29 @@ export const testCelebs: CelebProps[] = [
     name: { ko: "도경수", en: "D.O." },
     thumbnail: "/temp/celeb/1.webp",
   },
+  {
+    id: "2",
+    name: { ko: "우지호", en: "ZICO" },
+    thumbnail: "/temp/celeb/1.webp",
+  },
+  {
+    id: "3",
+    name: { ko: "도경수", en: "D.O." },
+    thumbnail: "/temp/celeb/1.webp",
+  },
+  {
+    id: "4",
+    name: { ko: "도경수", en: "D.O." },
+    thumbnail: "/temp/celeb/1.webp",
+  },
+  {
+    id: "5",
+    name: { ko: "도경수", en: "D.O." },
+    thumbnail: "/temp/celeb/1.webp",
+  },
 ];
 
-export const testContents: ContentsProps[] = [
+export const testProjects: ProjectProps[] = [
   {
     id: "1",
     celeb: {
@@ -137,17 +159,22 @@ export const testContents: ContentsProps[] = [
     },
     thumbnail: "/temp/contents/1.png",
     title: {
-      ko: "경수오빠 저희를 위해서 솔로앨범 내주세요",
-      en: "Kyungsoo oppa, please release an album for us",
+      ko: "크리스마스 캐롤 앨범 제작 프로젝트",
+      en: "Christmas Carol Album Project",
     },
     description: {
       ko: "이 편지는 영국에서 최초로 시작되어 일년에 한바퀴를 돌면서 받는 사람에게 행운을 주었고 지금은 당신에게로 옮겨진 이 편지는 4일 안에 당신 곁을 떠나야 합니다. 이 편지를 포함해서 7통을 행운이 필요한 사람에게 보내 주셔야 합니다. 복사를 해도 좋습니다. 혹 미신이라 하실지 모르지만 사실입니다.",
       en: "If you have nothing to do now I can offer you a little entertainment – a psychological game. Try it and I hope that you will like it.",
     },
     story: { ko: "", en: "" },
-    likeCount: 24,
-    commentCount: 0,
+    likeCount: 2640,
+    commentCount: 1077,
+    viewCount: 18473,
     liked: true,
+    dueDate: new Date("2023-12-01"),
+    fan: {
+      id: "1",
+    },
   },
   {
     id: "2",
@@ -156,17 +183,22 @@ export const testContents: ContentsProps[] = [
     },
     thumbnail: "/temp/contents/2.jpeg",
     title: {
-      ko: "경수오빠 저희를 위해서 솔로앨범 내주세요",
-      en: "Kyungsoo oppa, please release an album for us",
+      ko: "화보 메이킹필름 콘텐츠 프로젝트",
+      en: "Pictorial making film content project",
     },
     description: {
       ko: "이 편지는 영국에서 최초로 시작되어 일년에 한바퀴를 돌면서 받는 사람에게 행운을 주었고 지금은 당신에게로 옮겨진 이 편지는 4일 안에 당신 곁을 떠나야 합니다. 이 편지를 포함해서 7통을 행운이 필요한 사람에게 보내 주셔야 합니다. 복사를 해도 좋습니다. 혹 미신이라 하실지 모르지만 사실입니다.",
       en: "If you have nothing to do now I can offer you a little entertainment – a psychological game. Try it and I hope that you will like it.",
     },
     story: { ko: "", en: "" },
-    likeCount: 3,
-    commentCount: 1,
+    likeCount: 3822,
+    commentCount: 934,
+    viewCount: 18473,
     liked: false,
+    dueDate: new Date("2023-12-01"),
+    fan: {
+      id: "2",
+    },
   },
   {
     id: "3",
@@ -175,17 +207,22 @@ export const testContents: ContentsProps[] = [
     },
     thumbnail: "/temp/contents/3.jpg",
     title: {
-      ko: "경수오빠 저희를 위해서 솔로앨범 내주세요",
-      en: "Kyungsoo oppa, please release an album for us",
+      ko: "더 문 촬영 및 제작후기 공유 프로젝트",
+      en: "The Moon filming and production review sharing project",
     },
     description: {
       ko: "이 편지는 영국에서 최초로 시작되어 일년에 한바퀴를 돌면서 받는 사람에게 행운을 주었고 지금은 당신에게로 옮겨진 이 편지는 4일 안에 당신 곁을 떠나야 합니다. 이 편지를 포함해서 7통을 행운이 필요한 사람에게 보내 주셔야 합니다. 복사를 해도 좋습니다. 혹 미신이라 하실지 모르지만 사실입니다.",
       en: "If you have nothing to do now I can offer you a little entertainment – a psychological game. Try it and I hope that you will like it.",
     },
     story: { ko: "", en: "" },
-    likeCount: 12,
-    commentCount: 6,
+    likeCount: 1216,
+    commentCount: 680,
+    viewCount: 18473,
     liked: false,
+    dueDate: new Date("2023-12-01"),
+    fan: {
+      id: "3",
+    },
   },
   {
     id: "4",
@@ -202,9 +239,14 @@ export const testContents: ContentsProps[] = [
       en: "If you have nothing to do now I can offer you a little entertainment – a psychological game. Try it and I hope that you will like it.",
     },
     story: { ko: "", en: "" },
-    likeCount: 15,
-    commentCount: 4,
+    likeCount: 1580,
+    commentCount: 412,
+    viewCount: 18473,
     liked: false,
+    dueDate: new Date("2023-12-01"),
+    fan: {
+      id: "4",
+    },
   },
   {
     id: "5",
@@ -221,9 +263,14 @@ export const testContents: ContentsProps[] = [
       en: "If you have nothing to do now I can offer you a little entertainment – a psychological game. Try it and I hope that you will like it.",
     },
     story: { ko: "", en: "" },
-    likeCount: 2,
-    commentCount: 3,
+    likeCount: 2108,
+    commentCount: 477,
+    viewCount: 18473,
     liked: false,
+    dueDate: new Date("2023-12-01"),
+    fan: {
+      id: "1",
+    },
   },
   {
     id: "6",
@@ -240,9 +287,14 @@ export const testContents: ContentsProps[] = [
       en: "If you have nothing to do now I can offer you a little entertainment – a psychological game. Try it and I hope that you will like it.",
     },
     story: { ko: "", en: "" },
-    likeCount: 2,
-    commentCount: 3,
+    likeCount: 2143,
+    commentCount: 358,
+    viewCount: 18473,
     liked: false,
+    dueDate: new Date("2023-12-01"),
+    fan: {
+      id: "2",
+    },
   },
   {
     id: "7",
@@ -259,9 +311,113 @@ export const testContents: ContentsProps[] = [
       en: "If you have nothing to do now I can offer you a little entertainment – a psychological game. Try it and I hope that you will like it.",
     },
     story: { ko: "", en: "" },
-    likeCount: 2,
-    commentCount: 3,
+    likeCount: 2912,
+    commentCount: 364,
+    viewCount: 18473,
     liked: false,
+    dueDate: new Date("2023-12-01"),
+    fan: {
+      id: "3",
+    },
+  },
+];
+
+export const testIdeas: IdeaProps[] = [
+  {
+    id: "1",
+    celeb: {
+      id: "1",
+    },
+    thumbnail: "",
+    title: {
+      ko: "경수오빠 저희를 위해서 솔로앨범 내주세요",
+      en: "Kyungsoo oppa, please release an album for us",
+    },
+    description: {
+      ko: "이 편지는 영국에서 최초로 시작되어 일년에 한바퀴를 돌면서 받는 사람에게 행운을 주었고 지금은 당신에게로 옮겨진 이 편지는 4일 안에 당신 곁을 떠나야 합니다. 이 편지를 포함해서 7통을 행운이 필요한 사람에게 보내 주셔야 합니다. 복사를 해도 좋습니다. 혹 미신이라 하실지 모르지만 사실입니다.",
+      en: "If you have nothing to do now I can offer you a little entertainment – a psychological game. Try it and I hope that you will like it.",
+    },
+    story: { ko: "", en: "" },
+    likeCount: 291,
+    commentCount: 36,
+    viewCount: 1847,
+    liked: true,
+    writtenDate: new Date("2023-11-07"),
+    fan: {
+      id: "3",
+    },
+  },
+  {
+    id: "2",
+    celeb: {
+      id: "1",
+    },
+    thumbnail: "",
+    title: {
+      ko: "경수오빠 저희를 위해서 솔로앨범 내주세요",
+      en: "Kyungsoo oppa, please release an album for us",
+    },
+    description: {
+      ko: "이 편지는 영국에서 최초로 시작되어 일년에 한바퀴를 돌면서 받는 사람에게 행운을 주었고 지금은 당신에게로 옮겨진 이 편지는 4일 안에 당신 곁을 떠나야 합니다. 이 편지를 포함해서 7통을 행운이 필요한 사람에게 보내 주셔야 합니다. 복사를 해도 좋습니다. 혹 미신이라 하실지 모르지만 사실입니다.",
+      en: "If you have nothing to do now I can offer you a little entertainment – a psychological game. Try it and I hope that you will like it.",
+    },
+    story: { ko: "", en: "" },
+    likeCount: 291,
+    commentCount: 36,
+    viewCount: 1847,
+    liked: true,
+    writtenDate: new Date("2023-11-08"),
+    fan: {
+      id: "2",
+    },
+  },
+  {
+    id: "3",
+    celeb: {
+      id: "1",
+    },
+    thumbnail: "",
+    title: {
+      ko: "경수오빠 저희를 위해서 솔로앨범 내주세요",
+      en: "Kyungsoo oppa, please release an album for us",
+    },
+    description: {
+      ko: "이 편지는 영국에서 최초로 시작되어 일년에 한바퀴를 돌면서 받는 사람에게 행운을 주었고 지금은 당신에게로 옮겨진 이 편지는 4일 안에 당신 곁을 떠나야 합니다. 이 편지를 포함해서 7통을 행운이 필요한 사람에게 보내 주셔야 합니다. 복사를 해도 좋습니다. 혹 미신이라 하실지 모르지만 사실입니다.",
+      en: "If you have nothing to do now I can offer you a little entertainment – a psychological game. Try it and I hope that you will like it.",
+    },
+    story: { ko: "", en: "" },
+    likeCount: 291,
+    commentCount: 36,
+    viewCount: 1847,
+    liked: true,
+    writtenDate: new Date("2023-11-08"),
+    fan: {
+      id: "2",
+    },
+  },
+  {
+    id: "4",
+    celeb: {
+      id: "1",
+    },
+    thumbnail: "",
+    title: {
+      ko: "경수오빠 저희를 위해서 솔로앨범 내주세요",
+      en: "Kyungsoo oppa, please release an album for us",
+    },
+    description: {
+      ko: "이 편지는 영국에서 최초로 시작되어 일년에 한바퀴를 돌면서 받는 사람에게 행운을 주었고 지금은 당신에게로 옮겨진 이 편지는 4일 안에 당신 곁을 떠나야 합니다. 이 편지를 포함해서 7통을 행운이 필요한 사람에게 보내 주셔야 합니다. 복사를 해도 좋습니다. 혹 미신이라 하실지 모르지만 사실입니다.",
+      en: "If you have nothing to do now I can offer you a little entertainment – a psychological game. Try it and I hope that you will like it.",
+    },
+    story: { ko: "", en: "" },
+    likeCount: 291,
+    commentCount: 36,
+    viewCount: 1847,
+    liked: true,
+    writtenDate: new Date("2023-11-08"),
+    fan: {
+      id: "2",
+    },
   },
 ];
 
@@ -281,7 +437,7 @@ export default function App() {
             background:
               "linear-gradient(rgba(18, 18, 18, 0) 0%, rgba(18, 18, 18, 1) 120px)",
             bottom: 0,
-            zIndex: 98
+            zIndex: 98,
           }}
         />
         <Box
@@ -296,14 +452,15 @@ export default function App() {
           }}
           className="HomeContents"
         >
-          <Section />
+          <ProjectSection />
+          <IdeaSection />
         </Box>
       </Container>
     </>
   );
 }
 
-function Section() {
+function ProjectSection() {
   const router = useRouter();
   const { en } = router.query;
   const [swiper, setSwiper] = useState<SwiperCore>();
@@ -330,8 +487,120 @@ function Section() {
           }}
         >
           {en === "true"
-            ? "Currently recruited contents"
-            : "지금 모집중인 콘텐츠"}
+            ? "Currently preparing projects"
+            : "지금 준비중인 프로젝트"}
+        </Typography>
+        <Box
+          sx={{
+            m: theme.spacing(2, -2, 0, -2),
+            "@media(min-width: 600px)": {
+              m: theme.spacing(2, -3, 0, -3),
+            },
+            "& .swiper": {
+              p: theme.spacing(0, 2),
+              "@media(min-width: 600px)": {
+                p: theme.spacing(0, 3),
+              },
+            },
+          }}
+        >
+          <Swiper
+            onSwiper={setSwiper}
+            onSlideChange={handleSlideChange}
+            breakpoints={{
+              0: {
+                slidesPerView: 1,
+                spaceBetween: 8,
+              },
+              240: {
+                slidesPerView: 2,
+                spaceBetween: 8,
+              },
+              480: {
+                slidesPerView: 2,
+                spaceBetween: 8,
+              },
+              720: {
+                slidesPerView: 3,
+                spaceBetween: 12,
+              },
+              840: {
+                slidesPerView: 4,
+                spaceBetween: 12,
+              },
+              1200: {
+                slidesPerView: 5,
+                spaceBetween: 12,
+              },
+            }}
+            // breakpoints={{
+            //   0: {
+            //     slidesPerView: 1,
+            //     spaceBetween: 8,
+            //   },
+            //   240: {
+            //     slidesPerView: 1,
+            //     spaceBetween: 8,
+            //   },
+            //   480: {
+            //     slidesPerView: 1,
+            //     spaceBetween: 8,
+            //   },
+            //   720: {
+            //     slidesPerView: 2,
+            //     spaceBetween: 12,
+            //   },
+            //   840: {
+            //     slidesPerView: 3,
+            //     spaceBetween: 12,
+            //   },
+            //   1200: {
+            //     slidesPerView: 4,
+            //     spaceBetween: 12,
+            //   },
+            // }}
+          >
+            {testProjects.map((item, index) => {
+              return (
+                <SwiperSlide key={index}>
+                  <ProjectItem item={item} />
+                </SwiperSlide>
+              );
+            })}
+          </Swiper>
+        </Box>
+      </Box>
+    </Box>
+  );
+}
+
+function IdeaSection() {
+  const router = useRouter();
+  const { en } = router.query;
+  const [swiper, setSwiper] = useState<SwiperCore>();
+  const handleSlideChange = () => {};
+  return (
+    <Box
+      sx={{
+        p: theme.spacing(0, 2),
+        "@media(min-width: 600px)": {
+          p: theme.spacing(0, 3),
+        },
+      }}
+    >
+      <Box
+        sx={{
+          p: theme.spacing(8, 0, 0, 0),
+        }}
+      >
+        <Typography
+          sx={{
+            fontSize: 16,
+            lineHeight: "24px",
+            fontWeight: "700",
+          }}
+        >
+          {en === "true" ? "Real-time popular ideas" : "실시간 인기 아이디어"}
         </Typography>
         <Box
           sx={{
@@ -382,31 +651,31 @@ function Section() {
                 spaceBetween: 8,
               },
               240: {
-                slidesPerView: 2,
+                slidesPerView: 1,
                 spaceBetween: 8,
               },
               480: {
-                slidesPerView: 2,
+                slidesPerView: 1,
                 spaceBetween: 8,
               },
               720: {
-                slidesPerView: 3,
+                slidesPerView: 2,
                 spaceBetween: 12,
               },
               840: {
-                slidesPerView: 4,
+                slidesPerView: 2,
                 spaceBetween: 12,
               },
               1200: {
-                slidesPerView: 5,
+                slidesPerView: 3,
                 spaceBetween: 12,
               },
             }}
           >
-            {testContents.map((item, index) => {
+            {testIdeas.map((item, index) => {
               return (
                 <SwiperSlide key={index}>
-                  <ContentsItem item={item} />
+                  <IdeaItem item={item} />
                 </SwiperSlide>
               );
             })}

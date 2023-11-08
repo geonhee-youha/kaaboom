@@ -1,6 +1,5 @@
 import _ from "lodash";
 import { useRecoilValue } from "recoil";
-import { userState } from "../../recoil/users";
 import {
   BottomNavigation,
   BottomNavigationAction,
@@ -65,7 +64,6 @@ export type BottomTabsProps = {
 export default function BottomNav() {
   const router = useRouter();
   const { en } = router.query;
-  const user = useRecoilValue(userState);
   const { scrollPositions } = usePreserveScroll();
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     router.push({ pathname: newValue, query: { en: en } });
@@ -141,7 +139,7 @@ export default function BottomNav() {
                           alignItems: "center",
                         }}
                       >
-                        <User item={user} size={24} />
+                        {/* */}
                       </Box>
                     ) : (
                       <Icon

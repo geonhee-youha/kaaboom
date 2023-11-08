@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import BackHeader from "../../components/organisms/BackHeader";
-import { testCelebs, testContents } from "../home";
+import { testCelebs, testProjects } from "../home";
 import Visual from "../../components/atoms/Visual";
 import _ from "lodash";
 import { Box, Container, alpha } from "@mui/material";
@@ -10,7 +10,7 @@ export default function Index() {
   const router = useRouter();
   const { id, en } = router.query;
   const contents =
-    testContents[_.findIndex(testContents, (el) => el.id === id)];
+    testProjects[_.findIndex(testProjects, (el) => el.id === id)];
   return (
     <>
       <BackHeader />
@@ -22,10 +22,9 @@ export default function Index() {
 function Page() {
   const router = useRouter();
   const { id, en } = router.query;
-  const contents =
-    testContents[_.findIndex(testContents, (el) => el.id === id)];
+  const project = testProjects[_.findIndex(testProjects, (el) => el.id === id)];
   const celeb =
-    testCelebs[_.findIndex(testCelebs, (el) => el.id === contents.celeb.id)];
+    testCelebs[_.findIndex(testCelebs, (el) => el.id === project.celeb.id)];
   useEffect(() => {
     var headerEl: any = document.querySelector(`.HeaderBackground`);
     var headerBottomEl: any = document.querySelector(`.HeaderBottom`);
@@ -90,10 +89,10 @@ function Page() {
               aspectRatio: `10 / 16`,
             }}
           >
-            <Visual src={contents.thumbnail} absolute />
+            <Visual src={project.thumbnail} absolute />
           </Box>
         </Box>
-        <Box sx={{ height: '200vh'}} className="HomeContents"/>
+        <Box sx={{ height: "200vh" }} className="HomeContents" />
       </Container>
     </>
   );

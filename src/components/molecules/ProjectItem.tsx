@@ -5,12 +5,13 @@ import { theme } from "../../themes/theme";
 import React from "react";
 import { useRouter } from "next/router";
 import { grey, pink } from "@mui/material/colors";
-import { comma } from "../../utils";
+import { comma, getCountryFlagEmoji, getDiffDay } from "../../utils";
 import Icon from "../atoms/Icon";
 import { testCelebs } from "../../pages/home";
 import _ from "lodash";
+import { tempFans } from "./FanItem";
 
-export type ContentsProps = {
+export type ProjectProps = {
   id: string;
   celeb: {
     id: string;
@@ -21,16 +22,22 @@ export type ContentsProps = {
   story: { ko: React.ReactNode; en: React.ReactNode };
   likeCount: number;
   commentCount: number;
+  viewCount: number;
   liked?: boolean;
+  dueDate: Date;
+  fan: {
+    id: string;
+  };
 };
 
-export default function ContentsItem({ item }: { item: ContentsProps }) {
+export default function ProjectItem({ item }: { item: ProjectProps }) {
   const router = useRouter();
   const { en } = router.query;
   const celeb =
     testCelebs[_.findIndex(testCelebs, (el) => el.id === item.celeb.id)];
+  const fan = tempFans[_.findIndex(tempFans, (el) => el.id === item.fan.id)];
   const handleClick = () => {
-    router.push({ pathname: `/contents/${item.id}`, query: router.query });
+    router.push({ pathname: `/project/${item.id}`, query: router.query });
   };
   return (
     <ButtonBase
@@ -70,18 +77,46 @@ export default function ContentsItem({ item }: { item: ContentsProps }) {
           )})`,
         }}
       >
+        <Box
+          sx={{
+            position: "absolute",
+            top: 8,
+            left: 8,
+          }}
+        >
+          <Box
+            sx={{
+              height: 24,
+              borderRadius: 1,
+              display: "flex",
+              alignItems: "center",
+              p: theme.spacing(0, 1),
+              backgroundColor: grey[900],
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: 10,
+                lineHeight: "14px",
+              }}
+            >
+              {getDiffDay(item.dueDate)}
+            </Typography>
+          </Box>
+        </Box>
         <Typography
           sx={{
             fontSize: 12,
             lineHeight: "16px",
             color: grey[400],
             // fontWeight: '300',
-            m: theme.spacing(0, 0, 0.5, 0),
+            m: theme.spacing(0, 0, 1, 0),
           }}
         >
           {celeb.name[en === "true" ? "en" : "ko"]}
         </Typography>
         <Typo
+          lines={2}
           sx={{
             fontSize: 14,
             lineHeight: "20px",
@@ -102,6 +137,17 @@ export default function ContentsItem({ item }: { item: ContentsProps }) {
         >
           {item.description[en === "true" ? "en" : "ko"]}
         </Typo>
+        {/* <Typo
+          sx={{
+            fontSize: 10,
+            lineHeight: "14px",
+            // fontWeight: "300",
+            color: grey[600],
+            m: theme.spacing(1, 0, 0, 0),
+          }}
+        >
+          {en ==='true' ? `${comma(item.viewCount)} view` : `조회수 ${comma(item.viewCount)}`}
+        </Typo> */}
         {/* <Box
           sx={{
             m: theme.spacing(2, 0, 0, 0),
@@ -178,7 +224,7 @@ export default function ContentsItem({ item }: { item: ContentsProps }) {
             m: theme.spacing(1.25, -0.25, -0.25, -0.25),
             display: "flex",
             "& > *:not(:nth-of-type(1))": {
-              m: theme.spacing(0, 0, 0, 1.5),
+              m: theme.spacing(0, 0, 0, 1),
             },
           }}
         >
@@ -190,7 +236,7 @@ export default function ContentsItem({ item }: { item: ContentsProps }) {
           >
             <Icon
               prefix="fas"
-              color={item.liked ? pink[500] : grey[700]}
+              color={item.liked ? pink[500] : grey[600]}
               name="heart"
               size={12}
               sx={{ m: theme.spacing(0, 0.5, 0, 0) }}
@@ -199,7 +245,7 @@ export default function ContentsItem({ item }: { item: ContentsProps }) {
               sx={{
                 fontSize: 12,
                 lineHeight: "16px",
-                color: item.liked ? pink[500] : grey[700],
+                color: item.liked ? pink[500] : grey[600],
                 fontWeight: 700,
               }}
             >
@@ -214,7 +260,7 @@ export default function ContentsItem({ item }: { item: ContentsProps }) {
           >
             <Icon
               prefix="fas"
-              color={grey[700]}
+              color={grey[600]}
               name="comment"
               size={12}
               sx={{ m: theme.spacing(0, 0.5, 0, 0) }}
@@ -223,7 +269,7 @@ export default function ContentsItem({ item }: { item: ContentsProps }) {
               sx={{
                 fontSize: 12,
                 lineHeight: "16px",
-                color: grey[700],
+                color: grey[600],
                 fontWeight: 700,
               }}
             >
