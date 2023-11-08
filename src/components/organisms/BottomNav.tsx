@@ -34,19 +34,19 @@ export const bottomTabs: BottomTabsProps[] = [
     name: "house",
   },
   {
-    label: { ko: "둘러보기", en: "Exlpore" },
-    value: "/explore",
-    name: "compass",
+    label: { ko: "프로젝트", en: "Projects" },
+    value: "/projects",
+    name: "bolt",
   },
   {
-    label: { ko: "랭킹", en: "ranking" },
-    value: "/ranking",
-    name: "trophy-star",
+    label: { ko: "아이디어", en: "Ideas" },
+    value: "/ideas",
+    name: "lightbulb",
   },
   {
     label: { ko: "즐겨찾기", en: "Favorite" },
     value: "/favorite",
-    name: "star",
+    name: "heart",
   },
   {
     label: { ko: "마이카붐", en: "Account" },

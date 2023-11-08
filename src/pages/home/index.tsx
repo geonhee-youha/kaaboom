@@ -9,7 +9,7 @@ import { grey } from "@mui/material/colors";
 import { useRouter } from "next/router";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Pagination } from "swiper";
-import { CelebProps } from "../../components/molecules/CelebItem";
+import CelebItem, { CelebProps } from "../../components/molecules/CelebItem";
 import ProjectItem, {
   ProjectProps,
 } from "../../components/molecules/ProjectItem";
@@ -132,22 +132,37 @@ export const testCelebs: CelebProps[] = [
   {
     id: "2",
     name: { ko: "우지호", en: "ZICO" },
-    thumbnail: "/temp/celeb/1.webp",
+    thumbnail: "/temp/celeb/2.webp",
+  },
+  {
+    id: "6",
+    name: { ko: "욘니와 치애", en: "YONNI & CHIAE" },
+    thumbnail: "/temp/celeb/6.webp",
+  },
+  {
+    id: "7",
+    name: { ko: "손흥민", en: "SON" },
+    thumbnail: "/temp/celeb/7.webp",
+  },
+  {
+    id: "8",
+    name: { ko: "류승룡", en: "SEUNG RYONG RYU" },
+    thumbnail: "/temp/celeb/8.webp",
   },
   {
     id: "3",
-    name: { ko: "도경수", en: "D.O." },
-    thumbnail: "/temp/celeb/1.webp",
+    name: { ko: "첸", en: "CHEN" },
+    thumbnail: "/temp/celeb/3.webp",
   },
   {
     id: "4",
-    name: { ko: "도경수", en: "D.O." },
-    thumbnail: "/temp/celeb/1.webp",
+    name: { ko: "백현", en: "BAEKHYUN" },
+    thumbnail: "/temp/celeb/4.webp",
   },
   {
     id: "5",
-    name: { ko: "도경수", en: "D.O." },
-    thumbnail: "/temp/celeb/1.webp",
+    name: { ko: "시우민", en: "XIUMIN" },
+    thumbnail: "/temp/celeb/5.webp",
   },
 ];
 
@@ -454,6 +469,7 @@ export default function App() {
         >
           <ProjectSection />
           <IdeaSection />
+          <CelebSection />
         </Box>
       </Container>
     </>
@@ -512,7 +528,15 @@ function ProjectSection() {
                 slidesPerView: 1,
                 spaceBetween: 8,
               },
+              120: {
+                slidesPerView: 1,
+                spaceBetween: 8,
+              },
               240: {
+                slidesPerView: 1,
+                spaceBetween: 8,
+              },
+              360: {
                 slidesPerView: 2,
                 spaceBetween: 8,
               },
@@ -520,12 +544,24 @@ function ProjectSection() {
                 slidesPerView: 2,
                 spaceBetween: 8,
               },
+              600: {
+                slidesPerView: 3,
+                spaceBetween: 12,
+              },
               720: {
                 slidesPerView: 3,
                 spaceBetween: 12,
               },
               840: {
                 slidesPerView: 4,
+                spaceBetween: 12,
+              },
+              960: {
+                slidesPerView: 4,
+                spaceBetween: 12,
+              },
+              1080: {
+                slidesPerView: 5,
                 spaceBetween: 12,
               },
               1200: {
@@ -650,7 +686,15 @@ function IdeaSection() {
                 slidesPerView: 1,
                 spaceBetween: 8,
               },
+              120: {
+                slidesPerView: 1,
+                spaceBetween: 8,
+              },
               240: {
+                slidesPerView: 1,
+                spaceBetween: 8,
+              },
+              360: {
                 slidesPerView: 1,
                 spaceBetween: 8,
               },
@@ -658,12 +702,24 @@ function IdeaSection() {
                 slidesPerView: 1,
                 spaceBetween: 8,
               },
+              600: {
+                slidesPerView: 1,
+                spaceBetween: 12,
+              },
               720: {
                 slidesPerView: 2,
                 spaceBetween: 12,
               },
               840: {
                 slidesPerView: 2,
+                spaceBetween: 12,
+              },
+              960: {
+                slidesPerView: 2,
+                spaceBetween: 12,
+              },
+              1080: {
+                slidesPerView: 3,
                 spaceBetween: 12,
               },
               1200: {
@@ -680,6 +736,181 @@ function IdeaSection() {
               );
             })}
           </Swiper>
+        </Box>
+      </Box>
+    </Box>
+  );
+}
+
+function CelebSection() {
+  const router = useRouter();
+  const { en } = router.query;
+  const [swiper, setSwiper] = useState<SwiperCore>();
+  const handleSlideChange = () => {};
+  return (
+    <Box
+      sx={{
+        p: theme.spacing(0, 2),
+        "@media(min-width: 600px)": {
+          p: theme.spacing(0, 3),
+        },
+      }}
+    >
+      <Box
+        sx={{
+          p: theme.spacing(8, 0, 0, 0),
+        }}
+      >
+        <Typography
+          sx={{
+            fontSize: 16,
+            lineHeight: "24px",
+            fontWeight: "700",
+          }}
+        >
+          {en === "true" ? "Currently hot celebs" : "최근 인기 셀럽"}
+        </Typography>
+        <Box
+          sx={{
+            m: theme.spacing(2, -2, 0, -2),
+            "@media(min-width: 600px)": {
+              m: theme.spacing(2, -3, 0, -3),
+            },
+            "& .swiper": {
+              p: theme.spacing(0, 2),
+              "@media(min-width: 600px)": {
+                p: theme.spacing(0, 3),
+              },
+            },
+            display: "none",
+          }}
+        >
+          <Swiper
+            onSwiper={setSwiper}
+            onSlideChange={handleSlideChange}
+            // breakpoints={{
+            //   0: {
+            //     slidesPerView: 1,
+            //     spaceBetween: 8,
+            //   },
+            //   240: {
+            //     slidesPerView: 2,
+            //     spaceBetween: 8,
+            //   },
+            //   480: {
+            //     slidesPerView: 3,
+            //     spaceBetween: 8,
+            //   },
+            //   720: {
+            //     slidesPerView: 3,
+            //     spaceBetween: 12,
+            //   },
+            //   840: {
+            //     slidesPerView: 4,
+            //     spaceBetween: 12,
+            //   },
+            //   1200: {
+            //     slidesPerView: 5,
+            //     spaceBetween: 12,
+            //   },
+            // }}
+            breakpoints={{
+              0: {
+                slidesPerView: 2,
+                spaceBetween: 8,
+              },
+              120: {
+                slidesPerView: 2,
+                spaceBetween: 8,
+              },
+              240: {
+                slidesPerView: 3,
+                spaceBetween: 8,
+              },
+              360: {
+                slidesPerView: 2,
+                spaceBetween: 8,
+              },
+              480: {
+                slidesPerView: 3,
+                spaceBetween: 8,
+              },
+              600: {
+                slidesPerView: 3,
+                spaceBetween: 12,
+              },
+              720: {
+                slidesPerView: 4,
+                spaceBetween: 12,
+              },
+              840: {
+                slidesPerView: 4,
+                spaceBetween: 12,
+              },
+              960: {
+                slidesPerView: 5,
+                spaceBetween: 12,
+              },
+              1080: {
+                slidesPerView: 5,
+                spaceBetween: 12,
+              },
+              1200: {
+                slidesPerView: 6,
+                spaceBetween: 12,
+              },
+            }}
+          >
+            {testCelebs.map((item, index) => {
+              return (
+                <SwiperSlide key={index}>
+                  <CelebItem item={item} />
+                </SwiperSlide>
+              );
+            })}
+          </Swiper>
+        </Box>
+        <Box
+          sx={{
+            m: theme.spacing(2, 0, 0, 0),
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr 1fr",
+            gridAutoRows: "1fr",
+            gridTemplateRows: "auto",
+            gridColumnGap: 8,
+            gridRowGap: 16,
+            "@media(min-width: 480px)": {
+              gridTemplateColumns: "1fr 1fr 1fr 1fr",
+            },
+            "@media(min-width: 600px)": {
+              gridTemplateColumns: "1fr 1fr 1fr 1fr",
+              gridColumnGap: 12,
+              gridRowGap: 24,
+            },
+            "@media(min-width: 720px)": {
+              gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+            },
+            "@media(min-width: 840px)": {
+              gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+            },
+            "@media(min-width: 960px)": {
+              gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr 1fr",
+            },
+            "@media(min-width: 1080px)": {
+              gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr 1fr",
+            },
+            "@media(min-width: 1200px)": {
+              gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr",
+            },
+          }}
+        >
+          {testCelebs.map((item, index) => {
+            return (
+              <SwiperSlide key={index}>
+                <CelebItem item={item} />
+              </SwiperSlide>
+            );
+          })}
         </Box>
       </Box>
     </Box>
