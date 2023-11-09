@@ -26,7 +26,7 @@ import BottomNav from "../components/organisms/BottomNav";
 import MainHeader from "../components/organisms/MainHeader";
 import MainFab from "../components/organisms/MainFab";
 import { usePreserveScroll } from "../hooks/usePreserveScroll";
-import '@fortawesome/fontawesome-svg-core/styles.css'
+import "@fortawesome/fontawesome-svg-core/styles.css";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -106,6 +106,14 @@ function MyApp(props: MyAppProps) {
   // }, []);
 
   usePreserveScroll();
+  useEffect(() => {
+    if (router.query?.lang?.toString() === "") {
+      router.replace({
+        pathname: router.pathname,
+        query: { ...router.query, lang: "kr" },
+      });
+    }
+  }, [router]);
   return (
     <CacheProvider value={emotionCache}>
       <Head>

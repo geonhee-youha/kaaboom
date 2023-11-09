@@ -23,14 +23,13 @@ import { CountryCode } from "../../constants/country";
 import { bottomTabs } from "./BottomNav";
 
 export default function MainHeader() {
+  const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
   const onClickSearch = () => {};
   const onClickBell = () => {};
   const onClickGlobe = () => {
     setOpen(!open);
   };
-  const router = useRouter();
-  const { en } = router.query;
   const handleClose = () => {
     setOpen(false);
   };
@@ -88,7 +87,7 @@ export default function MainHeader() {
           <Box
             sx={{
               display: "flex",
-              m: theme.spacing(0, -1, 0, 0),
+              m: theme.spacing(0, -1.5, 0, 0),
             }}
           >
             <IconButton name="search" onClick={onClickSearch} />
@@ -111,10 +110,10 @@ export default function MainHeader() {
                 {languages.map((item, index) => {
                   const handleClick = () => {
                     router.push({
-                      query:
-                        item.value === "KR"
-                          ? { ...router.query, en: undefined }
-                          : { ...router.query, en: true },
+                      query: {
+                        ...router.query,
+                        lang: item.value.toLowerCase(),
+                      },
                     });
                     handleClose();
                   };

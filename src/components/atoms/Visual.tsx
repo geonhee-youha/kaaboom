@@ -25,7 +25,7 @@ export default function Visual({
   video,
   children,
   threshold,
-  forceShow,
+  forceShow = true,
   top,
 }: Props) {
   const [loaded, setLoaded] = useState<boolean>(false);

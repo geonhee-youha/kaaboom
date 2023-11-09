@@ -14,15 +14,18 @@ export const homeMainBannerContentsHeight = `calc((100vh - 56px - var(--saib)) *
 export type HomeMainBannerItemProps = {
   id: string;
   thumbnail: string;
-  title: { ko: React.ReactNode; en: React.ReactNode };
-  description: { ko: React.ReactNode; en: React.ReactNode };
+  title: { [key in string]: React.ReactNode };
+  description: { [key in string]: React.ReactNode };
 };
 
 function HomeMainBannerItem({ item }: { item: HomeMainBannerItemProps }) {
   const router = useRouter();
-  const { en } = router.query;
+  const { lang } = router.query;
   const handleClick = () => {
-    router.push(`/celeb/${item.id}`);
+    router.push({
+      pathname: `/celebs/${item.id}`,
+      query: { ...router.query, lang: lang ?? "kr" },
+    });
   };
   return (
     <>
@@ -61,7 +64,7 @@ function HomeMainBannerItem({ item }: { item: HomeMainBannerItemProps }) {
               fontWeight: "700",
             }}
           >
-            {en === "true" ? item.title.en : item.title.ko}
+            {item.title[lang?.toString() ?? "kr"]}
           </Typography>
           <Typography
             sx={{
@@ -72,7 +75,7 @@ function HomeMainBannerItem({ item }: { item: HomeMainBannerItemProps }) {
               m: theme.spacing(1, 0, 0, 0),
             }}
           >
-            {en === "true" ? item.description.en : item.description.ko}
+            {item.description[lang?.toString() ?? "kr"]}
           </Typography>
         </Box>
       </Container>
@@ -89,9 +92,9 @@ export default function HomeMainBanner({
   const handleSlideChange = () => {};
   useEffect(() => {
     var headerBackgroundEl: any = document.querySelector(`.HeaderBackground`);
-    var headerBottomEl: any = document.querySelector(`.HeaderBottom`);
     var contentsEls: any = document.querySelectorAll(`.HomeMainBannerText`);
-    var homeContentsEl: any = document.querySelector(`.HomeContents`);
+    var targetContentsEl: any = document.querySelector(`.HomeContents`);
+    var targetLineEl: any = document.querySelector(`.TargetLine`);
     var imageEls: any = document.querySelectorAll(
       `.HomeMainBannerImage .ImageContainer`
     );
@@ -101,15 +104,13 @@ export default function HomeMainBanner({
     );
     const listener1 = (e: any) => {
       var scrollY = Number(window.scrollY.toFixed(0));
-      var swiperLineOffsetTop = homeContentsEl.getBoundingClientRect().top + 32;
-      var top = swiperLineOffsetTop < 1 ? 1 : swiperLineOffsetTop;
-      var headerBackgroundOffsetBottom =
-        headerBottomEl.getBoundingClientRect().bottom;
-      var bannerOpacity: number = Number(
-        ((top - headerBackgroundOffsetBottom) / top).toFixed(1)
+      var targetLineOffsetBottom = targetLineEl.getBoundingClientRect().bottom;
+      var targetOffsetTop = targetContentsEl.getBoundingClientRect().top;
+      var backgroundOpacity: number = Number(
+        (targetOffsetTop / targetLineOffsetBottom).toPrecision(2)
       );
       var headerBlur: number = Number(
-        (1 - (top - headerBackgroundOffsetBottom) / top).toFixed(1)
+        (1 - targetOffsetTop / targetLineOffsetBottom).toPrecision(2)
       );
       headerBackgroundEl.style.setProperty(
         "background",
@@ -125,13 +126,14 @@ export default function HomeMainBanner({
       itemEls.forEach(function (el: any) {
         el.style.setProperty(
           "opacity",
-          bannerOpacity > 1 ? 1 : bannerOpacity < 0 ? 0 : bannerOpacity
+          backgroundOpacity > 1 ? 1 : backgroundOpacity < 0 ? 0 : backgroundOpacity
         );
       });
       paginationEl.style.setProperty(
         "opacity",
-        bannerOpacity > 1 ? 1 : bannerOpacity < 0 ? 0 : bannerOpacity
+        backgroundOpacity > 1 ? 1 : backgroundOpacity < 0 ? 0 : backgroundOpacity
       );
+      console.log(targetOffsetTop, targetLineOffsetBottom);
     };
     window.addEventListener("scroll", listener1);
     window.addEventListener("resize", listener1);
@@ -143,8 +145,20 @@ export default function HomeMainBanner({
   return (
     <>
       <Box
-        sx={{ width: "100%", height: homeMainBannerContentsHeight }}
-        className="BannerHeight"
+        sx={{
+          width: "100%",
+          height: homeMainBannerContentsHeight,
+        }}
+      />
+      <Box
+        sx={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          height: homeMainBannerContentsHeight,
+        }}
+        className="TargetLine"
       />
       <Box
         sx={{

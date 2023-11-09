@@ -6,13 +6,13 @@ import { grey } from "@mui/material/colors";
 
 export type CelebProps = {
   id: string;
-  name: { ko: string; en: string };
+  name: { [key in string]: string };
   thumbnail: string;
 };
 
 export default function CelebItem({ item }: { item: CelebProps }) {
   const router = useRouter();
-  const { en } = router.query;
+  const { lang } = router.query;
   const celeb = item;
   return (
     <ButtonBase
@@ -31,7 +31,7 @@ export default function CelebItem({ item }: { item: CelebProps }) {
           aspectRatio: `1`,
           borderRadius: "50%",
           overflow: "hidden",
-          backgroundColor: grey[900]
+          backgroundColor: grey[900],
         }}
       >
         <Visual src={celeb.thumbnail} absolute forceShow />
@@ -44,7 +44,7 @@ export default function CelebItem({ item }: { item: CelebProps }) {
           m: theme.spacing(1.5, 0, 0, 0),
         }}
       >
-        {celeb.name[en === "true" ? "en" : "ko"]}
+        {celeb.name[lang?.toString() ?? "kr"]}
       </Typography>
     </ButtonBase>
   );

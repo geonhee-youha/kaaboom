@@ -9,11 +9,7 @@ export default function BackHeader() {
   const onClickBack = () => {
     router.back();
   };
-  const [mounted, setMounted] = useState<boolean>(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-  return mounted ? (
+  return (
     <AppBar
       component="div"
       sx={{
@@ -28,6 +24,16 @@ export default function BackHeader() {
       elevation={0}
       className="Header"
     >
+      <Box
+        sx={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+        }}
+        className="BackHeaderBackground"
+      />
       <Container
         sx={{
           transition: "all 0.5s ease",
@@ -35,15 +41,18 @@ export default function BackHeader() {
           display: "flex",
           alignItems: "center",
           height: 56,
+          maxWidth: router.asPath.includes("/projects/")
+            ? "600px !important"
+            : "1200px",
         }}
       >
         <Box
           sx={{
             display: "flex",
-            m: theme.spacing(0, 0, 0, -1),
+            m: theme.spacing(0, 0, 0, -1.5),
           }}
         >
-          <IconButton name="chevron-left" onClick={onClickBack} size={20}/>
+          <IconButton name="chevron-left" onClick={onClickBack} size={20} />
         </Box>
         <Box
           sx={{
@@ -62,7 +71,5 @@ export default function BackHeader() {
         className="HeaderBottom"
       />
     </AppBar>
-  ) : (
-    <></>
   );
 }

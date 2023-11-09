@@ -29,44 +29,47 @@ import { usePreserveScroll } from "../../hooks/usePreserveScroll";
 
 export const bottomTabs: BottomTabsProps[] = [
   {
-    label: { ko: "홈", en: "Home" },
+    label: { kr: "홈", us: "Home" },
     value: "/home",
     name: "house",
   },
   {
-    label: { ko: "프로젝트", en: "Projects" },
+    label: { kr: "프로젝트", us: "Projects" },
     value: "/projects",
     name: "bolt",
   },
   {
-    label: { ko: "아이디어", en: "Ideas" },
+    label: { kr: "아이디어", us: "Ideas" },
     value: "/ideas",
     name: "lightbulb",
   },
   {
-    label: { ko: "즐겨찾기", en: "Favorite" },
+    label: { kr: "즐겨찾기", us: "Favorite" },
     value: "/favorite",
     name: "heart",
   },
   {
-    label: { ko: "마이카붐", en: "Account" },
+    label: { kr: "마이카붐", us: "Account" },
     value: "/account",
     name: "user",
   },
 ];
 
 export type BottomTabsProps = {
-  label: { ko: string; en: string };
+  label: { [key in string]: string };
   value: string;
   name: IconName;
 };
 
 export default function BottomNav() {
   const router = useRouter();
-  const { en } = router.query;
+  const { lang } = router.query;
   const { scrollPositions } = usePreserveScroll();
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    router.push({ pathname: newValue, query: { en: en } });
+    router.push({
+      pathname: newValue,
+      query: { ...router.query, lang: lang ?? "kr" },
+    });
   };
   const [mounted, setMounted] = useState<boolean>(false);
   useEffect(() => {
@@ -98,6 +101,7 @@ export default function BottomNav() {
             backgroundColor: `#121212`,
             p: theme.spacing(0, 0, `calc(var(--saib))`, 0),
             overflow: "hidden",
+            maxWidth: 'initial'
           }}
         >
           {bottomTabs.map((item, index) => {
@@ -116,7 +120,7 @@ export default function BottomNav() {
                       color: color,
                     }}
                   >
-                    {en === "true" ? item.label.en : item.label.ko}
+                    {item.label[lang?.toString() ?? "kr"]}
                   </Typography>
                 }
                 value={item.value}
@@ -158,6 +162,7 @@ export default function BottomNav() {
                   transition: `all 0.5s ease`,
                   justifyContent: "center",
                   alignItems: "center",
+                  maxWidth: 120
                 }}
               />
             );

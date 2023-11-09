@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { grey, pink } from "@mui/material/colors";
 import { comma, getCountryFlagEmoji, getDiffDay } from "../../utils";
 import Icon from "../atoms/Icon";
-import { testCelebs } from "../../pages/home";
+import { testCelebs } from "../../constants/temp";
 import _ from "lodash";
 import { tempFans } from "./FanItem";
 
@@ -17,9 +17,9 @@ export type ProjectProps = {
     id: string;
   };
   thumbnail: string;
-  title: { ko: React.ReactNode; en: React.ReactNode };
-  description: { ko: React.ReactNode; en: React.ReactNode };
-  story: { ko: React.ReactNode; en: React.ReactNode };
+  title: { [key in string]: React.ReactNode };
+  description: { [key in string]: React.ReactNode };
+  story: { [key in string]: React.ReactNode };
   likeCount: number;
   commentCount: number;
   viewCount: number;
@@ -30,14 +30,20 @@ export type ProjectProps = {
   };
 };
 
-export default function ProjectItem({ item }: { item: ProjectProps }) {
+export default function ProjectItem({
+  item,
+  aspectRatio = `10 / 16`,
+}: {
+  item: ProjectProps;
+  aspectRatio?: string;
+}) {
   const router = useRouter();
-  const { en } = router.query;
+  const { lang } = router.query;
   const celeb =
     testCelebs[_.findIndex(testCelebs, (el) => el.id === item.celeb.id)];
   const fan = tempFans[_.findIndex(tempFans, (el) => el.id === item.fan.id)];
   const handleClick = () => {
-    router.push({ pathname: `/project/${item.id}`, query: router.query });
+    router.push({ pathname: `/projects/${item.id}`, query: router.query });
   };
   return (
     <ButtonBase
@@ -55,7 +61,7 @@ export default function ProjectItem({ item }: { item: ProjectProps }) {
           position: "relative",
           width: "100%",
           //   aspectRatio: `16 / 10`,
-          aspectRatio: `10 / 16`,
+          aspectRatio: aspectRatio,
         }}
       >
         <Visual src={item.thumbnail} absolute forceShow />
@@ -113,7 +119,7 @@ export default function ProjectItem({ item }: { item: ProjectProps }) {
             m: theme.spacing(0, 0, 1, 0),
           }}
         >
-          {celeb.name[en === "true" ? "en" : "ko"]}
+          {celeb.name[lang?.toString() ?? "kr"]}
         </Typography>
         <Typo
           lines={2}
@@ -124,7 +130,7 @@ export default function ProjectItem({ item }: { item: ProjectProps }) {
             m: theme.spacing(0, 0, 1, 0),
           }}
         >
-          {item.title[en === "true" ? "en" : "ko"]}
+          {item.title[lang?.toString() ?? "kr"]}
         </Typo>
         <Typo
           lines={2}
@@ -135,7 +141,7 @@ export default function ProjectItem({ item }: { item: ProjectProps }) {
             color: grey[400],
           }}
         >
-          {item.description[en === "true" ? "en" : "ko"]}
+          {item.description[lang?.toString() ?? "kr"]}
         </Typo>
         {/* <Typo
           sx={{
@@ -281,200 +287,3 @@ export default function ProjectItem({ item }: { item: ProjectProps }) {
     </ButtonBase>
   );
 }
-
-// export default function ContentsItem({ item }: { item: ContentsProps }) {
-//     const router = useRouter();
-//     const { en } = router.query;
-//     const celeb =
-//       testCelebs[_.findIndex(testCelebs, (el) => el.id === item.celeb.id)];
-//     return (
-//       <ButtonBase
-//         sx={{
-//           width: "100%",
-//           flexDirection: "column",
-//         }}
-//         disableRipple
-//       >
-//         <Paper
-//           sx={{
-//             position: "relative",
-//             width: "100%",
-//             aspectRatio: `16 / 10`,
-//           //   aspectRatio: `1`,
-//             borderRadius: 1.5,
-//             overflow: "hidden",
-//           }}
-//         >
-//           <Visual src={item.thumbnail} absolute forceShow />
-//         </Paper>
-//         <Box
-//           sx={{
-//             m: theme.spacing(1.5, 0, 0, 0),
-//             p: theme.spacing(0, 0.5, 0, 0),
-//           }}
-//         >
-//           <Typography
-//             sx={{
-//               fontSize: 12,
-//               lineHeight: "16px",
-//               color: grey[600],
-//               // fontWeight: '300',
-//               m: theme.spacing(0, 0, 0.5, 0),
-//             }}
-//           >
-//             {celeb.name[en === "true" ? "en" : "ko"]}
-//           </Typography>
-//           <Typo
-//             sx={{
-//               fontSize: 14,
-//               lineHeight: "20px",
-//               fontWeight: "400",
-//               m: theme.spacing(0, 0, 1, 0),
-//             }}
-//           >
-//             {item.title[en === "true" ? "en" : "ko"]}
-//           </Typo>
-//           <Typo
-//             lines={2}
-//             sx={{
-//               fontSize: 12,
-//               lineHeight: "16px",
-//               fontWeight: "300",
-//               color: grey[600],
-//             }}
-//           >
-//             {item.description[en === "true" ? "en" : "ko"]}
-//           </Typo>
-//           {/* <Box
-//             sx={{
-//               m: theme.spacing(2, 0, 0, 0),
-//               width: "100%",
-//             }}
-//           >
-//             <Box
-//               sx={{
-//                 display: "flex",
-//                 alignItems: "center",
-//                 justifyContent: "space-between",
-//                 m: theme.spacing(0, 0, 1, 0),
-//               }}
-//             >
-//               <Box
-//                 sx={{
-//                   display: "flex",
-//                   alignItems: "center",
-//                 }}
-//               >
-//                 <Icon
-//                   prefix="fas"
-//                   color={pink[500]}
-//                   name="heart"
-//                   size={12}
-//                   sx={{ m: theme.spacing(0, 0.5, 0, 0) }}
-//                 />
-//                 <Typography
-//                   sx={{
-//                     fontSize: 12,
-//                     lineHeight: "16px",
-//                     color: pink[500],
-//                   }}
-//                 >
-//                   {`${comma(item.likeCount)}`}
-//                 </Typography>
-//               </Box>
-//               <Typography
-//                 sx={{
-//                   fontSize: 12,
-//                   lineHeight: "16px",
-//                   color: grey[800],
-//                 }}
-//               >
-//                 100
-//               </Typography>
-//             </Box>
-//             <Box
-//               sx={{
-//                 position: "relative",
-//                 borderRadius: 2,
-//                 overflow: "hidden",
-//                 backgroundColor: grey[900],
-//                 height: 6,
-//                 width: "100%",
-//                 display: "none",
-//               }}
-//             >
-//               <Box
-//                 sx={{
-//                   position: "absolute",
-//                   top: 0,
-//                   left: 0,
-//                   bottom: 0,
-//                   width: `${(item.likeCount / 100) * 100}%`,
-//                   backgroundColor: pink[500],
-//                   borderRadius: 2,
-//                 }}
-//               />
-//             </Box>
-//           </Box> */}
-//           <Box
-//             sx={{
-//               m: theme.spacing(1.25, -0.25, 0, -0.25),
-//               display: "flex",
-//               "& > *:not(:nth-of-type(1))": {
-//                 m: theme.spacing(0, 0, 0, 1.5),
-//               },
-//             }}
-//           >
-//             <Box
-//               sx={{
-//                 display: "flex",
-//                 alignItems: "center",
-//               }}
-//             >
-//               <Icon
-//                 prefix="fas"
-//                 color={item.liked ? pink[500] : grey[700]}
-//                 name="heart"
-//                 size={12}
-//                 sx={{ m: theme.spacing(0, 0.5, 0, 0) }}
-//               />
-//               <Typography
-//                 sx={{
-//                   fontSize: 12,
-//                   lineHeight: "16px",
-//                   color: item.liked ? pink[500] : grey[700],
-//                   fontWeight: 700,
-//                 }}
-//               >
-//                 {`${comma(item.likeCount)}`}
-//               </Typography>
-//             </Box>
-//             <Box
-//               sx={{
-//                 display: "flex",
-//                 alignItems: "center",
-//               }}
-//             >
-//               <Icon
-//                 prefix="fas"
-//                 color={grey[700]}
-//                 name="comment"
-//                 size={12}
-//                 sx={{ m: theme.spacing(0, 0.5, 0, 0) }}
-//               />
-//               <Typography
-//                 sx={{
-//                   fontSize: 12,
-//                   lineHeight: "16px",
-//                   color: grey[700],
-//                   fontWeight: 700,
-//                 }}
-//               >
-//                 {`${comma(item.commentCount)}`}
-//               </Typography>
-//             </Box>
-//           </Box>
-//         </Box>
-//       </ButtonBase>
-//     );
-//   }

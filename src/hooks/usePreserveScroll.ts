@@ -2,6 +2,7 @@
 import _ from "lodash"
 import { useRouter } from "next/router"
 import { useEffect, useRef } from "react"
+import { bottomTabs } from "../components/organisms/BottomNav"
 
 export const usePreserveScroll = () => {
   const router = useRouter()
@@ -15,24 +16,26 @@ export const usePreserveScroll = () => {
     })
     const onRouteChangeStart = () => {
       const url = router.pathname
-      scrollPositions.current = [...scrollPositions.current, { index: new Date().getTime(), url: url, position: window.scrollY }]
+      scrollPositions.current = [...scrollPositions.current, { index: new Date().getTime(), url: `${url}${router.query.id}`, position: window.scrollY }]
     }
     const onRouteChangeComplete = (url: any) => {
-      if (scrollPositions.current.length > 0) {
-        const target = scrollPositions.current[_.findLastIndex(scrollPositions.current, el => el.url === router.pathname)]
+      const target = scrollPositions.current[_.findLastIndex(scrollPositions.current, el => el.url === `${router.pathname}${router.query.id}`)]
+      if ((isBack.current || bottomTabs.flatMap(el => el.value).includes(router.pathname)) && scrollPositions.current.length > 0) {
         if (target) {
           window.scroll({
             top: target.position,
             behavior: "auto",
           })
-          scrollPositions.current = _.filter(scrollPositions.current, el => el.index !== target.index)
         }
+      }
+      if (scrollPositions.current.length > 0 && target) {
+        scrollPositions.current = _.filter(scrollPositions.current, el => el.index !== target.index)
       }
       isBack.current = false
     }
     router.events.on("routeChangeStart", onRouteChangeStart)
     router.events.on("routeChangeComplete", onRouteChangeComplete)
-
+    console.log(scrollPositions)
     return () => {
       router.events.off("routeChangeStart", onRouteChangeStart)
       router.events.off("routeChangeComplete", onRouteChangeComplete)

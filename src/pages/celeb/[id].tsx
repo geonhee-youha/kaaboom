@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import BackHeader from "../../components/organisms/BackHeader";
-import { testCelebs, testProjects } from "../home";
+import { testCelebs, testProjects } from "../../constants/temp";
 import Visual from "../../components/atoms/Visual";
 import _ from "lodash";
 import { Box, Container } from "@mui/material";
