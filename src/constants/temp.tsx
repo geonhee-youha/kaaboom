@@ -77,7 +77,42 @@ export const testHomeMainBanner: HomeMainBannerItemProps[] = [
           원하는 콘텐츠는?
         </>
       ),
-      us: <>What content do you want from Do Kyungsoo?</>,
+      us: (
+        <>
+          What do you want from
+          <br />
+          Doh Kyungsoo?
+        </>
+      ),
+    },
+    description: {
+      kr: (
+        <>
+          아이돌부터 영화배우까지,
+          <br />
+          완벽주의자 도경수의 다음 콘텐츠는?
+        </>
+      ),
+      us: (
+        <>
+          From idol to movie star, what will be <br />
+          the next step of Doh Kyungsoo,the perfectionist?
+        </>
+      ),
+    },
+  },
+  {
+    id: "1",
+    thumbnail: "/temp/banner/home-main-1.jpeg",
+    title: {
+      kr: (
+        <>
+          당신이 도경수에게
+          <br />
+          원하는 콘텐츠는?
+        </>
+      ),
+      us: <>What content do you want from Doh Kyungsoo?</>,
     },
     description: {
       kr: (
@@ -106,36 +141,7 @@ export const testHomeMainBanner: HomeMainBannerItemProps[] = [
           원하는 콘텐츠는?
         </>
       ),
-      us: <>What content do you want from Do Kyungsoo?</>,
-    },
-    description: {
-      kr: (
-        <>
-          아이돌부터 영화배우까지,
-          <br />
-          완벽주의자 도경수의 다음 콘텐츠는?
-        </>
-      ),
-      us: (
-        <>
-          From idol to movie star, what will be the next content for
-          perfectionist Do Kyung-soo?
-        </>
-      ),
-    },
-  },
-  {
-    id: "1",
-    thumbnail: "/temp/banner/home-main-1.jpeg",
-    title: {
-      kr: (
-        <>
-          당신이 도경수에게
-          <br />
-          원하는 콘텐츠는?
-        </>
-      ),
-      us: <>What content do you want from Do Kyungsoo?</>,
+      us: <>What content do you want from Doh Kyungsoo?</>,
     },
     description: {
       kr: (
@@ -218,27 +224,27 @@ export const testCelebs: CelebProps[] = [
 
 export const testProjects: ProjectProps[] = [
   {
-    id: "1",
+    id: "4",
     celeb: {
       id: "1",
     },
-    thumbnail: "/temp/contents/1.png",
+    thumbnail: "/temp/contents/2.jpeg",
     title: {
-      kr: "크리스마스 캐롤 앨범 제작 프로젝트",
-      us: "Christmas Carol Album Project",
+      kr: "경수오빠 저희를 위해서 솔로앨범 내주세요",
+      us: "Cooking with Doh Kyungsoo : Global Edition",
     },
     description: {
       kr: "이 편지는 영국에서 최초로 시작되어 일년에 한바퀴를 돌면서 받는 사람에게 행운을 주었고 지금은 당신에게로 옮겨진 이 편지는 4일 안에 당신 곁을 떠나야 합니다. 이 편지를 포함해서 7통을 행운이 필요한 사람에게 보내 주셔야 합니다. 복사를 해도 좋습니다. 혹 미신이라 하실지 모르지만 사실입니다.",
-      us: "If you have nothing to do now I can offer you a little entertainment – a psychological game. Try it and I hope that you will like it.",
+      us: "Doh Kyungsoo showcases his culinary skills by preparing dishes from various countries around the world. What is his specialty besides making Korean dishes?",
     },
     story: { kr: "", us: "" },
-    likeCount: 2640,
-    commentCount: 1077,
+    likeCount: 1580,
+    commentCount: 412,
     viewCount: 18473,
-    liked: true,
+    liked: false,
     dueDate: new Date("2023-12-01"),
     fan: {
-      id: "1",
+      id: "4",
     },
   },
   {
@@ -246,14 +252,14 @@ export const testProjects: ProjectProps[] = [
     celeb: {
       id: "1",
     },
-    thumbnail: "/temp/contents/2.jpeg",
+    thumbnail: "/temp/contents/3.jpg",
     title: {
       kr: "화보 메이킹필름 콘텐츠 프로젝트",
-      us: "Pictorial making film content project",
+      us: "Doh Kyungsoo's Mindfulness Moments",
     },
     description: {
       kr: "이 편지는 영국에서 최초로 시작되어 일년에 한바퀴를 돌면서 받는 사람에게 행운을 주었고 지금은 당신에게로 옮겨진 이 편지는 4일 안에 당신 곁을 떠나야 합니다. 이 편지를 포함해서 7통을 행운이 필요한 사람에게 보내 주셔야 합니다. 복사를 해도 좋습니다. 혹 미신이라 하실지 모르지만 사실입니다.",
-      us: "If you have nothing to do now I can offer you a little entertainment – a psychological game. Try it and I hope that you will like it.",
+      us: "Doh Kyungsoo guides viewers through mindfulness and relaxation exercises. This could include meditation sessions, calming nature walks, or even ASMR content to help fans unwind.",
     },
     story: { kr: "", us: "" },
     likeCount: 3822,
@@ -266,18 +272,42 @@ export const testProjects: ProjectProps[] = [
     },
   },
   {
+    id: "1",
+    celeb: {
+      id: "1",
+    },
+    thumbnail: "/temp/contents/1.png",
+    title: {
+      kr: "크리스마스 캐롤 앨범 제작 프로젝트",
+      us: "Doh Kyungsoo's Language Learning Journey",
+    },
+    description: {
+      kr: "이 편지는 영국에서 최초로 시작되어 일년에 한바퀴를 돌면서 받는 사람에게 행운을 주었고 지금은 당신에게로 옮겨진 이 편지는 4일 안에 당신 곁을 떠나야 합니다. 이 편지를 포함해서 7통을 행운이 필요한 사람에게 보내 주셔야 합니다. 복사를 해도 좋습니다. 혹 미신이라 하실지 모르지만 사실입니다.",
+      us: "Doh Kyungsoo embarks on a language learning challenge, attempting to learn phrases or even hold basic conversations in different languages. Fans can follow his progress and maybe learn along with him.",
+    },
+    story: { kr: "", us: "" },
+    likeCount: 2640,
+    commentCount: 1077,
+    viewCount: 18473,
+    liked: true,
+    dueDate: new Date("2023-12-01"),
+    fan: {
+      id: "1",
+    },
+  },
+  {
     id: "3",
     celeb: {
       id: "1",
     },
-    thumbnail: "/temp/contents/3.jpg",
+    thumbnail: "/temp/contents/4.jpg",
     title: {
       kr: "더 문 촬영 및 제작후기 공유 프로젝트",
-      us: "The Moon filming and production review sharing project",
+      us: "Doh Kyungsoo's Book Club",
     },
     description: {
       kr: "이 편지는 영국에서 최초로 시작되어 일년에 한바퀴를 돌면서 받는 사람에게 행운을 주었고 지금은 당신에게로 옮겨진 이 편지는 4일 안에 당신 곁을 떠나야 합니다. 이 편지를 포함해서 7통을 행운이 필요한 사람에게 보내 주셔야 합니다. 복사를 해도 좋습니다. 혹 미신이라 하실지 모르지만 사실입니다.",
-      us: "If you have nothing to do now I can offer you a little entertainment – a psychological game. Try it and I hope that you will like it.",
+      us: "Doh Kyungsoo shares his favorite books and discusses literature with fans. This can include book reviews, recommendations, and perhaps even a monthly book club discussion with fans.",
     },
     story: { kr: "", us: "" },
     likeCount: 1216,
@@ -287,30 +317,6 @@ export const testProjects: ProjectProps[] = [
     dueDate: new Date("2023-12-01"),
     fan: {
       id: "3",
-    },
-  },
-  {
-    id: "4",
-    celeb: {
-      id: "1",
-    },
-    thumbnail: "",
-    title: {
-      kr: "경수오빠 저희를 위해서 솔로앨범 내주세요",
-      us: "Kyungsoo oppa, please release an album for us",
-    },
-    description: {
-      kr: "이 편지는 영국에서 최초로 시작되어 일년에 한바퀴를 돌면서 받는 사람에게 행운을 주었고 지금은 당신에게로 옮겨진 이 편지는 4일 안에 당신 곁을 떠나야 합니다. 이 편지를 포함해서 7통을 행운이 필요한 사람에게 보내 주셔야 합니다. 복사를 해도 좋습니다. 혹 미신이라 하실지 모르지만 사실입니다.",
-      us: "If you have nothing to do now I can offer you a little entertainment – a psychological game. Try it and I hope that you will like it.",
-    },
-    story: { kr: "", us: "" },
-    likeCount: 1580,
-    commentCount: 412,
-    viewCount: 18473,
-    liked: false,
-    dueDate: new Date("2023-12-01"),
-    fan: {
-      id: "4",
     },
   },
   {

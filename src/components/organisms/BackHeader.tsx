@@ -2,9 +2,13 @@ import { AppBar, Box, Container } from "@mui/material";
 import IconButton from "../atoms/IconButton";
 import { theme } from "../../themes/theme";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
-export default function BackHeader() {
+export default function BackHeader({
+  children,
+}: {
+  children?: React.ReactNode;
+}) {
   const router = useRouter();
   const onClickBack = () => {
     router.back();
@@ -56,9 +60,15 @@ export default function BackHeader() {
         </Box>
         <Box
           sx={{
-            flex: 1,
+            position: "absolute",
+            left: 72,
+            right: 72,
+            top: 0,
+            bottom: 0,
           }}
-        ></Box>
+        >
+          {children}
+        </Box>
       </Container>
       <Box
         sx={{
